@@ -28,6 +28,12 @@ module ResqueHelper
     "<li #{class_if_current(dname)}>#{link_to(name, url(dname))}</li>"
   end
 
+  def find_worker(worker)
+    first_part, *rest = worker.split(':')
+    first_part.gsub!(/_/,'.')
+    Resque::Worker.find("#{first_part}:#{rest.join(':')}")
+  end
+  
   def redis_get_size(key)
     case Resque.redis.type(key)
     when 'none'

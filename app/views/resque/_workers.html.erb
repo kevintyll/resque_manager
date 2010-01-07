@@ -1,5 +1,5 @@
 
-<% if params[:id] && worker = Resque::Worker.find(params[:id].gsub(/_/,'.')) %>
+<% if params[:id] && worker = find_worker(params[:id]) %>
 
   <h1>Worker <%= worker %></h1>
   <table class='workers'>
