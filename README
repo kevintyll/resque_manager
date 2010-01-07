@@ -12,6 +12,13 @@ script/plugin install git://github.com/kevintyll/resque_ui.git
 
 Once installed, you now have a resque controller, so you can get to the ui with:  http://your_domain/resque.
 
+Dependencies
+=======
+
+This plugin requires the resque gem
+
+sudo gem install resque
+
 
 Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Kevin Tyll, released under the MIT license

@@ -17,7 +17,7 @@
         <% data = worker.job %>
         <% queue = data['queue'] %>
         <td><%= link_to(queue, {:action => 'queues', :id => queue}, :class => 'queue') %></td>
-        <td><span class="time"><%= data['run_at'] %></span></td>
+        <td><span class="time"><%= data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S") %></span></td>
         <td>
           <code><%= data['payload']['class'] %></code>
         </td>
