@@ -1,13 +1,17 @@
 ResqueUi
 ========
 
-Introduction goes here.
+Resque UI is a Rails plugin port of the Sinatra app that is included in Chris Wanstrath's resque gem.  We love the gem and love the UI,
+but just didn't want to add Sinatra to our stack.
 
 
-Example
+Installation
 =======
 
-Example goes here.
+script/plugin install git://github.com/kevintyll/resque_ui.git
+
+Once installed, you now have a resque controller, so you can get to the ui with:  http://your_domain/resque.
 
 
+Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Kevin Tyll, released under the MIT license
