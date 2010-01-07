@@ -11,7 +11,7 @@
       <th>Args</th>
     </tr>
       <tr>
-        <td><img src="<%=u '../../images/working.png' %>" alt="working" title="working"></td>
+        <td><img src="<%=u '../../images/resque/working.png' %>" alt="working" title="working"></td>
         <% host, pid, _ = worker.to_s.split(':') %>
         <td><%= link_to("#{host}:#{pid}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
         <% data = worker.job %>
@@ -46,7 +46,7 @@
     <% for worker in workers.sort_by { |w| w.job['run_at'] ? w.job['run_at'] : '' } %>
       <% job = worker.job %>
       <tr>
-        <td class='icon'><img src="<%=u "../../images/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
+        <td class='icon'><img src="<%=u "../../images/resque/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
         <% host, pid, queues = worker.to_s.split(':') %>
         <td class='where'><%= link_to("#{host}:#{pid}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
         <td class='queues queue'>

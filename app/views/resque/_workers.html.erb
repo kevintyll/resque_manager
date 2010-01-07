@@ -14,7 +14,7 @@
       <th>Processing</th>
     </tr>
     <tr>
-      <td class='icon'><img src="<%=u "../../images/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
+      <td class='icon'><img src="<%=u "../../images/resque/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
 
       <% host, pid, queues = worker.to_s.split(':') %>
       <td><%= host %></td>
@@ -52,7 +52,7 @@
     </tr>
     <% for worker in (workers = resque.workers.sort_by { |w| w.to_s }) %>
     <tr class="<%=state = worker.state%>">
-      <td class='icon'><img src="<%=u "../../images/#{state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
+      <td class='icon'><img src="<%=u "../../images/resque/#{state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
 
       <% host, pid, queues = worker.to_s.split(':') %>
       <td class='where'><%=link_to("#{host}:#{pid}",:action => 'workers', :id => worker.to_s.gsub(/\./,'_'))%></td>
