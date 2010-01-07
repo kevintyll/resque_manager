@@ -55,7 +55,7 @@
         <td class='process'>
           <% if job['queue'] %>
             <code><%= job['payload']['class'] %></code>
-            <small><%= link_to(job['run_at'], {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
+            <small><%= link_to(job['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
           <% else %>
             <span class='waiting'>Waiting for a job...</span>
           <% end %>

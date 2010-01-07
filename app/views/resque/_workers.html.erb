@@ -27,7 +27,7 @@
         <% data = worker.processing || {} %>
         <% if data['queue'] %>
           <code><%= data['payload']['class'] %></code>
-          <small><%= link_to(data['run_at'], {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
+          <small><%= link_to(data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
         <% else %>
           <span class='waiting'>Waiting for a job...</span>
         <% end %>
@@ -62,7 +62,7 @@
         <% data = worker.processing || {} %>
         <% if data['queue'] %>
           <code><%= data['payload']['class'] %></code>
-          <small><%= link_to(data['run_at'], {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
+          <small><%= link_to(data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
         <% else %>
           <span class='waiting'>Waiting for a job...</span>
         <% end %>
