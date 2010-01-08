@@ -24,6 +24,8 @@ Additions
 
 The displaying of times is fixed.  Some browsers displayed "Nan days ago" for all process times in the original Sinatra app.
 
+------------------------------
+
 Added the ability to display process status in the worker "Processing" column on the workers and working pages.
 To do this, in the class that you have enqueued, set the $0
 variable with status messages.  The string must start with "resque:"
@@ -34,6 +36,10 @@ if row_count % 100 == 0
 end
 
 The "#{self.filename} - Upload - #{row_count} rows processed" shows up in the "Processing" column on the workers and working pages.
+
+------------------------------
+
+Added the ability to restart failed jobs, and clear individual failed jobs from the list
 
 Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Kevin Tyll, released under the MIT license
