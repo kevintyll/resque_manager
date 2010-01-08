@@ -33,6 +33,13 @@ module ResqueHelper
     first_part.gsub!(/_/,'.')
     Resque::Worker.find("#{first_part}:#{rest.join(':')}")
   end
+
+  def worker_status(pid)
+    s = `ps -a | grep #{pid}`
+    forked_pid = s.split('resque: Forked ').last.split(' at ').first
+    s = `ps -a | grep #{forked_pid}`
+    s.split('resque:').last
+  end
   
   def redis_get_size(key)
     case Resque.redis.type(key)

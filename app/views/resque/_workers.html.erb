@@ -28,6 +28,8 @@
         <% if data['queue'] %>
           <code><%= data['payload']['class'] %></code>
           <small><%= link_to(data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
+          <br>
+          <small><%=worker_status(pid)%></small>
         <% else %>
           <span class='waiting'>Waiting for a job...</span>
         <% end %>
@@ -37,7 +39,7 @@
 
 <% elsif params[:id] %>
 
-<h1>Worker doesn't exist</h1>
+  <h1>Worker doesn't exist</h1>
 
 <% else %>
 
@@ -51,28 +53,30 @@
       <th>Processing</th>
     </tr>
     <% for worker in (workers = resque.workers.sort_by { |w| w.to_s }) %>
-    <tr class="<%=state = worker.state%>">
-      <td class='icon'><img src="<%=u "../../images/resque/#{state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
+      <tr class="<%=state = worker.state%>">
+        <td class='icon'><img src="<%=u "../../images/resque/#{state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
 
-      <% host, pid, queues = worker.to_s.split(':') %>
-      <td class='where'><%=link_to("#{host}:#{pid}",:action => 'workers', :id => worker.to_s.gsub(/\./,'_'))%></td>
-      <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('') %></td>
+        <% host, pid, queues = worker.to_s.split(':') %>
+        <td class='where'><%=link_to("#{host}:#{pid}",:action => 'workers', :id => worker.to_s.gsub(/\./,'_'))%></td>
+        <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('') %></td>
 
-      <td class='process'>
-        <% data = worker.processing || {} %>
-        <% if data['queue'] %>
-          <code><%= data['payload']['class'] %></code>
-          <small><%= link_to(data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
-        <% else %>
-          <span class='waiting'>Waiting for a job...</span>
-        <% end %>
-      </td>
-    </tr>
+        <td class='process'>
+          <% data = worker.processing || {} %>
+          <% if data['queue'] %>
+            <code><%= data['payload']['class'] %></code>
+            <small><%= link_to(data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
+            <br>
+            <small><%=worker_status(pid)%></small>
+          <% else %>
+            <span class='waiting'>Waiting for a job...</span>
+          <% end %>
+        </td>
+      </tr>
     <% end %>
     <% if workers.empty? %>
-    <tr>
-      <td colspan='4' class='no-data'>There are no registered workers</td>
-    </tr>
+      <tr>
+        <td colspan='4' class='no-data'>There are no registered workers</td>
+      </tr>
     <% end %>
   </table>
   <%=poll%>
