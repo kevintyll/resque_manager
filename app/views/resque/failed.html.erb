@@ -26,11 +26,11 @@
           <pre style='display:none'><%=h job['backtrace'].join("\n") %></pre>
         </dd>
         <dt>
-          <%= button_to "Restart Job", {:controller=>'resque', :action=> 'requeue_failure', :payload => job['payload']}, :class => 'clear-failed', :method => :post %>
+          <%= button_to "Restart Job", {:controller=>'resque', :action=> 'requeue_failure', :payload => job['payload']}, :method => :post %>
         </dt>
         <dt></dt>
         <dd>
-          <%= button_to "Clear Job", {:controller=>'resque', :action=> 'clear_failure', :payload => job['payload']}, :class => 'clear-failed', :method => :post %>
+          <%= button_to "Clear Job", {:controller=>'resque', :action=> 'clear_failure', :payload => job['payload']}, :method => :post %>
         </dd>
       </dl>
       <div class='r'>

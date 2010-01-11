@@ -8,7 +8,7 @@ class ResqueController < ApplicationController
 
   before_filter :check_connection
 
-  verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure],
+  verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure, :stop_worker, :restart_worker, :start_worker],
     :render => { :text => "<p>Please use the POST http method to post data to this API.</p>" }
 
 
@@ -52,6 +52,27 @@ class ResqueController < ApplicationController
     args = params["payload"]["args"]
     Resque.enqueue(eval(params["payload"]["class"]), *args)
     redirect_to(:action => 'failed')
+  end
+
+  def stop_worker
+    server, pid, queues = params[:worker].split(':')
+    kill_remote_pid(pid)
+    redirect_to(:action => "workers")
+  end
+
+  def restart_worker
+    server, pid, queues = params[:worker].split(':')
+    kill_remote_pid(pid)
+    ip = server[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
+    start_remote_worker(ip, queues)
+    redirect_to(:action => "workers")
+  end
+
+  def start_worker
+    queues = params[:queues]
+    ip = params[:hosts]
+    start_remote_worker(ip, queues)
+    redirect_to(:action => "workers")
   end
 
   def stats
@@ -104,6 +125,25 @@ class ResqueController < ApplicationController
         :worker    => f["worker"],
         :queue     => f["queue"],
         :failed_at => f["failed_at"])
+    end
+  end
+
+  def kill_remote_pid(pid)
+    if RAILS_ENV =~ /development|test/
+      system("kill -QUIT  #{pid}")
+    else
+      ip = server[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
+      system("cap #{RAILS_ENV} resque:quit_worker pid=#{pid} host=#{ip}")
+    end
+  end
+
+  def start_remote_worker(ip, queues)
+    if RAILS_ENV =~ /development|test/
+      p1 = fork{system("rake QUEUE=#{queues} resque:work")}
+      Process.detach(p1)
+    else
+      p1 = fork{system("cap #{RAILS_ENV} resque:work host=#{ip} queue=#{queues}")}
+      Process.detach(p1)
     end
   end
 end

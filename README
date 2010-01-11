@@ -41,5 +41,12 @@ The "#{self.filename} - Upload - #{row_count} rows processed" shows up in the "P
 
 Added the ability to restart failed jobs, and clear individual failed jobs from the list
 
+------------------------------
+
+Added the ability to stop, start, and restart workers from the workers page.  This requires capistrano, and capistrano-ext to be installed.
+
 Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Kevin Tyll, released under the MIT license
+
+Much thanks goes to the management at Clarity Services Inc. for allowing this code to be open sourced and Brian Ketelsen for the ideas for the improved
+functionality for the UI.
