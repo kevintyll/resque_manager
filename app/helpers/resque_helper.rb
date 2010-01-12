@@ -35,12 +35,14 @@ module ResqueHelper
   end
 
   def worker_status(pid)
-    s = `ps -a | grep #{pid}`
-    forked_pid = s.split('resque: Forked ').last.split(' at ').first
-    s = `ps -a | grep #{forked_pid}`
-    s.split('resque:').last
+    s = `ps -ea | grep #{pid}`
+    unless s.blank?
+      forked_pid = s.split('resque: Forked ').last.split(' at ').first
+      s = `ps -ea | grep #{forked_pid}`
+      s.split('resque:').last.split(/\n/).find{|r| !r.include?('grep')}
+    end
   end
-  
+
   def redis_get_size(key)
     case Resque.redis.type(key)
     when 'none'

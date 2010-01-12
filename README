@@ -48,5 +48,4 @@ Added the ability to stop, start, and restart workers from the workers page.  Th
 Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Kevin Tyll, released under the MIT license
 
-Much thanks goes to the management at Clarity Services Inc. for allowing this code to be open sourced and Brian Ketelsen for the ideas for the improved
-functionality for the UI.
+Much thanks goes to Brian Ketelsen for the ideas for the improved functionality for the UI.

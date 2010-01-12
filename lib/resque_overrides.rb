@@ -27,6 +27,26 @@ module Resque
     def ip
       to_s.split(':').first[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
     end
+
+    # Looks for any workers which should be running on this server
+    # and, if they're not, removes them from Redis.
+    #
+    # This is a form of garbage collection. If a server is killed by a
+    # hard shutdown, power failure, or something else beyond our
+    # control, the Resque workers will not die gracefully and therefor
+    # will leave stale state information in Redis.
+    #
+    # By checking the current Redis state against the actual
+    # environment, we can determine if Redis is old and clean it up a bit.
+    def prune_dead_workers
+      Worker.all.each do |worker|
+        host, pid, queues = worker.id.split(':')
+        next unless host.include?(hostname)
+        next if worker_pids.include?(pid)
+        log! "Pruning dead worker: #{worker}"
+        worker.unregister_worker
+      end
+    end
   end
 
 
