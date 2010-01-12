@@ -89,13 +89,13 @@
   <hr />
   <h1 class='wi'>Start New Workers</h1>
   <% form_tag :action =>  'start_worker' do -%>
-    <ul>
+    <ul class='new_worker'>
       <li>
         <dl>
           <dt>Queue(s)</dt>
-          <dd><%=text_field_tag :queues %></dd>
+          <dd><%=text_field_tag :queues %>  Comma separated list of queues you want this worker to monitor.  No Spaces.</dd>
           <dt>Host(s)/IP(s)</dt>
-          <dd><%=text_field_tag :hosts %></dd>
+          <dd><%=text_field_tag :hosts %>  The IP address of the server where you want your worker to run.</dd>
           <dt><%= submit_tag "Start" %></dt>
         </dl>
       </li>
