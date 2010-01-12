@@ -56,13 +56,13 @@ class ResqueController < ApplicationController
 
   def stop_worker
     server, pid, queues = params[:worker].split(':')
-    kill_remote_pid(pid)
+    kill_remote_pid(server, pid)
     redirect_to(:action => "workers")
   end
 
   def restart_worker
     server, pid, queues = params[:worker].split(':')
-    kill_remote_pid(pid)
+    kill_remote_pid(server, pid)
     ip = server[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
     start_remote_worker(ip, queues)
     redirect_to(:action => "workers")
@@ -128,7 +128,7 @@ class ResqueController < ApplicationController
     end
   end
 
-  def kill_remote_pid(pid)
+  def kill_remote_pid(server, pid)
     if RAILS_ENV =~ /development|test/
       system("kill -QUIT  #{pid}")
     else
