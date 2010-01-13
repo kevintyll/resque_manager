@@ -22,7 +22,6 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "Gracefully kill a worker.  If the worker is working, it will finish before shutting down. arg: host=ip pid=pid"
     task :quit_worker, :roles => :app do
       if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
-        puts 'here i am'
         puts 'You must enter the host and pid to kill..cap resque:quit host=ip pid=pid'
       else
         hosts = ENV['host'] || find_servers_for_task(current_task).collect{|s| s.host}

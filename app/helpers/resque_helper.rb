@@ -35,11 +35,15 @@ module ResqueHelper
   end
 
   def worker_status(pid)
-    s = `ps -ea | grep #{pid}`
-    unless s.blank?
-      forked_pid = s.split('resque: Forked ').last.split(' at ').first
-      s = `ps -ea | grep #{forked_pid}`
-      s.split('resque:').last.split(/\n/).find{|r| !r.include?('grep')}
+    if RAILS_ENV =~ /development/
+      #this won't work on a server farm.
+      #going to have to use redis to keep track of the status
+      s = `ps -ea | grep #{pid}`
+      unless s.blank?
+        forked_pid = s.split('resque: Forked ').last.split(' at ').first
+        s = `ps -ea | grep #{forked_pid}`
+        s.split('resque:').last.split(/\n/).find{|r| !r.include?('grep')}
+      end
     end
   end
 
@@ -76,13 +80,6 @@ module ResqueHelper
   def partial?
     @partial
   end
-
-  #  def partial(template, local_vars = {})
-  #    @partial = true
-  #    erb(template.to_sym, {:layout => false}, local_vars)
-  #  ensure
-  #    @partial = false
-  #  end
 
   def poll
     if @polling
