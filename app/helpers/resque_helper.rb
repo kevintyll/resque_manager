@@ -34,21 +34,9 @@ module ResqueHelper
     Resque::Worker.find("#{first_part}:#{rest.join(':')}")
   end
 
-  def worker_status(pid)
-    if RAILS_ENV =~ /development/
-      #this won't work on a server farm.
-      #going to have to use redis to keep track of the status
-      s = `ps -ea | grep #{pid}`
-      unless s.blank?
-        forked_pid = s.split('resque: Forked ').last.split(' at ').first
-        s = `ps -ea | grep #{forked_pid}`
-        s.split('resque:').last.split(/\n/).find{|r| !r.include?('grep')}
-      end
-    end
-  end
-
   def redis_get_size(key)
-    case Resque.redis.type(key)
+    namespace = 'resque:'
+    case Resque.redis.type(namespace+key)
     when 'none'
       []
     when 'list'
@@ -61,7 +49,8 @@ module ResqueHelper
   end
 
   def redis_get_value_as_array(key)
-    case Resque.redis.type(key)
+    namespace = 'resque:'
+    case Resque.redis.type(namespace+key)
     when 'none'
       []
     when 'list'

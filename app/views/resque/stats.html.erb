@@ -35,7 +35,7 @@
     </tr>
   <% end %>
   </table>
-  
+
 <% elsif params[:id] == 'keys' %>
 
   <h1>Keys owned by <%= resque %></h1>
@@ -51,7 +51,7 @@
       <th>
         <%= link_to(key, "/resque/stats/keys?key=#{key}") %>
       </th>
-      <td><%= resque.redis.type key %></td>
+      <td><%= resque.redis.type "resque:#{key}" %></td>
       <td><%= redis_get_size key %></td>
     </tr>
   <% end %>

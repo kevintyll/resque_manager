@@ -29,7 +29,7 @@
           <code><%= data['payload']['class'] %></code>
           <small><%= link_to(data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
           <br>
-          <small><%=worker_status(pid)%></small>
+          <small><%=worker.status%></small>
         <% else %>
           <span class='waiting'>Waiting for a job...</span>
         <% end %>
@@ -67,7 +67,7 @@
             <code><%= data['payload']['class'] %></code>
             <small><%= link_to(data['run_at'].to_time.strftime("%Y/%m/%d %H:%M:%S"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
             <br>
-            <small><%=worker_status(pid)%></small>
+            <small><%=worker.status%></small>
           <% else %>
             <span class='waiting'>Waiting for a job...</span>
           <% end %>

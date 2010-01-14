@@ -23,21 +23,25 @@ Additions
 =======
 
 The displaying of times is fixed.  Some browsers displayed "Nan days ago" for all process times in the original Sinatra app.
+Fixed the stats/keys page.  The page wasn't showing the keys' types, size or values.
 
 ------------------------------
 
 Added the ability to display process status in the worker "Processing" column on the workers and working pages.
-To do this, in the class that you have enqueued, set the $0
-variable with status messages.  The string must start with "resque:"
-ex.  Inside a loop that is processing a .csv file, I have:
+To do this, yield the status message back in your perform method.
 
-if row_count % 100 == 0
-    $0 = "resque: #{self.filename} - Upload - #{row_count} rows processed"
+Class YourClass
+
+  self.perform(arg)
+  ...your code here
+  yield "Your status message"
+  ...more code
+  yield "Another status message"
+  ...more code
+  end
 end
 
-The "#{self.filename} - Upload - #{row_count} rows processed" shows up in the "Processing" column on the workers and working pages.
-
-NOTE:  This feature currently only works in dev.  To to refactor to make it work in other environments.
+This is really handy for those long running jobs to give you assurance the the job is really running or not.
 
 ------------------------------
 
@@ -47,7 +51,8 @@ Added the ability to restart failed jobs, and clear individual failed jobs from 
 
 Added the ability to stop, start, and restart workers from the workers page.  This requires capistrano, and capistrano-ext to be installed.
 The controller calls cap tasks to manage the workers.  To include the recipes in you application, add this line to your deploy.rb file:
-      require File.dirname(__FILE__) + '/../vendor/plugins/resque_ui/lib/resque_ui/cap_recipes'
+
+require File.dirname(__FILE__) + '/../vendor/plugins/resque_ui/lib/resque_ui/cap_recipes'
 
 You will also need to make sure you have your rake path set in the deploy.rb file.
                ex.  set :rake, "/opt/ruby-enterprise-1.8.6-20090421/bin/rake"

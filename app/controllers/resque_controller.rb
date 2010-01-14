@@ -41,16 +41,16 @@ class ResqueController < ApplicationController
   end
 
   def clear_failure
-    remove_failure_from_list(params[:payload])
+    remove_failure_from_list(Resque.decode(params[:payload]))
     redirect_to(:action => 'failed')
   end
 
   def requeue_failure
     #first clear the job we're restarting from the failure list.
     remove_failure_from_list(params[:payload])
-
-    args = params["payload"]["args"]
-    Resque.enqueue(eval(params["payload"]["class"]), *args)
+    payload = Resque.decode(params["payload"])
+    args = payload["args"]
+    Resque.enqueue(eval(payload["class"]), *args)
     redirect_to(:action => 'failed')
   end
 
