@@ -133,7 +133,7 @@ class ResqueController < ApplicationController
       system("kill -QUIT  #{pid}")
     else
       ip = server[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
-      system("cap #{RAILS_ENV} resque:quit_worker pid=#{pid} host=#{ip}")
+      system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_worker pid=#{pid} host=#{ip}")
     end
   end
 
@@ -142,7 +142,7 @@ class ResqueController < ApplicationController
       p1 = fork{system("rake QUEUE=#{queues} resque:work")}
       Process.detach(p1)
     else
-      p1 = fork{system("cap #{RAILS_ENV} resque:work host=#{ip} queue=#{queues}")}
+      p1 = fork{system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip} queue=#{queues}")}
       Process.detach(p1)
     end
   end

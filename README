@@ -51,11 +51,14 @@ Added the ability to restart failed jobs, and clear individual failed jobs from 
 
 Added the ability to stop, start, and restart workers from the workers page.  This requires capistrano, and capistrano-ext to be installed.
 The controller calls cap tasks to manage the workers.  To include the recipes in you application, add this line to your deploy.rb file:
-
-require File.dirname(__FILE__) + '/../vendor/plugins/resque_ui/lib/resque_ui/cap_recipes'
+    require File.dirname(__FILE__) + '/../vendor/plugins/resque_ui/lib/resque_ui/cap_recipes'
 
 You will also need to make sure you have your rake path set in the deploy.rb file.
-               ex.  set :rake, "/opt/ruby-enterprise-1.8.6-20090421/bin/rake"
+    ex.  set :rake, "/opt/ruby-enterprise-1.8.6-20090421/bin/rake"
+
+You will also need to tell resque_ui where cap is installed.  Add this line to your environments.rb file:
+    ResqueUi::Cap.path           = '/opt/ruby-enterprise-1.8.6-20090421/bin/cap'
+...using your own path of course.
 
 The cap tasks included are:
  cap resque:work          # start a resque worker.
