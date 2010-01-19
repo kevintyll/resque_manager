@@ -1,4 +1,4 @@
-<% if params[:id] && (worker = find_worker(params[:id])) && worker.job %>
+<% if params[:id] && (worker = find_worker(params[:id])) && !worker.job.empty? %>
   <h1><%= worker %>'s job</h1>
 
   <table>
