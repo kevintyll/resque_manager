@@ -55,23 +55,19 @@ class ResqueController < ApplicationController
   end
 
   def stop_worker
-    server, pid, queues = params[:worker].split(':')
-    kill_remote_pid(server, pid)
+    worker = find_worker(params[:worker])
+    worker.quit
     redirect_to(:action => "workers")
   end
 
   def restart_worker
-    server, pid, queues = params[:worker].split(':')
-    kill_remote_pid(server, pid)
-    ip = server[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
-    start_remote_worker(ip, queues)
+    worker = find_worker(params[:worker])
+    worker.restart
     redirect_to(:action => "workers")
   end
 
   def start_worker
-    queues = params[:queues]
-    ip = params[:hosts]
-    start_remote_worker(ip, queues)
+    Resque::Worker.start(params[:hosts], params[:queues])
     redirect_to(:action => "workers")
   end
 
@@ -128,25 +124,14 @@ class ResqueController < ApplicationController
     end
   end
 
-  def kill_remote_pid(server, pid)
-    if RAILS_ENV =~ /development|test/
-      system("kill -QUIT  #{pid}")
-    else
-      ip = server[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
-      system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_worker pid=#{pid} host=#{ip}")
-    end
-  end
-
-  def start_remote_worker(ip, queues)
-    if RAILS_ENV =~ /development|test/
-      p1 = fork{system("rake QUEUE=#{queues} resque:work")}
-      Process.detach(p1)
-    else
-      p1 = fork{system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip} queue=#{queues}")}
-      Process.detach(p1)
-    end
+  def find_worker(worker)
+    first_part, *rest = worker.split(':')
+    first_part.gsub!(/_/,'.')
+    Resque::Worker.find("#{first_part}:#{rest.join(':')}")
   end
 end
+
+
 
 #because of load order, this can't be in the resque_overrides file like it should be.
 class Resque::Failure::Redis < Resque::Failure::Base

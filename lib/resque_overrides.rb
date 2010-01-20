@@ -28,6 +28,10 @@ module Resque
       to_s.split(':').first[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
     end
 
+    def queues
+      to_s.split(':').last
+    end
+
     # Looks for any workers which should be running on this server
     # and, if they're not, removes them from Redis.
     #
@@ -56,7 +60,33 @@ module Resque
     def status
       job['status']
     end
+
+    def self.start(ips, queues)
+      if RAILS_ENV =~ /development|test/
+        p1 = fork{system("rake QUEUE=#{queues} resque:work")}
+        Process.detach(p1)
+      else
+        p1 = fork{system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ips} queue=#{queues}")}
+        Process.detach(p1)
+      end
+    end
+
+    def quit
+      if RAILS_ENV =~ /development|test/
+        system("kill -QUIT  #{self.pid}")
+      else
+        system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
+      end
+    end
+
+    def restart
+      quit
+      self.class.start(self.ip, self.queues)
+    end
+
   end
+
+
 
   class Job
     # Attempts to perform the work represented by this job instance.

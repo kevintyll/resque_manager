@@ -15,8 +15,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       hosts = ENV['host'] || find_servers_for_task(current_task).collect{|s| s.host}
       queue = ENV['queue'] || '*'
       rake = fetch(:rake, "rake")
-      rails_env = fetch(:rails_env, "staging")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{rails_env} QUEUE=#{queue} resque:work", :hosts => hosts)
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} QUEUE=#{queue} resque:work", :hosts => hosts)
     end
 
     desc "Gracefully kill a worker.  If the worker is working, it will finish before shutting down. arg: host=ip pid=pid"
@@ -36,8 +35,14 @@ Capistrano::Configuration.instance(:must_exist).load do
       queue = ENV['queue'] || '*'
       count = ENV['count'] || '1'
       rake = fetch(:rake, "rake")
-      rails_env = fetch(:rails_env, "staging")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{rails_env} COUNT=#{count} QUEUE=#{queue} resque:work", :hosts => hosts)
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} COUNT=#{count} QUEUE=#{queue} resque:work", :hosts => hosts)
+    end
+
+    desc "Restart all workers on all servers"
+    task :restart_workers, :roles => :app, :only => { :resque_restart => true } do
+      default_run_options[:pty] = true
+      rake = fetch(:rake, "rake")
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:restart_workers")
     end
 
   end
