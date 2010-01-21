@@ -15,7 +15,7 @@
     <li>
       <dl>
         <dt>Worker</dt>
-        <dd><%= link_to(job['worker'].split(':')[0...2].join(':'), :action => 'workers',:id => job['worker'].gsub(/\./,'_')) %> on <b class='queue-tag'><%= job['queue'] %></b > at <b><span class="time"><%= job['failed_at'].to_time.strftime("%Y/%m/%d %H:%M:%S") %></span></b></dd>
+        <dd><%= link_to(job['worker'].split(':')[0...2].join(':'), :action => 'workers',:id => job['worker'].gsub(/\./,'_')) %> on <b class='queue-tag'><%= job['queue'] %></b > at <b><span class="time"><%= job['failed_at'] %></span></b></dd>
         <dt>Class</dt>
         <dd><code><%= job['payload']['class'] %></code></dd>
         <dt>Arguments</dt>

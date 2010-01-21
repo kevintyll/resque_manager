@@ -137,7 +137,7 @@ end
 class Resque::Failure::Redis < Resque::Failure::Base
   def save
     data = {
-      :failed_at => failed_at || Time.now.to_s,
+      :failed_at => failed_at || Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"),
       :payload   => payload,
       :error     => exception.to_s,
       :backtrace => exception.backtrace,
