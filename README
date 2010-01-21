@@ -49,7 +49,8 @@ Added the ability to restart failed jobs, and clear individual failed jobs from 
 
 ------------------------------
 
-Added the ability to stop, start, and restart workers from the workers page.  This requires capistrano, and capistrano-ext to be installed.
+Added the ability to stop, start, and restart workers from the workers page.  This requires capistrano, and capistrano-ext to be installed on all
+deployed servers.
 The controller calls cap tasks to manage the workers.  To include the recipes in your application, add this line to your deploy.rb file:
     require File.dirname(__FILE__) + '/../vendor/plugins/resque_ui/lib/resque_ui/cap_recipes'
 
