@@ -2,21 +2,6 @@ require 'socket'
 
 module Resque
   class Worker
-    # Tell Redis we've started
-    def started!
-      redis.set("worker:#{self}:started", Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"))
-    end
-
-    # Given a job, tells Redis we're working on it. Useful for seeing
-    # what workers are doing and when.
-    def working_on(job)
-      job.worker = self
-      data = encode \
-        :queue   => job.queue,
-        :run_at  => Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"),
-        :payload => job.payload
-      redis.set("worker:#{self}", data)
-    end
 
     def local_ip
       orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily

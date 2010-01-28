@@ -19,7 +19,7 @@
       <% host, pid, queues = worker.to_s.split(':') %>
       <td><%= host %></td>
       <td><%= pid %></td>
-      <td><span class="time"><%= worker.started %></a></td>
+      <td><span class="time"><%= Time.zone.parse(worker.started).strftime("%Y/%m/%d %H:%M:%S %Z") %></a></td>
       <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('') %></td>
       <td><%= worker.processed %></td>
       <td><%= worker.failed %></td>
@@ -27,7 +27,7 @@
         <% data = worker.processing || {} %>
         <% if data['queue'] %>
           <code><%= data['payload']['class'] %></code>
-          <small><%= link_to(data['run_at'], {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
+          <small><%= link_to(Time.zone.parse(data['run_at']).strftime("%Y/%m/%d %H:%M:%S %Z"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
           <br>
           <small><%=worker.status%></small>
         <% else %>
@@ -65,7 +65,7 @@
           <% data = worker.processing || {} %>
           <% if data['queue'] %>
             <code><%= data['payload']['class'] %></code>
-            <small><%= link_to(data['run_at'], {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
+            <small><%= link_to(Time.zone.parse(data['run_at']).strftime("%Y/%m/%d %H:%M:%S %Z"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
             <br>
             <small><%=worker.status%></small>
           <% else %>

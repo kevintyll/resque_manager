@@ -17,7 +17,7 @@
       <% data = worker.job %>
       <% queue = data['queue'] %>
       <td><%= link_to(queue, {:action => 'queues', :id => queue}, :class => 'queue') %></td>
-      <td><span class="time"><%= data['run_at'] %></span></td>
+      <td><span class="time"><%= Time.zone.parse(data['run_at']).strftime("%Y/%m/%d %H:%M:%S %Z") %></span></td>
       <td>
         <code><%= data['payload']['class'] %></code>
       </td>
@@ -55,7 +55,7 @@
         <td class='process'>
           <% if job['queue'] %>
             <code><%= job['payload']['class'] %></code>
-            <small><%= link_to(job['run_at'], {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
+            <small><%= link_to(Time.zone.parse(job['run_at']).strftime("%Y/%m/%d %H:%M:%S %Z"), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
             <br>
             <small><%=worker.status%></small>
           <% else %>
