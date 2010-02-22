@@ -15,7 +15,7 @@ Once installed, you now have a resque controller, so you can get to the ui with:
 Dependencies
 =======
 
-This plugin requires the resque gem
+This plugin requires the resque 1.5 gem
 
 sudo gem install resque
 
