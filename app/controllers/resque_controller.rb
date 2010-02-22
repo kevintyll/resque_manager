@@ -54,15 +54,20 @@ class ResqueController < ApplicationController
     redirect_to(:action => 'failed')
   end
 
+  def remove_job
+    Resque.dequeue(params['class'].constantize,*params['args'])
+    redirect_to request.referrer
+  end
+
   def stop_worker
     worker = find_worker(params[:worker])
-    worker.quit
+    worker.quit if worker
     redirect_to(:action => "workers")
   end
 
   def restart_worker
     worker = find_worker(params[:worker])
-    worker.restart
+    worker.restart if worker
     redirect_to(:action => "workers")
   end
 

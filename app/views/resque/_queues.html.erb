@@ -10,17 +10,21 @@
     <tr>
       <th>Class</th>
       <th>Args</th>
+      <th>&nbsp;</th>
     </tr>
     <% for job in (jobs = resque.peek(queue, start, 20)) %>
-    <tr>
-      <td class='class'><%= job['class'] %></td>
-      <td class='args'><%=h job['args'].inspect %></td>
-    </tr>
+      <tr>
+        <td class='class'><%= job['class'] %></td>
+        <td class='args'><%=h job['args'].inspect %></td>
+        <td>
+          <%= button_to "Remove", {:controller=>'resque', :action=> 'remove_job',:class => job['class'], :args => job['args']}, :class => 'clear-failed', :method => :post %>
+            </td>
+      </tr>
     <% end %>
     <% if jobs.empty? %>
-    <tr>
-      <td class='no-data' colspan='2'>There are no pending jobs in this queue</td>
-    </tr>
+      <tr>
+        <td class='no-data' colspan='3'>There are no pending jobs in this queue</td>
+      </tr>
     <% end %>
   </table>
   <%= render(:partial => 'next_more', :locals => {:start => start, :size => size}) %>
@@ -34,10 +38,10 @@
       <th>Jobs</th>
     </tr>
     <% for queue in resque.queues.sort_by { |q| q.to_s } %>
-    <tr>
-      <td class='queue'><%= link_to(queue, {:action => "queues", :id => queue}, :class => 'queue') %></td>
-      <td class='size'><%= resque.size queue %></td>
-    </tr>
+      <tr>
+        <td class='queue'><%= link_to(queue, {:action => "queues", :id => queue}, :class => 'queue') %></td>
+        <td class='size'><%= resque.size queue %></td>
+      </tr>
     <% end %>
     <tr class='failed'>
       <td class='queue failed'><%= link_to('failed', {:action => "failed"}, :class => 'queue') %></td>
