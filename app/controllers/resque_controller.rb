@@ -109,23 +109,13 @@ class ResqueController < ApplicationController
   end
 
   def remove_failure_from_list(payload)
-    #we don't have a way of hand picking the job from the failure list,
-    #so we must get the whole list, clear the list, then recreate the list
-    #without the jobs that match the one we're restarting
-    #VERY UGLY
-    failures = Resque::Failure.all(0,Resque::Failure.count)
-    failures = [failures] if Resque::Failure.count == 1
-    failures.delete_if{|f| f["payload"] == payload}
-    Resque::Failure.clear
-    failures.each do |f|
-      exception = Exception.new(f["error"])
-      exception.set_backtrace(f["backtrace"])
-      Resque::Failure.create(
-        :payload   => f["payload"],
-        :exception => exception,
-        :worker    => f["worker"],
-        :queue     => f["queue"],
-        :failed_at => f["failed_at"])
+    Resque.redis.lrange(:failed,0,-1).each do |string|
+
+      f = Resque.decode string
+
+      if f["payload"] == payload
+        Resque.redis.lrem(:failed, 0, string)
+      end
     end
   end
 
