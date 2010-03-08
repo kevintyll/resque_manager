@@ -12,12 +12,9 @@
     <div class="header">
       <ul class='nav'>
         <li><%=link_to("Home",url_for('/'))%></li>
-        <%= tab "Overview" %>
-        <%= tab "Working" %>
-        <%= tab "Failed" %>
-        <%= tab "Queues" %>
-        <%= tab "Workers" %>
-        <%= tab "Stats" %>
+        <% Resque::Server.tabs.each do |name| -%>
+        <%= tab name -%>
+        <%end-%>
       </ul>
     </div>
 

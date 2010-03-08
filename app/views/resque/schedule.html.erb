@@ -1,0 +1,96 @@
+
+<div id="schedule">
+  <h1>Schedule</h1>
+
+  <p class='intro'>
+    The list below contains all scheduled jobs.  Click &quot;Queue now&quot; to queue
+    a job immediately.
+  </p>
+
+  <table>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>IP</th>
+      <th>Description</th>
+      <th>Cron</th>
+      <th>Class</th>
+      <th>Arguments</th>
+      <th></th>
+    </tr>
+    <% Resque.schedule.each do |name,config| %>
+      <tr>
+        <td>
+          <%= button_to "Queue now", {:controller=>'resque', :action=> 'schedule_requeue', :job_name => name}, :method => :post %>
+        </td>
+        <td><%= h name %></td>
+        <td><%= h config['ip'] %></td>
+        <td><%= h config['description'] %></td>
+        <td style="white-space:nowrap"><%= h config['cron'] %></td>
+        <td><%= h config['class'] %></td>
+        <td><%= h config['args'].inspect %></td>
+        <td><%= button_to "Remove", {:controller=>'resque', :action=> 'remove_from_schedule', :job_name => name, :ip => config['ip']}, :method => :post %></td>
+      </tr>
+    <%end%>
+  </table>
+
+  <h1>Add Job to Schedule</h1>
+  <div id='flash' class="flash">
+    <%flash_message = flash_helper%>
+    <% unless flash_message.blank? -%>
+      <p>
+        <%= flash_message %>
+      </p>
+      <%= javascript_tag "$('flash').show();" %>
+    <% end %>
+  </div>
+  <% form_tag :url => {:controller => 'resque', :action => 'add_scheduled_job'} do -%>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>IP</th>
+        <th>Description</th>
+        <th>Cron</th>
+        <th>Class</th>
+        <th>Arguments</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td><%= text_field_tag :name %></td>
+        <td><%= text_field_tag :ip %></td>
+        <td><%= text_field_tag :description %></td>
+        <td style="white-space:nowrap"><%= text_field_tag :cron %></td>
+        <td><%= text_field_tag :class %></td>
+        <td><%= text_area_tag :args, nil, :rows => 1, :cols => 40%></td>
+        <td>
+          <%= submit_tag 'Add Job', :id => 'add_job' %>
+        </td>
+      </tr>
+    </table>
+  <% end -%>
+
+  <h1>Farm Status</h1>
+
+  <table>
+    <tr>
+      <th>IP</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    <%@farm_status.each do |ip,status| -%>
+      <tr>
+        <td>
+          <%= ip %>
+        </td>
+        <td><%= status %></td>
+        <td>
+          <%  if status == 'Running' -%>
+            <%= button_to "Stop Scheduler", {:controller=>'resque', :action=> 'stop_scheduler', :ip => ip}, :method => :post %>
+          <% else -%>
+            <%= button_to "Start Scheduler", {:controller=>'resque', :action=> 'start_scheduler', :ip => ip}, :method => :post %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end -%>
+  </table>
+</div>

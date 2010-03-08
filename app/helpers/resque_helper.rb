@@ -1,6 +1,17 @@
 module ResqueHelper
-  include Rack::Utils
-  alias_method :h, :escape_html
+  #include Rack::Utils
+  #alias_method :h, :escape_html
+
+
+  def flash_helper
+    [:notice, :warning, :message, :error].collect do |key|
+      content_tag(:div, flash[key], :class => "flash #{key}") unless flash[key].blank?
+    end.join
+  end
+
+  def format_time(t)
+    t.strftime("%Y/%m/%d %H:%M:%S %Z")
+  end
 
   def current_section
     request.path_info.sub('/','').split('/')[1].downcase

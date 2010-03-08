@@ -6,4 +6,13 @@ namespace :resque do
       worker.restart
     end
   end
+
+  desc "Kill the scheduler pid"
+  task :quit_scheduler => :setup do
+    require 'resque_scheduler'
+    ResqueScheduler.pids.each do |pid|
+      `kill -QUIT #{pid}`
+    end
+  end
+
 end

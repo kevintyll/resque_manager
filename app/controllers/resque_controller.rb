@@ -8,7 +8,8 @@ class ResqueController < ApplicationController
 
   before_filter :check_connection
 
-  verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure, :stop_worker, :restart_worker, :start_worker],
+  verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure, :stop_worker, :restart_worker,
+    :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job, :start_scheduler, :stop_scheduler],
     :render => { :text => "<p>Please use the POST http method to post data to this API.</p>" }
 
 
@@ -99,6 +100,66 @@ class ResqueController < ApplicationController
     end
   end
 
+  def schedule
+    @farm_status = ResqueScheduler.farm_status
+  end
+
+  def schedule_requeue
+    config = Resque.schedule[params['job_name']]
+    Resque::Scheduler.enqueue_from_config(config)
+    redirect_to(:action => 'overview')
+  end
+
+  def add_scheduled_job
+    errors = []
+    if Resque.schedule.keys.include?(params[:name])
+      errors << 'Name already exists'
+    end
+    if params[:ip].blank?
+      errors << 'You must enter an ip address for the server you want this job to run on.'
+    end
+    if params[:cron].blank?
+      errors << 'You must enter the cron schedule.'
+    end
+    if errors.blank?
+      config = {params['name'] => {'class' => params['class'],
+          'ip' => params['ip'],
+          'cron' => params['cron'],
+          'args' => Resque.decode(params['args']),
+          'description' => params['description']}
+      }
+      Resque.redis.rpush(:scheduled, Resque.encode(config))
+      ResqueScheduler.restart('ip')
+    else
+      flash[:error] = errors.join('<br>')
+    end
+    redirect_to(:action => 'schedule')
+  end
+
+  def remove_from_schedule
+    Resque.redis.lrange(:scheduled,0,-1).each do |string|
+
+      s = Resque.decode string
+
+      if s[params['job_name']]
+        Resque.redis.lrem(:scheduled, 0, string)
+        # Restart the scheduler on the server that has changed it's schedule
+        ResqueScheduler.restart(params['ip'])
+      end
+    end
+    redirect_to(:action => 'schedule')
+  end
+
+  def start_scheduler
+    ResqueScheduler.start(params[:ip])
+    redirect_to(:action => 'schedule')
+  end
+
+  def stop_scheduler
+    ResqueScheduler.quit(params[:ip])
+    redirect_to(:action => 'schedule')
+  end
+
   private
 
   def check_connection
@@ -109,7 +170,7 @@ class ResqueController < ApplicationController
   end
 
   def remove_failure_from_list(payload)
-    Resque.redis.lrange(:failed,0,-1).each do |string|
+    Resque.redis.lrange(:failed,0,-0).each do |string|
 
       f = Resque.decode string
 
@@ -124,6 +185,7 @@ class ResqueController < ApplicationController
     first_part.gsub!(/_/,'.')
     Resque::Worker.find("#{first_part}:#{rest.join(':')}")
   end
+
 end
 
 
