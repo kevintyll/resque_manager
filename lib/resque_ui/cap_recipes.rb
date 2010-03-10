@@ -60,7 +60,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "Gracefully kill the scheduler on a server. arg: host=ip"
     task :quit_scheduler, :roles => :app do
       if ENV['host'].nil? || ENV['host'].empty?
-        puts 'You must enter the host kill..cap resque:quit_scheduler host=ip pid=pid'
+        puts 'You must enter the host to kill..cap resque:quit_scheduler host=ip pid=pid'
       else
         hosts = ENV['host'] || find_servers_for_task(current_task).collect{|s| s.host}
         rake = fetch(:rake, "rake")
@@ -73,15 +73,10 @@ Capistrano::Configuration.instance(:must_exist).load do
       hosts = ENV['hosts'].to_s.split(',') || find_servers_for_task(current_task).collect{|s| s.host}
 
       status = nil
-      stream = nil
-      channel = {}
-      begin
-        run("ps -A -o pid,command | grep [r]esque:scheduler | grep -v cap", :hosts => hosts)  do |channel, stream, data|
-          status = (data =~ /resque:scheduler/) ? 'up' : 'down'
-          puts " ** [#{stream} :: #{channel[:host]}] resque:scheduler is #{status}"
-        end
-      rescue
-        puts " ** [#{stream} :: #{channel[:host]}] resque:scheduler is #{status || 'down'}"
+
+      run("ps -eaf | grep resque | grep -v cap", :hosts => hosts)  do |channel, stream, data|
+        status = (data =~ /resque:scheduler/) ? 'up' : 'down'
+        puts " ** [#{stream} :: #{channel[:host]}] resque:scheduler is #{status}"
       end
     end
   end
