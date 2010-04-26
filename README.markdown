@@ -19,6 +19,16 @@ This plugin requires the resque 1.5 gem and of course the redis gem.
 
     sudo gem install resque
 
+    require the necessary gems in your envoronment.rb file
+
+      config.gem 'redis'
+      config.gem 'redis-namespace', :lib => 'redis/namespace'
+      config.gem 'resque'
+      #and for resque-scheduler...
+      config.gem 'vegas'
+      config.gem 'rufus-scheduler'
+      config.gem 'resque-scheduler', :lib => 'resque_scheduler'
+
 Times Fixed
 -----------
 
