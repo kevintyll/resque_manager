@@ -170,10 +170,9 @@ class ResqueController < ApplicationController
   end
 
   def remove_failure_from_list(payload)
-    Resque.redis.lrange(:failed,0,-0).each do |string|
+    Resque.redis.lrange(:failed,0,-1).each do |string|
 
       f = Resque.decode string
-
       if f["payload"] == payload
         Resque.redis.lrem(:failed, 0, string)
       end

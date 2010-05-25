@@ -114,6 +114,20 @@ module Resque
       backend.new(*options.values_at(:exception, :worker, :queue, :payload, :failed_at)).save
     end
 
+    # Requeues all failed jobs of a given class
+    def self.requeue(failed_class)
+      Resque.redis.lrange(:failed,0,-1).each do |string|
+
+        f = Resque.decode string
+
+        if f["payload"]["class"] == failed_class
+          Resque.redis.lrem(:failed, 0, string)
+        end
+        args = f["payload"]["args"]
+        Resque.enqueue(eval(f["payload"]["class"]), *args)
+      end
+    end
+
     class Base
       #When the job originally failed.  Used when clearing a single failure
       attr_accessor :failed_at
