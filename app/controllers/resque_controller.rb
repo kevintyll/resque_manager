@@ -56,7 +56,7 @@ class ResqueController < ApplicationController
   end
 
   def remove_job
-    Resque.dequeue(params['class'].constantize,*params['args'])
+    Resque.dequeue(params['class'].constantize,*Resque.decode(params['args']))
     redirect_to request.referrer
   end
 

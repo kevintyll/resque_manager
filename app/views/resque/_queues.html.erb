@@ -17,7 +17,7 @@
         <td class='class'><%= job['class'] %></td>
         <td class='args'><%=h job['args'].inspect %></td>
         <td>
-          <%= button_to "Remove", {:controller=>'resque', :action=> 'remove_job',:class => job['class'], :args => job['args']}, :class => 'clear-failed', :method => :post %>
+          <%= button_to "Remove", {:controller=>'resque', :action=> 'remove_job',:class => job['class'], :args => Resque.encode(job['args'])}, :class => 'clear-failed', :method => :post %>
             </td>
       </tr>
     <% end %>
