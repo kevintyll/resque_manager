@@ -9,7 +9,7 @@ class ResqueController < ApplicationController
   before_filter :check_connection
 
   verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure, :stop_worker, :restart_worker,
-    :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job, :start_scheduler, :stop_scheduler],
+    :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job, :start_scheduler, :stop_scheduler, :requeue_failures_in_class],
     :render => { :text => "<p>Please use the POST http method to post data to this API.</p>" }
 
 
@@ -52,6 +52,11 @@ class ResqueController < ApplicationController
     remove_failure_from_list(payload)
     args = payload["args"]
     Resque.enqueue(eval(payload["class"]), *args)
+    redirect_to(:action => 'failed')
+  end
+
+  def requeue_failures_in_class
+    Resque::Failure.requeue(params['class'])
     redirect_to(:action => 'failed')
   end
 

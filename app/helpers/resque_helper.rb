@@ -3,6 +3,10 @@ module ResqueHelper
   #alias_method :h, :escape_html
 
 
+  def classes_in_failure
+    Resque.redis.lrange(:failed,0,-1).collect{|job| Resque.decode(job)['payload']['class']}.uniq
+  end
+
   def flash_helper
     [:notice, :warning, :message, :error].collect do |key|
       content_tag(:div, flash[key], :class => "flash #{key}") unless flash[key].blank?

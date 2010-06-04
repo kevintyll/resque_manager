@@ -8,6 +8,18 @@
   </form>
 <%end%>
 
+<% if classes_in_failure.present? -%>
+  <br/>
+  <table style="border:1px solid #CCCCCC">
+    <tr>
+    <h2>Restart all failed jobs in class:</h2>
+    <% classes_in_failure.each do |c| -%>
+      <td style="<%="width:#{100/classes_in_failure.size}%; border:none"%>"><%= button_to c, {:controller=>'resque', :action=> 'requeue_failures_in_class', :class => c}, :method => :post %></td>
+    <% end -%>
+  </tr>
+  </table>
+<% end -%>
+
 <p class='sub'>Showing <%=start%> to <%= start + 20 %> of <b><%= size = Resque::Failure.count %></b> jobs</p>
 
 <ul class='failed'>
