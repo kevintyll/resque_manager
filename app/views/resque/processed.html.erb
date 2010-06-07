@@ -1,0 +1,25 @@
+<%processed = Resque::Job.processed_info%>
+
+<h1>Processed Job Info</h1>
+
+<% if processed.present? -%>
+  <table class='stats'>
+    <% Resque::Job.processed_info.each do |info|%>
+      <tr>
+        <td>
+          <%= info %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else -%>
+  <p>
+    To store information about the jobs that have been processed, call:
+  </p>
+  <pre>
+      Resque::Job.process_info!(string)
+  </pre>
+  <p>Call this at the end of your class' perform method for any jobs you want to keep track of.</p>
+  <p>Good for jobs that process files, so we you what files have been processed.</p>
+  <p>We're only keeping the last 100 jobs processed otherwise the UI is too unweildy.</p>
+<% end -%>

@@ -19,16 +19,6 @@ This plugin requires the resque 1.5 gem and of course the redis gem.
 
     sudo gem install resque
 
-    require the necessary gems in your envoronment.rb file
-
-      config.gem 'redis'
-      config.gem 'redis-namespace', :lib => 'redis/namespace'
-      config.gem 'resque'
-      #and for resque-scheduler...
-      config.gem 'vegas'
-      config.gem 'rufus-scheduler'
-      config.gem 'resque-scheduler', :lib => 'resque_scheduler'
-
 Times Fixed
 -----------
 
@@ -70,6 +60,21 @@ Added the ability to remove jobs, from a queue
 
 ![Remove Items from the Queue](http://img.skitch.com/20100308-qukiw7bpsnr9y1saap7f8276qx.png)
 
+View Processed Job Info
+-----------------------
+
+A new tab has been added that shows custom information about jobs that have run.  You have to set that information yourself by calling:
+
+    Resque::Job.process_info!(string)
+
+Add this to the end of your perform method with any information you want displayed on the Processed tab in order to keep track of what has already
+been processed.  We use the queues for a lot of different things including sending emails and processing data files.  I don't much care about what
+emails have been sent, but I always want to know what files have been processed.  By adding the above line to my classes that process files, I now
+have insight into what files have been processed.
+
+I'm only keeping the last 100 records in the list.  I'm doing this so the page can be maintenance free, and I don't need a permanent history, just a
+window to see what's recently been processed.
+
 
 Manage Workers
 --------------
@@ -89,7 +94,7 @@ You will also need to make sure you have your rake path set in the deploy.rb fil
     set :rake, "/opt/ruby-enterprise-1.8.6-20090421/bin/rake"
 
 You will also need to tell resque_ui where cap is installed.  Add this line to your environments.rb file:
-    
+
     ResqueUi::Cap.path           = '/opt/ruby-enterprise-1.8.6-20090421/bin/cap'
 
 ...using your own path of course.
@@ -129,7 +134,7 @@ need to edit a static file that gets loaded on initialization.  This also means 
 you edit your schedule.
 
 You can also create different schedules on different servers in your farm.  You specify
-the IP address you want to scheduled job to run on, and it will add the job to the schedule on that server.  You can also start and
+the IP address you want to schedule a job to run on, and it will add the job to the schedule on that server.  You can also start and
 stop the scheduler on each server from the Schedule tab.
 
 ![Resque Scheduler](http://img.skitch.com/20100308-quccysfiwtgubpw286ka2enr9m.png)
@@ -142,7 +147,7 @@ we have a method that takes 3 parameters:
     => "[["300"],1,{"end_date":"2010-02-28","start_date":"2010-02-01"}]"
 
 The first parameter is an array of strings, the second parameter is an integer, and the third parameter is a hash.
-Remembering that the arguments are stored in a array, all the parameters need to be in an array when there is more that one.
+Remembering that the arguments are stored in an array, all the parameters need to be in an array when there is more than one.
 
 Any string arguments need to be quoted in the text box:
 

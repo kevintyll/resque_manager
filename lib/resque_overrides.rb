@@ -98,7 +98,22 @@ module Resque
       args ? payload_class.perform(*args){|status| self.worker.status = status} : payload_class.perform{|status| self.worker.status = status}
     end
 
+    # Put some info into a list that we can read on the UI so we know what has been processed.
+    # Call this at the end of your class' perform method for any jobs you want to keep track of.
+    # Good for jobs that process files, so we know what files have been processed.
+    # We're only keeping the last 100 jobs processed otherwise the UI is too unweildy.
+    def self.process_info!(info)
+      redis.push_head(:processed_jobs, info)
+      REDIS.list_trim(:processed_jobs, 0, 99)
+    end
+
+    def self.processed_info
+      Resque.redis.list_range(:processed_jobs,0,-1)
+    end
+
   end
+
+  Resque::Server.tabs << 'Processed'
 
   module Failure
 
@@ -120,11 +135,11 @@ module Resque
 
         f = Resque.decode string
 
-        if f["payload"]["class"] == failed_class
+        if failed_class.blank? || (f["payload"]["class"] == failed_class)
           Resque.redis.lrem(:failed, 0, string)
+          args = f["payload"]["args"]
+          Resque.enqueue(eval(f["payload"]["class"]), *args)
         end
-        args = f["payload"]["args"]
-        Resque.enqueue(eval(f["payload"]["class"]), *args)
       end
     end
 
