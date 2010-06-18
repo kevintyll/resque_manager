@@ -53,6 +53,35 @@ module Resque
       end
     end
 
+    # Jruby won't allow you to trap the QUIT signal, so we're adding the HUP signal to replace it for Jruby.
+    def register_signal_handlers
+      trap('TERM') { shutdown!  }
+      trap('INT')  { shutdown!  }
+
+      begin
+        s = trap('HUP') { shutdown }
+        warn "Signal HUP not supported." unless s
+        s = trap('QUIT') { shutdown   }
+        warn "Signal QUIT not supported." unless s
+        s = trap('USR1') { kill_child }
+        warn "Signal USR1 not supported." unless s
+        s = trap('USR2') { pause_processing }
+        warn "Signal USR2 not supported." unless s
+        s = trap('CONT') { unpause_processing }
+        warn "Signal CONT not supported." unless s
+      rescue ArgumentError
+        warn "Signals HUP, QUIT, USR1, USR2, and/or CONT not supported."
+      end
+    end
+
+    # Returns an array of string pids of all the other workers on this
+    # machine. Useful when pruning dead workers on startup.
+    def worker_pids
+      `ps -A -o pid,command | grep [r]esque`.split("\n").map do |line|
+        line.split(' ')[0]
+      end
+    end
+
     def status=(status)
       data = encode(job.merge('status' => status))
       redis.set("worker:#{self}", data)
@@ -64,17 +93,15 @@ module Resque
 
     def self.start(ips, queues)
       if RAILS_ENV =~ /development|test/
-        p1 = fork{system("rake QUEUE=#{queues} resque:work")}
-        Process.detach(p1)
+        Thread.new(queues){|queue| system("rake QUEUE=#{queue} resque:work > log/resque.log")}
       else
-        p1 = fork{system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ips} queue=#{queues}")}
-        Process.detach(p1)
+        Thread.new(queues){|queue,ip_list| system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip_list} queue=#{queue} > log/resque.log")}
       end
     end
 
     def quit
       if RAILS_ENV =~ /development|test/
-        system("kill -QUIT  #{self.pid}")
+        system("kill -HUP  #{self.pid}")
       else
         system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
       end
@@ -108,7 +135,7 @@ module Resque
     end
 
     def self.processed_info
-      Resque.redis.list_range(:processed_jobs,0,-1)
+      Resque.redis.lrange(:processed_jobs,0,-1)
     end
 
   end

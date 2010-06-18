@@ -11,7 +11,7 @@ namespace :resque do
   task :quit_scheduler => :setup do
     require 'resque_scheduler'
     ResqueScheduler.pids.each do |pid|
-      `kill -QUIT #{pid}`
+      `kill -TERM #{pid}`
     end
   end
 

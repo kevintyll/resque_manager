@@ -16,11 +16,9 @@ module ResqueScheduler
 
   def self.start(ips)
     if RAILS_ENV =~ /development|test/
-      p1 = fork{system("rake resque:scheduler")}
-      Process.detach(p1)
+      Thread.new{system("rake resque:scheduler")}
     else
-      p1 = fork{system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:scheduler host=#{ips}")}
-      Process.detach(p1)
+      Thread.new(ips){|ip_list|system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:scheduler host=#{ip_list}")}
     end
   end
 

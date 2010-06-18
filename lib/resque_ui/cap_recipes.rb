@@ -24,7 +24,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         puts 'You must enter the host and pid to kill..cap resque:quit host=ip pid=pid'
       else
         hosts = ENV['host'] || find_servers_for_task(current_task).collect{|s| s.host}
-        run("kill -QUIT #{ENV['pid']}", :hosts => hosts)
+        run("kill -HUP #{ENV['pid']}", :hosts => hosts)
       end
     end
 
