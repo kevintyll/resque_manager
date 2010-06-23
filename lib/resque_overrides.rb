@@ -53,14 +53,12 @@ module Resque
       end
     end
 
-    # Jruby won't allow you to trap the QUIT signal, so we're adding the HUP signal to replace it for Jruby.
+    # Jruby won't allow you to trap the QUIT signal, so we're changing the INT signal to replace it for Jruby.
     def register_signal_handlers
       trap('TERM') { shutdown!  }
-      trap('INT')  { shutdown!  }
+      trap('INT')  { shutdown  }
 
       begin
-        s = trap('HUP') { shutdown }
-        warn "Signal HUP not supported." unless s
         s = trap('QUIT') { shutdown   }
         warn "Signal QUIT not supported." unless s
         s = trap('USR1') { kill_child }
@@ -93,17 +91,17 @@ module Resque
 
     def self.start(ips, queues)
       if RAILS_ENV =~ /development|test/
-        Thread.new(queues){|queue| system("rake QUEUE=#{queue} resque:work > log/resque.log")}
+        Thread.new(queues){|queue| system("rake QUEUE=#{queue} resque:work")}
       else
-        Thread.new(queues){|queue,ip_list| system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip_list} queue=#{queue} > log/resque.log")}
+        Thread.new(queues,ips){|queue,ip_list| system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip_list} queue=#{queue}")}
       end
     end
 
     def quit
       if RAILS_ENV =~ /development|test/
-        system("kill -HUP  #{self.pid}")
+        system("kill -INT  #{self.pid}")
       else
-        system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
+        system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
       end
     end
 
