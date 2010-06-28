@@ -26,7 +26,7 @@ module ResqueScheduler
     if RAILS_ENV =~ /development|test/
       system("rake resque:quit_scheduler")
     else
-      system("#{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_scheduler host=#{ips}")
+      system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_scheduler host=#{ips}")
     end
   end
 

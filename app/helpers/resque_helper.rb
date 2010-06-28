@@ -4,7 +4,7 @@ module ResqueHelper
 
 
   def classes_in_failure
-    (Resque.redis.lrange(:failed,0,-1) || []).collect{|job| Resque.decode(job)['payload']['class']}.uniq
+    Resque.list_range(:failed,0,-1).collect{|job| job['payload']['class']}.uniq
   end
 
   def flash_helper
@@ -69,7 +69,7 @@ module ResqueHelper
     when 'none'
       []
     when 'list'
-      Resque.redis.lrange(key, 0, 20)
+      Resque.list_range(key, 0, 20)
     when 'set'
       Resque.redis.smembers(key)
     when 'string'

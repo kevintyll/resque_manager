@@ -142,12 +142,10 @@ class ResqueController < ApplicationController
   end
 
   def remove_from_schedule
-    Resque.redis.lrange(:scheduled,0,-1).each do |string|
-
-      s = Resque.decode string
+    Resque.list_range(:scheduled,0,-1).each do |s|
 
       if s[params['job_name']]
-        Resque.redis.lrem(:scheduled, 0, string)
+        Resque.redis.lrem(:scheduled, 0, s.to_json)
         # Restart the scheduler on the server that has changed it's schedule
         ResqueScheduler.restart(params['ip'])
       end
@@ -175,11 +173,10 @@ class ResqueController < ApplicationController
   end
 
   def remove_failure_from_list(payload)
-    Resque.redis.lrange(:failed,0,-1).each do |string|
+    Resque.list_range(:failed,0,-1).each do |f|
 
-      f = Resque.decode string
       if f["payload"] == payload
-        Resque.redis.lrem(:failed, 0, string)
+        Resque.redis.lrem(:failed, 0, f.to_json)
       end
     end
   end

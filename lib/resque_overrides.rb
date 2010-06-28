@@ -133,7 +133,7 @@ module Resque
     end
 
     def self.processed_info
-      Resque.redis.lrange(:processed_jobs,0,-1)
+      Resque.list_range(:processed_jobs,0,-1)
     end
 
   end
@@ -156,12 +156,10 @@ module Resque
 
     # Requeues all failed jobs of a given class
     def self.requeue(failed_class)
-      Resque.redis.lrange(:failed,0,-1).each do |string|
-
-        f = Resque.decode string
+      Resque.list_range(:failed,0,-1).each do |f|
 
         if failed_class.blank? || (f["payload"]["class"] == failed_class)
-          Resque.redis.lrem(:failed, 0, string)
+          Resque.redis.lrem(:failed, 0, f.to_json)
           args = f["payload"]["args"]
           Resque.enqueue(eval(f["payload"]["class"]), *args)
         end
