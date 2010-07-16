@@ -133,7 +133,7 @@ module Resque
     end
 
     def self.processed_info
-      Resque.list_range(:processed_jobs,0,-1)
+      Resque.redis.lrange(:processed_jobs,0,-1)
     end
 
   end
