@@ -72,6 +72,16 @@ module Resque
       end
     end
 
+    # logic for mappged_mget changed where it returns keys with nil values in latest redis gem.
+    def self.working
+      names = all
+      return [] unless names.any?
+      names.map! { |name| "worker:#{name}" }
+      redis.mapped_mget(*names).map do |key, value|
+        find key.sub("worker:", '') unless value.nil?
+      end.compact
+    end
+
     # Returns an array of string pids of all the other workers on this
     # machine. Useful when pruning dead workers on startup.
     def worker_pids
