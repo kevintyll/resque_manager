@@ -15,7 +15,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       hosts = ENV['host'] || find_servers_for_task(current_task).collect{|s| s.host}
       queue = ENV['queue'] || '*'
       rake = fetch(:rake, "rake")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} QUEUE=#{queue} resque:work", :hosts => hosts)
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} QUEUE=#{queue} resque:work &", :hosts => hosts)
     end
 
     desc "Gracefully kill a worker.  If the worker is working, it will finish before shutting down. arg: host=ip pid=pid"
@@ -35,14 +35,14 @@ Capistrano::Configuration.instance(:must_exist).load do
       queue = ENV['queue'] || '*'
       count = ENV['count'] || '1'
       rake = fetch(:rake, "rake")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} COUNT=#{count} QUEUE=#{queue} resque:work", :hosts => hosts)
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} COUNT=#{count} QUEUE=#{queue} resque:work &", :hosts => hosts)
     end
 
     desc "Restart all workers on all servers"
     task :restart_workers, :roles => :app, :only => { :resque_restart => true } do
       default_run_options[:pty] = true
       rake = fetch(:rake, "rake")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:restart_workers")
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:restart_workers &")
     end
 
     # ====================================
@@ -54,7 +54,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       default_run_options[:pty] = true
       hosts = ENV['host'] || find_servers_for_task(current_task).collect{|s| s.host}
       rake = fetch(:rake, "rake")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:scheduler", :hosts => hosts)
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:scheduler &", :hosts => hosts)
     end
 
     desc "Gracefully kill the scheduler on a server. arg: host=ip"
@@ -64,7 +64,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       else
         hosts = ENV['host'] || find_servers_for_task(current_task).collect{|s| s.host}
         rake = fetch(:rake, "rake")
-        run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:quit_scheduler", :hosts => hosts)
+        run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:quit_scheduler &", :hosts => hosts)
       end
     end
 
