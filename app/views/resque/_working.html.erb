@@ -17,7 +17,7 @@
       <% data = worker.job %>
       <% queue = data['queue'] %>
       <td><%= link_to(queue, {:action => 'queues', :id => queue}, :class => 'queue') %></td>
-      <td><span class="time"><%= format_time(Time.zone.parse(data['run_at'])) %></span></td>
+      <td><span class="time"><%= format_time(Time.zone.parse(data['run_at'].to_s)) %></span></td>
       <td>
         <code><%= data['payload']['class'] %></code>
       </td>
@@ -43,7 +43,7 @@
       </tr>
     <% end %>
 
-    <% for worker in workers.sort_by { |w| w.job['run_at'] ? w.job['run_at'] : '' } %>
+    <% for worker in workers.sort_by { |w| w.job['run_at'].to_s } %>
       <% job = worker.job %>
       <tr>
         <td class='icon'><img src="<%=u "../../images/resque/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
@@ -55,7 +55,7 @@
         <td class='process'>
           <% if job['queue'] %>
             <code><%= job['payload']['class'] %></code>
-            <small><%= link_to(format_time(Time.zone.parse(job['run_at'])), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
+            <small><%= link_to(format_time(Time.zone.parse(job['run_at'].to_s)), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
             <br>
             <small><%=worker.status%></small>
           <% else %>
