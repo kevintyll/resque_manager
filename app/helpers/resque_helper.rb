@@ -4,7 +4,7 @@ module ResqueHelper
 
 
   def classes_in_failure
-    Resque.list_range(:failed,0,-1).collect{|job| job['payload']['class']}.uniq
+    Resque.list_range(:failed,0,0).collect{|job| job['payload']['class']}.uniq
   end
 
   def flash_helper
