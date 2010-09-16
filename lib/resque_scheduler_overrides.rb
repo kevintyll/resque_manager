@@ -41,7 +41,7 @@ module ResqueScheduler
       status['localhost'] = pids.present? ? 'Running' : 'Stopped'
     else
       Resque.schedule.values.collect{|job| job['ip']}.each do |ip|
-        cap = `#{ResqueUi::Cap.path} #{RAILS_ENV} resque:scheduler_status host=#{ip}`
+        cap = `#{ResqueUi::Cap.path} #{RAILS_ENV} resque:scheduler_status hosts=#{ip}`
         status[ip] = cap =~ /resque:scheduler is up/ ? 'Running' : 'Stopped'
       end
     end
