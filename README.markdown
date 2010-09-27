@@ -106,6 +106,23 @@ The cap tasks included are:
     cap resque:quit_worker   # Gracefully kill a worker.  If the worker is working, it will finish before shutting down.
     cap resque:restart_workers # Restart all workers on all servers
 
+Multi-Threaded Workers
+---------------------
+With Jruby, you have to specify the amount of memory to allocate when you start up the jvm.  This has proven inefficient for us because we workers
+that require different amounts of memory.  We have standardized out jvm configuration for the workers, which means we have to start each worker with
+the maximum amount of memory needed by the most memory intensive worker.  This means we are wasting a lot of resources for the workers that don't
+require as much memory.
+
+Our answer was to make the workers multi-threaded.  Now if you pass multiple queues into the rake task, each worker will be started in separate 
+threads within the same process.
+
+    rake QUEUE=file_loader,file_loader,email resque:work
+
+This will start up 3 workers, 2 will work the file_loader queue, and one will work the email queue.  
+
+Be aware that when you stop a worker, it will stop all the worker within that process.  Also be aware that this eliminates queue priority
+since a separate worker is working each queue, rather than a list of queues.
+
 After Deploy Hooks
 ------------------
 

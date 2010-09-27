@@ -7,6 +7,7 @@
       <th>&nbsp;</th>
       <th>Host</th>
       <th>Pid</th>
+      <th>Thread</th>
       <th>Started</th>
       <th>Queues</th>
       <th>Processed</th>
@@ -16,9 +17,10 @@
     <tr>
       <td class='icon'><img src="<%=u "../../images/resque/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
 
-      <% host, pid, queues = worker.to_s.split(':') %>
+      <% host, pid, thread, queues = worker.to_s.split(':') %>
       <td><%= host %></td>
       <td><%= pid %></td>
+      <td><%= thread %></td>
       <td><span class="time"><%= format_time(Time.zone.parse(worker.started)) %></a></td>
       <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('') %></td>
       <td><%= worker.processed %></td>
@@ -43,22 +45,23 @@
 
 <% else %>
 
-  <h1 class='wi'><%= resque.workers.size %> Workers</h1>
+  <h1 class='wi'><%= pluralize resque.workers.size, 'Worker' %></h1>
   <p class='intro'>The workers listed below are all registered as active on your system.</p>
   <table class='workers'>
     <tr>
       <th>&nbsp;</th>
-      <th>Where</th>
+      <th>Where (ip):pid:thread</th>
       <th>Queues</th>
       <th>Processing</th>
       <th>&nbsp;</th>
     </tr>
+    <%  upid = ''%>
     <% for worker in (workers = resque.workers.sort_by { |w| w.to_s }) %>
       <tr class="<%=state = worker.state%>">
         <td class='icon'><img src="<%=u "../../images/resque/#{state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
 
-        <% host, pid, queues = worker.to_s.split(':') %>
-        <td class='where'><%=link_to("#{host}:#{pid}",:action => 'workers', :id => worker.to_s.gsub(/\./,'_'))%></td>
+        <% host, pid, thread, queues = worker.to_s.split(':') %>
+        <td class='where'><%=link_to("#{host}:#{pid}:#{thread}",:action => 'workers', :id => worker.to_s.gsub(/\./,'_'))%></td>
         <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('') %></td>
 
         <td class='process'>
@@ -66,15 +69,18 @@
           <% if data['queue'] %>
             <code><%= data['payload']['class'] %></code>
             <small><%= link_to(format_time(Time.zone.parse(data['run_at'])), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => "queue time") %></small>
-            <br>
+            <br/>
             <small><%=worker.status%></small>
           <% else %>
             <span class='waiting'>Waiting for a job...</span>
           <% end %>
         </td>
         <td>
-          <%= button_to "Stop", {:controller=>'resque', :action=> 'stop_worker', :worker => worker.to_s}, :class => 'clear-failed', :method => :post %>
-          <%= button_to "Restart", {:controller=>'resque', :action=> 'restart_worker', :worker => worker.to_s}, :class => 'clear-failed', :method => :post %>
+          <% if upid != pid %>
+            <%= button_to "Stop", {:controller=>'resque', :action=> 'stop_worker', :worker => worker.to_s}, :class => 'clear-failed', :title => "This will stop all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect{|w| w.to_s}.join(', ')}", :method => :post %>
+            <%= button_to "Restart", {:controller=>'resque', :action=> 'restart_worker', :worker => worker.to_s}, :class => 'clear-failed', :title => "This will restart all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect{|w| w.to_s}.join(', ')}", :method => :post %>
+            <% upid = pid %>
+          <% end %>
         </td>
       </tr>
     <% end %>

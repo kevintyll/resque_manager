@@ -17,7 +17,7 @@ module Resque
     # The string representation is the same as the id for this worker
     # instance. Can be used with `Worker.find`.
     def to_s
-      @to_s ||= "#{hostname}(#{local_ip}):#{Process.pid}:#{@queues.join(',')}"
+      @to_s || "#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:queue]}"
     end
     alias_method :id, :to_s
 
@@ -25,12 +25,53 @@ module Resque
       to_s.split(':').second
     end
 
+    def thread
+      to_s.split(':').third
+    end
+
+    def queue
+      to_s.split(':').last
+    end
+
+    def workers_in_pid
+      Array(redis.smembers(:workers)).select{|id| id =~ /\(#{ip}\):#{pid}/}.map { |id| Resque::Worker.find(id) }.compact
+    end
+
     def ip
       to_s.split(':').first[/\b(?:\d{1,3}\.){3}\d{1,3}\b/]
     end
 
+    def queues_in_pid
+      workers_in_pid.collect{|w| w.queue}
+    end
+
     def queues
-      to_s.split(':').last
+      @queues[0] == "*" ? Resque.queues.sort : Thread.list.collect{|t| t[:queue]}.compact
+    end
+
+    # Runs all the methods needed when a worker begins its lifecycle.
+    #OVERRIDE for multithreaded workers
+    def startup
+      enable_gc_optimizations
+      if Thread.current == Thread.main
+        register_signal_handlers
+        prune_dead_workers
+      end
+      run_hook :before_first_fork
+      register_worker
+
+      # Fix buffering so we can `rake resque:work > resque.log` and
+      # get output from the child in there.
+      $stdout.sync = true
+    end
+
+    # Schedule this worker for shutdown. Will finish processing the
+    # current job.
+    #OVERRIDE for multithreaded workers
+    def shutdown
+      log 'Exiting...'
+      Thread.list.each{|t| t[:shutdown] = true}
+      @shutdown = true
     end
 
     # Looks for any workers which should be running on this server
@@ -45,12 +86,16 @@ module Resque
     # environment, we can determine if Redis is old and clean it up a bit.
     def prune_dead_workers
       Worker.all.each do |worker|
-        host, pid, queues = worker.id.split(':')
+        host, pid, thread, queues = worker.id.split(':')
         next unless host.include?(hostname)
         next if worker_pids.include?(pid)
         log! "Pruning dead worker: #{worker}"
         worker.unregister_worker
       end
+    end
+
+    def all_workers_in_pid_working
+      workers_in_pid.select{|w| (hash = w.processing) && !hash.empty?}
     end
 
     # Jruby won't allow you to trap the QUIT signal, so we're changing the INT signal to replace it for Jruby.
@@ -68,8 +113,66 @@ module Resque
         s = trap('CONT') { unpause_processing }
         warn "Signal CONT not supported." unless s
       rescue ArgumentError
-        warn "Signals HUP, QUIT, USR1, USR2, and/or CONT not supported."
+        warn "Signals QUIT, USR1, USR2, and/or CONT not supported."
       end
+    end
+
+    # This is the main workhorse method. Called on a Worker instance,
+    # it begins the worker life cycle.
+    #
+    # The following events occur during a worker's life cycle:
+    #
+    # 1. Startup:   Signals are registered, dead workers are pruned,
+    #               and this worker is registered.
+    # 2. Work loop: Jobs are pulled from a queue and processed.
+    # 3. Teardown:  This worker is unregistered.
+    #
+    # Can be passed an integer representing the polling frequency.
+    # The default is 5 seconds, but for a semi-active site you may
+    # want to use a smaller value.
+    #
+    # Also accepts a block which will be passed the job as soon as it
+    # has completed processing. Useful for testing.
+    #OVERRIDE for multithreaded workers
+    def work(interval = 5, &block)
+      $0 = "resque: Starting"
+      startup
+
+      loop do
+        break if @shutdown || Thread.current[:shutdown]
+
+        if not @paused and job = reserve
+          log "got: #{job.inspect}"
+          run_hook :before_fork
+          working_on job
+
+          if @child = fork
+            rand # Reseeding
+            procline "Forked #{@child} at #{Time.now.to_i}"
+            Process.wait
+          else
+            procline "Processing #{job.queue} since #{Time.now.to_i}"
+            perform(job, &block)
+            exit! unless @cant_fork
+          end
+
+          done_working
+          @child = nil
+        else
+          break if interval.to_i == 0
+          log! "Sleeping for #{interval.to_i}"
+          procline @paused ? "Paused" : "Waiting for #{@queues.join(',')}"
+          sleep interval.to_i
+        end
+      end
+      unregister_worker rescue nil
+      loop do
+        #hang onto the process until all threads are done
+        break if all_workers_in_pid_working.blank?
+        sleep interval.to_i
+      end
+    ensure
+      unregister_worker
     end
 
     # logic for mappged_mget changed where it returns keys with nil values in latest redis gem.
@@ -80,6 +183,20 @@ module Resque
       redis.mapped_mget(*names).map do |key, value|
         find key.sub("worker:", '') unless value.nil?
       end.compact
+    end
+
+    # Attempts to grab a job off one of the provided queues. Returns
+    # nil if no job can be found.
+    #OVERRIDE for multithreaded workers
+    def reserve
+      queue = Thread.current[:queue]
+      log! "Checking #{queue}"
+      if job = Resque::Job.reserve(queue)
+        log! "Found job on #{queue}"
+        return job
+      end
+
+      nil
     end
 
     # Returns an array of string pids of all the other workers on this
@@ -116,8 +233,9 @@ module Resque
     end
 
     def restart
+      queues = self.queues_in_pid.join(',')
       quit
-      self.class.start(self.ip, self.queues)
+      self.class.start(self.ip, queues)
     end
 
   end

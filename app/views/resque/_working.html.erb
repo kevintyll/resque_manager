@@ -4,7 +4,7 @@
   <table>
     <tr>
       <th>&nbsp;</th>
-      <th>Where</th>
+      <th>Where (ip):pid:thread</th>
       <th>Queue</th>
       <th>Started</th>
       <th>Class</th>
@@ -12,8 +12,8 @@
     </tr>
     <tr>
       <td><img src="<%=u '../../images/resque/working.png' %>" alt="working" title="working"></td>
-      <% host, pid, _ = worker.to_s.split(':') %>
-      <td><%= link_to("#{host}:#{pid}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
+      <% host, pid,thread, _ = worker.to_s.split(':') %>
+      <td><%= link_to("#{host}:#{pid}:#{thread}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
       <% data = worker.job %>
       <% queue = data['queue'] %>
       <td><%= link_to(queue, {:action => 'queues', :id => queue}, :class => 'queue') %></td>
@@ -33,7 +33,7 @@
   <table class='workers'>
     <tr>
       <th>&nbsp;</th>
-      <th>Where</th>
+      <th>Where (ip):pid:thread</th>
       <th>Queue</th>
       <th>Processing</th>
     </tr>
@@ -47,8 +47,8 @@
       <% job = worker.job %>
       <tr>
         <td class='icon'><img src="<%=u "../../images/resque/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
-        <% host, pid, queues = worker.to_s.split(':') %>
-        <td class='where'><%= link_to("#{host}:#{pid}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
+        <% host, pid, thread, queues = worker.to_s.split(':') %>
+        <td class='where'><%= link_to("#{host}:#{pid}:#{thread}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
         <td class='queues queue'>
           <%= link_to(job['queue'], {:action => 'queues', :id => job['queue']}, :class => 'queue-tag') %>
         </td>
@@ -56,7 +56,7 @@
           <% if job['queue'] %>
             <code><%= job['payload']['class'] %></code>
             <small><%= link_to(format_time(Time.zone.parse(job['run_at'].to_s)), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
-            <br>
+            <br/>
             <small><%=worker.status%></small>
           <% else %>
             <span class='waiting'>Waiting for a job...</span>
