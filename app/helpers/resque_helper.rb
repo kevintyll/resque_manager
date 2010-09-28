@@ -50,8 +50,7 @@ module ResqueHelper
   end
 
   def redis_get_size(key)
-    namespace = 'resque:'
-    case Resque.redis.type(namespace+key)
+    case Resque.redis.type(key)
     when 'none'
       []
     when 'list'
@@ -64,8 +63,7 @@ module ResqueHelper
   end
 
   def redis_get_value_as_array(key)
-    namespace = 'resque:'
-    case Resque.redis.type(namespace+key)
+    case Resque.redis.type(key)
     when 'none'
       []
     when 'list'
