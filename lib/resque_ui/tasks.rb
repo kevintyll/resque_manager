@@ -40,7 +40,7 @@ namespace :resque do
   task :restart_workers => :setup do
     require 'resque'
     pid = ''
-    Resque.workers.each do |worker|
+    Resque.workers.sort_by { |w| w.to_s }.each do |worker|
       if pid != worker.pid
         worker.restart
         pid = worker.pid
