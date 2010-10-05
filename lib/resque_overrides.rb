@@ -4,7 +4,7 @@ module Resque
   class Worker
 
     def local_ip
-      orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
+      orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true # turn off reverse DNS resolution temporarily
 
       UDPSocket.open do |s|
         s.connect '64.233.187.99', 1
@@ -17,8 +17,9 @@ module Resque
     # The string representation is the same as the id for this worker
     # instance. Can be used with `Worker.find`.
     def to_s
-      @to_s || "#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:queue]}"
+      @to_s || "#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:queues]}"
     end
+
     alias_method :id, :to_s
 
     def pid
@@ -34,7 +35,7 @@ module Resque
     end
 
     def workers_in_pid
-      Array(redis.smembers(:workers)).select{|id| id =~ /\(#{ip}\):#{pid}/}.map { |id| Resque::Worker.find(id) }.compact
+      Array(redis.smembers(:workers)).select { |id| id =~ /\(#{ip}\):#{pid}/ }.map { |id| Resque::Worker.find(id) }.compact
     end
 
     def ip
@@ -42,11 +43,11 @@ module Resque
     end
 
     def queues_in_pid
-      workers_in_pid.collect{|w| w.queue}
+      workers_in_pid.collect { |w| w.queue }
     end
 
     def queues
-      @queues[0] == "*" ? Resque.queues.sort : Thread.list.collect{|t| t[:queue]}.compact
+      @queues[0] == "*" ? Resque.queues.sort : Thread.list.collect { |t| t[:queue] }.compact
     end
 
     # Runs all the methods needed when a worker begins its lifecycle.
@@ -70,7 +71,7 @@ module Resque
     #OVERRIDE for multithreaded workers
     def shutdown
       log 'Exiting...'
-      Thread.list.each{|t| t[:shutdown] = true}
+      Thread.list.each { |t| t[:shutdown] = true }
       @shutdown = true
     end
 
@@ -89,22 +90,23 @@ module Resque
         host, pid, thread, queues = worker.id.split(':')
         next unless host.include?(hostname)
         next if worker_pids.include?(pid)
+        RAILS_DEFAULT_LOGGER.info "********** pruning = "
         log! "Pruning dead worker: #{worker}"
         worker.unregister_worker
       end
     end
 
     def all_workers_in_pid_working
-      workers_in_pid.select{|w| (hash = w.processing) && !hash.empty?}
+      workers_in_pid.select { |w| (hash = w.processing) && !hash.empty? }
     end
 
     # Jruby won't allow you to trap the QUIT signal, so we're changing the INT signal to replace it for Jruby.
     def register_signal_handlers
-      trap('TERM') { shutdown!  }
-      trap('INT')  { shutdown  }
+      trap('TERM') { shutdown! }
+      trap('INT') { shutdown }
 
       begin
-        s = trap('QUIT') { shutdown   }
+        s = trap('QUIT') { shutdown }
         warn "Signal QUIT not supported." unless s
         s = trap('USR1') { kill_child }
         warn "Signal USR1 not supported." unless s
@@ -189,11 +191,13 @@ module Resque
     # nil if no job can be found.
     #OVERRIDE for multithreaded workers
     def reserve
-      queue = Thread.current[:queue]
-      log! "Checking #{queue}"
-      if job = Resque::Job.reserve(queue)
-        log! "Found job on #{queue}"
-        return job
+      queues = Thread.current[:queues].split(',')
+      queues.each do |queue|
+        log! "Checking #{queue}"
+        if job = Resque::Job.reserve(queue)
+          log! "Found job on #{queue}"
+          return job
+        end
       end
 
       nil
@@ -218,9 +222,9 @@ module Resque
 
     def self.start(ips, queues)
       if RAILS_ENV =~ /development|test/
-        Thread.new(queues){|queue| system("rake QUEUE=#{queue} resque:work")}
+        Thread.new(queues) { |queue| system("rake QUEUE=#{queue} resque:work") }
       else
-        Thread.new(queues,ips){|queue,ip_list| system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip_list} queue=#{queue}")}
+        Thread.new(queues, ips) { |queue, ip_list| system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip_list} queue=#{queue}") }
       end
     end
 
@@ -233,13 +237,12 @@ module Resque
     end
 
     def restart
-      queues = self.queues_in_pid.join(',')
+      queues = self.queues_in_pid.join('#')
       quit
       self.class.start(self.ip, queues)
     end
 
   end
-
 
 
   class Job
@@ -248,7 +251,7 @@ module Resque
     # arguments given in the payload.
     # The worker is passed in so the status can be set for the UI to display.
     def perform
-      args ? payload_class.perform(*args){|status| self.worker.status = status} : payload_class.perform{|status| self.worker.status = status}
+      args ? payload_class.perform(*args) { |status| self.worker.status = status } : payload_class.perform { |status| self.worker.status = status }
     end
 
     # Put some info into a list that we can read on the UI so we know what has been processed.
@@ -261,7 +264,7 @@ module Resque
     end
 
     def self.processed_info
-      Resque.redis.lrange(:processed_jobs,0,-1)
+      Resque.redis.lrange(:processed_jobs, 0, -1)
     end
 
   end
@@ -287,7 +290,7 @@ module Resque
       length = Resque.redis.llen(:failed)
       i = 0
       length.times do
-        f = Resque.list_range(:failed,i,1)
+        f = Resque.list_range(:failed, i, 1)
         if failed_class.blank? || (f["payload"]["class"] == failed_class)
           Resque.redis.lrem(:failed, 0, f.to_json)
           args = f["payload"]["args"]

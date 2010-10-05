@@ -5,10 +5,10 @@ namespace :resque do
     require 'resque'
 
     worker = nil
-    queues = (ENV['QUEUES'] || ENV['QUEUE']).to_s.split(',')
+    queues = (ENV['QUEUES'] || ENV['QUEUE']).to_s.split('#').delete_if{|a| a.blank?}
     threads = []
     mqueue = queues.shift
-    Thread.current[:queue] = mqueue
+    Thread.current[:queues] = mqueue
     mworker = Resque::Worker.new(mqueue)
     mworker.verbose = true #ENV['LOGGING'] || ENV['VERBOSE']
     mworker.very_verbose = true #ENV['VVERBOSE']
@@ -16,7 +16,7 @@ namespace :resque do
     queues.each do |queue|
       threads << Thread.new do
         begin
-          Thread.current[:queue] = queue
+          Thread.current[:queues] = queue
           worker = Resque::Worker.new(queue)
           worker.verbose = ENV['LOGGING'] || ENV['VERBOSE']
           worker.very_verbose = ENV['VVERBOSE']
