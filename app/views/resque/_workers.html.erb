@@ -99,7 +99,7 @@
       <li>
         <dl>
           <dt>Queue(s)</dt>
-          <dd><%=text_field_tag :queues, nil, :size => 125 %><br/>  Wrap each worker in parenthesis, comma separate the list of queues you want each worker to monitor.  No Spaces. (queue1,queue2)(queue3)(queue2) will produce 3 workers in 3 threads.</dd>
+          <dd><%=text_field_tag :queues, nil, :size => 125 %><br/>  Prefix each worker with a '#', comma separate the list of queues you want each worker to monitor.  No Spaces. #queue1,queue2#queue3#queue2 will produce 3 workers in 3 threads.</dd>
           <dt>Host(s)/IP(s)</dt>
           <dd><%=text_field_tag :hosts, nil, :size => 125 %><br/>  Comma separate the IP address of the servers where you want your worker to run.</dd>
           <dt><%= submit_tag "Start" %></dt>
