@@ -90,7 +90,6 @@ module Resque
         host, pid, thread, queues = worker.id.split(':')
         next unless host.include?(hostname)
         next if worker_pids.include?(pid)
-        RAILS_DEFAULT_LOGGER.info "********** pruning = "
         log! "Pruning dead worker: #{worker}"
         worker.unregister_worker
       end
