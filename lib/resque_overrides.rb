@@ -46,8 +46,9 @@ module Resque
       workers_in_pid.collect { |w| w.queue }
     end
 
+    #OVERRIDE for multithreaded workers
     def queues
-      @queues[0] == "*" ? Resque.queues.sort : Thread.list.collect { |t| t[:queue] }.compact
+      Thread.current[:queues] == "*" ? Resque.queues.sort : Thread.current[:queues].split(',')
     end
 
     # Runs all the methods needed when a worker begins its lifecycle.
@@ -184,22 +185,6 @@ module Resque
       redis.mapped_mget(*names).map do |key, value|
         find key.sub("worker:", '') unless value.nil?
       end.compact
-    end
-
-    # Attempts to grab a job off one of the provided queues. Returns
-    # nil if no job can be found.
-    #OVERRIDE for multithreaded workers
-    def reserve
-      queues = Thread.current[:queues].split(',')
-      queues.each do |queue|
-        log! "Checking #{queue}"
-        if job = Resque::Job.reserve(queue)
-          log! "Found job on #{queue}"
-          return job
-        end
-      end
-
-      nil
     end
 
     # Returns an array of string pids of all the other workers on this
