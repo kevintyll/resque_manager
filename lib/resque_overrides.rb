@@ -1,6 +1,14 @@
 require 'socket'
 
 module Resque
+
+  def self.throttle(queue, limit = 10000, sleep_for = 60)
+    loop do
+      break if Resque.size(queue.to_s) < limit
+      sleep sleep_for
+    end
+  end
+
   class Worker
 
     def local_ip
@@ -238,22 +246,9 @@ module Resque
       args ? payload_class.perform(*args) { |status| self.worker.status = status } : payload_class.perform { |status| self.worker.status = status }
     end
 
-    # Put some info into a list that we can read on the UI so we know what has been processed.
-    # Call this at the end of your class' perform method for any jobs you want to keep track of.
-    # Good for jobs that process files, so we know what files have been processed.
-    # We're only keeping the last 100 jobs processed otherwise the UI is too unweildy.
-    def self.process_info!(info)
-      redis.lpush(:processed_jobs, info)
-      redis.ltrim(:processed_jobs, 0, 99)
-    end
-
-    def self.processed_info
-      Resque.redis.lrange(:processed_jobs, 0, -1)
-    end
-
   end
 
-  Resque::Server.tabs << 'Processed'
+  Resque::Server.tabs << 'Statuses'
 
   module Failure
 

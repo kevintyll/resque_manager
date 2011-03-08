@@ -9,8 +9,10 @@ class ResqueController < ApplicationController
   before_filter :check_connection
 
   verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure, :stop_worker, :restart_worker,
-    :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job, :start_scheduler, :stop_scheduler, :requeue_failures_in_class],
-    :render => { :text => "<p>Please use the POST http method to post data to this API.</p>" }
+                                     :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job,
+                                     :start_scheduler, :stop_scheduler, :requeue_failures_in_class,
+                                     :kill, :clear_statuses],
+         :render => {:text => "<p>Please use the POST http method to post data to this API.</p>"}
 
 
   def index
@@ -27,7 +29,18 @@ class ResqueController < ApplicationController
 
   def poll
     @polling = true
-    render(:text => (render_to_string(:action => params[:page],:layout => false, :resque => Resque)).gsub(/\s{1,}/, ' '))
+    render(:text => (render_to_string(:action => params[:page], :layout => false, :resque => Resque)).gsub(/\s{1,}/, ' '))
+  end
+
+  def status_poll
+    @polling  = true
+
+    @start    = params[:start].to_i
+    @end      = @start + (params[:per_page] || 20)
+    @statuses = Resque::Status.statuses(@start, @end)
+    @size     = Resque::Status.status_ids.size
+
+    render(:text => (render_to_string(:action => 'statuses', :layout => false)))
   end
 
   def failed
@@ -61,7 +74,7 @@ class ResqueController < ApplicationController
   end
 
   def remove_job
-    Resque.dequeue(params['class'].constantize,*Resque.decode(params['args']))
+    Resque.dequeue(params['class'].constantize, *Resque.decode(params['args']))
     redirect_to request.referrer
   end
 
@@ -84,11 +97,11 @@ class ResqueController < ApplicationController
 
   def stats
     unless params[:id]
-      redirect_to(:action => 'stats',:id => 'resque')
+      redirect_to(:action => 'stats', :id => 'resque')
     end
 
     if params[:id] == 'txt'
-      info = Resque.info
+      info  = Resque.info
 
       stats = []
       stats << "resque.pending=#{info[:pending]}"
@@ -127,11 +140,11 @@ class ResqueController < ApplicationController
       errors << 'You must enter the cron schedule.'
     end
     if errors.blank?
-      config = {params['name'] => {'class' => params['class'],
-          'ip' => params['ip'],
-          'cron' => params['cron'],
-          'args' => Resque.decode(params['args']),
-          'description' => params['description']}
+      config = {params['name'] => {'class'       => params['class'],
+                                   'ip'          => params['ip'],
+                                   'cron'        => params['cron'],
+                                   'args'        => Resque.decode(params['args']),
+                                   'description' => params['description']}
       }
       Resque.redis.rpush(:scheduled, Resque.encode(config))
       ResqueScheduler.restart('ip')
@@ -142,7 +155,7 @@ class ResqueController < ApplicationController
   end
 
   def remove_from_schedule
-    Resque.list_range(:scheduled,0,-1).each do |s|
+    Resque.list_range(:scheduled, 0, -0).each do |s|
 
       if s[params['job_name']]
         Resque.redis.lrem(:scheduled, 0, s.to_json)
@@ -163,6 +176,30 @@ class ResqueController < ApplicationController
     redirect_to(:action => 'schedule')
   end
 
+  def statuses
+    @start    = params[:start].to_i
+    @end      = @start + (params[:per_page] || 20)
+    @statuses = Resque::Status.statuses(@start, @end)
+    @size     = Resque::Status.status_ids.size
+  end
+
+  def clear_statuses
+    Resque::Status.clear
+    redirect_to(:action => 'statuses')
+  end
+
+  def status
+    @status = Resque::Status.get(params[:id])
+  end
+
+  def kill
+    Resque::Status.kill(params[:id])
+    s = Resque::Status.get(params[:id])
+    s.status = 'killed'
+    Resque::Status.set(params[:id], s)
+    redirect_to(:action => 'statuses')
+  end
+
   private
 
   def check_connection
@@ -173,7 +210,7 @@ class ResqueController < ApplicationController
   end
 
   def remove_failure_from_list(payload)
-    Resque.list_range(:failed,0,-1).each do |f|
+    Resque.list_range(:failed, 0, -1).each do |f|
 
       if f["payload"] == payload
         Resque.redis.lrem(:failed, 0, f.to_json)
@@ -183,24 +220,23 @@ class ResqueController < ApplicationController
 
   def find_worker(worker)
     first_part, *rest = worker.split(':')
-    first_part.gsub!(/_/,'.')
+    first_part.gsub!(/_/, '.')
     Resque::Worker.find("#{first_part}:#{rest.join(':')}")
   end
 
 end
 
 
-
 #because of load order, this can't be in the resque_overrides file like it should be.
 class Resque::Failure::Redis < Resque::Failure::Base
   def save
     data = {
-      :failed_at => failed_at || Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"),
-      :payload   => payload,
-      :error     => exception.to_s,
-      :backtrace => exception.backtrace,
-      :worker    => worker.to_s,
-      :queue     => queue
+        :failed_at => failed_at || Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"),
+        :payload   => payload,
+        :error     => exception.to_s,
+        :backtrace => exception.backtrace,
+        :worker    => worker.to_s,
+        :queue     => queue
     }
     data = Resque.encode(data)
     Resque.redis.rpush(:failed, data)

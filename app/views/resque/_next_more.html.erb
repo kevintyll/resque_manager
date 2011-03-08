@@ -3,7 +3,7 @@
   <% if start - 20 >= 0 %>
     <%= link_to('&laquo; less',:start => start - 20, :class => 'less') %>
   <% end %>
-  <% if start + 20 <= size %>
+  <% if start + 20 < size %>
     <%= link_to('more &raquo;',:start => start + 20, :class => 'more') %>
   <% end %>
 </p>

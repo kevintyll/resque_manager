@@ -92,6 +92,15 @@ module ResqueHelper
     "<p class='poll'>#{text}</p>"
   end
 
+  def status_poll(start)
+    if @polling
+      text = "Last Updated: #{Time.now.strftime("%H:%M:%S")}"
+    else
+      text = link_to('Live Poll', {:action => 'status_poll', :start => start}, :rel => 'poll')
+    end
+    "<p class='poll'>#{text}</p>"
+  end
+
   def resque
     Resque
   end

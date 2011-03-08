@@ -12,12 +12,24 @@ script/plugin install git://github.com/kevintyll/resque_ui.git
 
 Once installed, you now have a resque controller, so you can get to the ui with:  http://your_domain/resque.
 
+If you have your default routes disabled, which you should if you have a RESTful API, then you'll need to add this to
+the top of your routes.rb file.
+
+    # Resque UI
+    map.connect 'resque/:action/:id', :controller => 'resque'
+
+
 Dependencies
 ------------
 
-This plugin requires the resque 1.5 gem and of course the redis gem.
+This plugin requires the resque 1.5 or higher gem and of course the redis gem.
 
     sudo gem install resque
+
+This gem now required the resque-status 0.2.2 or higher gem as well.
+
+    sudo gem install resque-status
+    
 
 Times Fixed
 -----------
@@ -63,17 +75,60 @@ Added the ability to remove jobs, from a queue
 View Processed Job Info
 -----------------------
 
-A new tab has been added that shows custom information about jobs that have run.  You have to set that information yourself by calling:
+Resque_ui now incorporates the resque-status gem and replaced the Processed tab with the Status tab. You can read about
+what you can do with resque-status [here](https://github.com/quirkey/resque-status).
 
-    Resque::Job.process_info!(string)
+I've added some additional functionality to the resque-status gem.  Namely, I've added a Resque::ChainedJobWithStatusClass.
+We process alot of data files.  Each part of the file's process is handled by a different worker.  One worker may convert
+a file into a differnet format, then another will parse that file and peel each record off the file and put each individual
+record on a separate queue.  A separate worker may then do any post processing when the file is complete.
 
-Add this to the end of your perform method with any information you want displayed on the Processed tab in order to keep track of what has already
-been processed.  We use the queues for a lot of different things including sending emails and processing data files.  I don't much care about what
-emails have been sent, but I always want to know what files have been processed.  By adding the above line to my classes that process files, I now
-have insight into what files have been processed.
+I wanted all of that to show under a single status.  So to do that, the very first worker class inherits from
+Resque::JobWithStatus, and everything after that inherits from Resque::ChainedJobWithStatus.  When you call #create on
+the chained job from the preceding job, you just need to pass {'uuid' => uuid} as one of the hash arguments.
 
-I'm only keeping the last 100 records in the list.  I'm doing this so the page can be maintenance free, and I don't need a permanent history, just a
-window to see what's recently been processed.
+    class DataContributionFile < Resque::JobWithStatus
+        @queue = :data_contribution
+
+        def perform
+            ...your code here
+            tick "Retrieving file."
+            ...more code
+            tick "Peeling #{file_path}"
+            SingleRecordLoader.create({'uuid' => uuid, 'row_data' => hash_of_row_data, 'rows_in_file' => total_rows})
+        end
+    end
+
+    class SingleRecordLoader < Resque::ChainedJobWithStatus
+        @queue = :single_record_loader
+
+        def completed(*messages)
+            if counter(:processed) >= options[:rows_in_file].to_i
+            super("#{options[:rows_in_file]} records processed: Started(#{status.time.to_s(:eastern_time_zone_long)}) Finished(#{Time.now.to_s(:eastern_time_zone_long)})")
+            post_process
+        end
+
+        def perform
+            ...your code here
+
+            incr_counter(:processed)
+            at((self.processed), options[:rows_in_file], "#{(self.processed)} of #{options[:rows_in_file]} completed.")
+        end
+    end
+
+So now, the data_contribution worker and the single_record_loader workers will update the same status on the status page.
+You can call tick or set_status to add messages along the way too.
+
+You will want to override the completed method so that it isn't called until the very end of the entire process.
+
+I've also added two more methods, #incr_counter(:counter) and #count(:counter).  We have dozens of single_record_loader 
+workers processing records at a time.  You encounter a race condition when they are all calling #at at the same time to
+update the :num attribute.  So I created these two methods to atomically increment a dedicated counter.  Just call
+#incr_counter and pass in a symbol for what you want to call the counter.  You can create any number of different counters
+for different purposes.  We keep track of different validation issues for each record.  Use #counter and pass is the same
+symbol to read the integer back.  The redis entries created by these methods all get cleaned up with a call to Resque::Status.clear(uuid)
+
+When you kill a job on the UI, it will kill all the workers in the chain.
 
 
 Manage Workers
@@ -108,8 +163,8 @@ The cap tasks included are:
 
 Multi-Threaded Workers
 ---------------------
-With Jruby, you have to specify the amount of memory to allocate when you start up the jvm.  This has proven inefficient for us because we workers
-that require different amounts of memory.  We have standardized out jvm configuration for the workers, which means we have to start each worker with
+With Jruby, you have to specify the amount of memory to allocate when you start up the jvm.  This has proven inefficient for us because different workers
+that require different amounts of memory.  We have standardized our jvm configuration for the workers, which means we have to start each worker with
 the maximum amount of memory needed by the most memory intensive worker.  This means we are wasting a lot of resources for the workers that don't
 require as much memory.
 
@@ -122,7 +177,7 @@ NOTE:  The convention to identify which queues are monitored by which worker is 
 
 This will start up 2 workers, 1 will work the file_loader queue, and one will work the file_loader and email queue.
 
-Be aware that when you stop a worker, it will stop all the worker within that process.
+Be aware that when you stop a worker, it will stop all the workers within that process.
 
 After Deploy Hooks
 ------------------
@@ -147,7 +202,7 @@ Resque Scheduler
 
 If resque-scheduler is installed, the Schedule and Delayed tabs will display.
 
-The Schedule tab functionality has been enhanced to be able to add jobs to the schuduler from the UI.  This means you don't
+The Schedule tab functionality has been enhanced to be able to add jobs to the scheduler from the UI.  This means you don't
 need to edit a static file that gets loaded on initialization.  This also means you don't have to deploy that file every time
 you edit your schedule.
 
@@ -182,12 +237,13 @@ Delayed Tab
 -----------
 
 I have not tested or added any functionality to the Delayed tab.  I get a RuntimeError: -ERR invalid bulk write count
-any time I try to do a Resque.enqueu_at.  I've spent some time researching, and assume it's something with my version combinations.
+any time I try to do a Resque.enqueue_at.  I've spent some time researching, and assume it's something with my version combinations.
 I believe it's a Redis issue and not a Resque-Scheduler issue.  But since I'm not using it, I haven't put a great deal of
 time into resolving it.
 
 Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Ben VandenBos
+Copyright (c) 2010 Aaron Quint
 Copyright (c) 2010 Kevin Tyll, released under the MIT license
 
 Much thanks goes to Brian Ketelsen for the ideas for the improved functionality for the UI.
