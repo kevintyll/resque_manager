@@ -75,6 +75,8 @@ Added the ability to remove jobs, from a queue
 View Processed Job Info
 -----------------------
 
+![Job Status](https://img.skitch.com/20110309-r9mhfgnn8w63ep29sik4c6khcj.png)
+
 Resque_ui now incorporates the resque-status gem and replaced the Processed tab with the Status tab. You can read about
 what you can do with resque-status [here](https://github.com/quirkey/resque-status).
 
