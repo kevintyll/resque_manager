@@ -81,8 +81,8 @@ Resque_ui now incorporates the resque-status gem and replaced the Processed tab 
 what you can do with resque-status [here](https://github.com/quirkey/resque-status).
 
 I've added some additional functionality to the resque-status gem.  Namely, I've added a Resque::ChainedJobWithStatusClass.
-We process alot of data files.  Each part of the file's process is handled by a different worker.  One worker may convert
-a file into a differnet format, then another will parse that file and peel each record off the file and put each individual
+We process a lot of data files.  Each part of the file's process is handled by a different worker.  One worker may convert
+a file into a different format, then another will parse that file and peel each record off the file and put each individual
 record on a separate queue.  A separate worker may then do any post processing when the file is complete.
 
 I wanted all of that to show under a single status.  So to do that, the very first worker class inherits from
