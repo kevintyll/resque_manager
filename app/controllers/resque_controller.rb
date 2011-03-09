@@ -181,6 +181,9 @@ class ResqueController < ApplicationController
     @end      = @start + (params[:per_page] || 20)
     @statuses = Resque::Status.statuses(@start, @end)
     @size     = Resque::Status.status_ids.size
+    if params[:format] == 'js'
+      render :text => @statuses.to_json
+    end
   end
 
   def clear_statuses
@@ -190,6 +193,9 @@ class ResqueController < ApplicationController
 
   def status
     @status = Resque::Status.get(params[:id])
+    if params[:format] == 'js'
+      render :text => @status.to_json
+    end
   end
 
   def kill

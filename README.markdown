@@ -29,7 +29,7 @@ This plugin requires the resque 1.5 or higher gem and of course the redis gem.
 This gem now required the resque-status 0.2.2 or higher gem as well.
 
     sudo gem install resque-status
-    
+
 
 Times Fixed
 -----------
@@ -121,14 +121,29 @@ You can call tick or set_status to add messages along the way too.
 
 You will want to override the completed method so that it isn't called until the very end of the entire process.
 
-I've also added two more methods, #incr_counter(:counter) and #count(:counter).  We have dozens of single_record_loader 
+I've also added two more methods, #incr_counter(:counter) and #count(:counter).  We have dozens of single_record_loader
 workers processing records at a time.  You encounter a race condition when they are all calling #at at the same time to
-update the :num attribute.  So I created these two methods to atomically increment a dedicated counter.  Just call
-#incr_counter and pass in a symbol for what you want to call the counter.  You can create any number of different counters
+update the :num attribute.  So I created these two methods to atomically increment a dedicated counter.  Just call #incr_counter
+and pass in a symbol for what you want to call the counter.  You can create any number of different counters
 for different purposes.  We keep track of different validation issues for each record.  Use #counter and pass is the same
 symbol to read the integer back.  The redis entries created by these methods all get cleaned up with a call to Resque::Status.clear(uuid)
 
 When you kill a job on the UI, it will kill all the workers in the chain.
+
+Throttle a Queue
+----------------
+
+A throttle method has been added.  This is useful if you have a queue that tends to have very high volume, for example,
+the queue that process all the individual records of a file.  You don't want to load that queue up with 1 million entries,
+possibly blowing out the memory of your Redis server.
+
+    FasterCSV.foreach(self.file_path, :headers => true, :quote_char => '"') do |row|
+        Resque.throttle(:single_record_loader, 10000, 30)
+        SingleRecordLoader.create({'uuid' => uuid, 'row_data' => row.to_hash, 'rows_in_file' => total_rows})
+    end
+
+Putting the throttle before enqueing the SingleRecordLoader will check the single_record_loader queue to make sure it has
+less than 10000 entries in it before proceeding.  If is has 10000 or more entries, it will sleep for 30 seconds before checking again.
 
 
 Manage Workers
