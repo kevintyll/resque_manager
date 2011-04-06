@@ -22,11 +22,13 @@ the top of your routes.rb file.
 Dependencies
 ------------
 
-This plugin requires the resque 1.5 or higher gem and of course the redis gem.
+This plugin now requires redis 2.1.3 or greater for the expiration of keys to work correctly.
+
+This plugin requires the resque 1.5 or higher gem.
 
     sudo gem install resque
 
-This gem now required the resque-status 0.2.2 or higher gem as well.
+This plugin now requires the resque-status 0.2.2 or higher gem as well.
 
     sudo gem install resque-status
 
