@@ -125,15 +125,11 @@ module Resque
 
     def self.incr_counter(counter, uuid)
       key = counter_key(counter, uuid)
-      redis.watch key
-      saved = redis.multi do
-        redis.incr(key)
-        if expire_in
-          redis.expire(key, expire_in)
-        end
+      n = redis.incr(key)
+      if expire_in
+        redis.expire(key, expire_in)
       end
-      incr_counter(counter, uuid) unless saved
-      saved.first
+      n
     end
   end
 end
