@@ -14,7 +14,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       hosts                     = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
       queue                     = ENV['queue'] || '*'
       rake                      = fetch(:rake, "rake")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} QUEUE=#{queue} resque:work", :hosts => hosts)
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} QUEUE=#{queue} resque:work >> log/resque_worker.log 2>&1", :hosts => hosts)
     end
 
     desc "Gracefully kill a worker.  If the worker is working, it will finish before shutting down. arg: host=ip pid=pid"
@@ -58,7 +58,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       queue                     = ENV['queue'] || '*'
       count                     = ENV['count'] || '1'
       rake                      = fetch(:rake, "rake")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} COUNT=#{count} QUEUE=#{queue} resque:work", :hosts => hosts)
+      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} COUNT=#{count} QUEUE=#{queue} resque:work >> log/resque_worker.log 2>&1", :hosts => hosts)
     end
 
     desc "Restart all workers on all servers"
