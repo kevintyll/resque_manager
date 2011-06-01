@@ -143,7 +143,7 @@ class ResqueController < ApplicationController
       config = {params['name'] => {'class'       => params['class'],
                                    'ip'          => params['ip'],
                                    'cron'        => params['cron'],
-                                   'args'        => Resque.decode(params['args']),
+                                   'args'        => Resque.decode(params['args'].blank? ? nil : params['args']),
                                    'description' => params['description']}
       }
       Resque.redis.rpush(:scheduled, Resque.encode(config))
