@@ -40,7 +40,7 @@ module ResqueHelper
 
   def tab(name)
     dname = "resque/#{name.to_s.downcase}"
-    "<li #{class_if_current(dname)}>#{link_to(name, url(dname))}</li>"
+    "<li #{class_if_current(dname)}>#{link_to(name, url(dname))}</li>".html_safe
   end
 
   def find_worker(worker)
@@ -89,7 +89,7 @@ module ResqueHelper
     else
       text = link_to('Live Poll', {:action => 'poll', :page => current_section}, :rel => 'poll')
     end
-    "<p class='poll'>#{text}</p>"
+    "<p class='poll'>#{text}</p>".html_safe
   end
 
   def status_poll(start)
@@ -98,7 +98,7 @@ module ResqueHelper
     else
       text = link_to('Live Poll', {:action => 'status_poll', :start => start}, :rel => 'poll')
     end
-    "<p class='poll'>#{text}</p>"
+    "<p class='poll'>#{text}</p>".html_safe
   end
 
   def resque

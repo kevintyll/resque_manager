@@ -13,6 +13,10 @@ namespace :resque do
     mworker.verbose         = true #ENV['LOGGING'] || ENV['VERBOSE']
     mworker.very_verbose    = true #ENV['VVERBOSE']
 
+    if ENV['PIDFILE']
+      File.open(ENV['PIDFILE'], 'w') { |f| f << mworker.pid }
+    end
+
     queues.each do |queue|
       threads << Thread.new do
         begin
@@ -34,6 +38,7 @@ namespace :resque do
       end
     end
     threads.each { |thread| thread.join(0.5) }
+    mworker.work(ENV['INTERVAL'] || 5) # interval, will block
   end
 
   desc "Restart all the workers"
@@ -70,19 +75,6 @@ namespace :resque do
         pid = worker.pid
       end
     end
-  end
-
-  desc "Kill the scheduler pid"
-  task :quit_scheduler => :setup do
-    require 'resque_scheduler'
-    ResqueScheduler.pids.each do |pid|
-      `kill -TERM #{pid}`
-    end
-  end
-
-  desc "Requeue all failed jobs in a class.  If no class is given, all failed jobs will be requeued. ex: rake resque:requeue class=class_name"
-  task :requeue => :setup do
-    Resque::Failure.requeue ENV['class']
   end
 
 end

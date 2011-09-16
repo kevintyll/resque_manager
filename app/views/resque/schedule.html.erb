@@ -44,7 +44,7 @@
       <%= javascript_tag "$('flash').show();" %>
     <% end %>
   </div>
-  <% form_tag :url => {:controller => 'resque', :action => 'add_scheduled_job'} do -%>
+  <%= form_tag '/resque/add_scheduled_job' do -%>
     <table>
       <tr>
         <th>Name</th>

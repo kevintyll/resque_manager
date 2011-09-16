@@ -29,7 +29,7 @@
         <div class="progress-bar" style="width:<%= status.pct_complete %>%">&nbsp;</div>
         <div class="progress-pct"><%= status.pct_complete ? "#{status.pct_complete}%" : '' %></div>
       </td>
-      <td><%= status.message %></td>
+      <td><%= status.message.html_safe %></td>
       <td><% if status.killable? %><%= link_to('Kill', {:action => :kill, :id => status.uuid}, :class => 'kill') %><% end %></td>
     </tr>
     <% end %>
@@ -53,7 +53,7 @@
       e.preventDefault();
       var $link = $(this),
           url = $link.attr('href'),
-          confirmed = confirm("Are you sure you want to kill this job? There is no undo.");
+          confirmed = confirm("Are you sure you want to kill this job? There is only do or do not.  There is no undo.");
       if (confirmed) {
         $link.animate({opacity: 0.5});
         $.ajax({

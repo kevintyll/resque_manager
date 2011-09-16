@@ -1,14 +1,18 @@
 ResqueUi
 --------
 
-Resque UI is a Rails plugin port of the Sinatra app that is included in Chris Wanstrath's resque gem.  We love the gem and love the UI,
+Resque UI is a Rails engine port of the Sinatra app that is included in Chris Wanstrath's resque gem.  We love the gem and love the UI,
 but just didn't want to add Sinatra to our stack and wanted to be able to manage the queues from the UI.
 
 
 Installation
 ------------
 
-script/plugin install git://github.com/kevintyll/resque_ui.git
+    sudo gem install resque_ui
+
+Or just add it to your Gemfile
+
+    gem 'resque_ui'
 
 Once installed, you now have a resque controller, so you can get to the ui with:  http://your_domain/resque.
 
@@ -22,15 +26,15 @@ the top of your routes.rb file.
 Dependencies
 ------------
 
-This plugin now requires redis 2.1.3 or greater for the expiration of keys to work correctly.
+This engine now requires rails 3.0.0 or greater.
 
-This plugin requires the resque 1.5 or higher gem.
+This engine now requires redis 2.1.3 or greater for the expiration of keys to work correctly.
 
-    sudo gem install resque
+This engine requires the resque 1.5 or higher gem.
 
-This plugin now requires the resque-status 0.2.2 or higher gem as well.
+This engine now requires the resque-status 0.2.2 or higher gem as well.
 
-    sudo gem install resque-status
+These gems will all be installed for automatically when you install resque_ui.
 
 
 Times Fixed
@@ -161,7 +165,7 @@ deployed servers.
 
 The controller calls cap tasks to manage the workers.  To include the recipes in your application, add this line to your deploy.rb file:
 
-    require File.dirname(__FILE__) + '/../vendor/plugins/resque_ui/lib/resque_ui/cap_recipes'
+    require File.dirname(__FILE__) + '/../vendor/engines/resque_ui/lib/resque_ui/cap_recipes'
 
 You will also need to make sure you have your rake path set in the deploy.rb file.
 
@@ -183,7 +187,7 @@ The cap tasks included are:
 Multi-Threaded Workers
 ---------------------
 With Jruby, you have to specify the amount of memory to allocate when you start up the jvm.  This has proven inefficient for us because different workers
-that require different amounts of memory.  We have standardized our jvm configuration for the workers, which means we have to start each worker with
+require different amounts of memory.  We have standardized our jvm configuration for the workers, which means we have to start each worker with
 the maximum amount of memory needed by the most memory intensive worker.  This means we are wasting a lot of resources for the workers that don't
 require as much memory.
 
@@ -220,6 +224,11 @@ Resque Scheduler
 ----------------
 
 If resque-scheduler is installed, the Schedule and Delayed tabs will display.
+
+Be sure you add the resque_scheduler gem before the resque_ui gem in your Gemfile:
+
+    gem 'resque-scheduler', :require => 'resque_scheduler'
+    gem 'resque_ui'
 
 The Schedule tab functionality has been enhanced to be able to add jobs to the scheduler from the UI.  This means you don't
 need to edit a static file that gets loaded on initialization.  This also means you don't have to deploy that file every time
@@ -264,5 +273,7 @@ Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Ben VandenBos
 Copyright (c) 2010 Aaron Quint
 Copyright (c) 2010 Kevin Tyll, released under the MIT license
+
+Thanks to Karl Baum for doing the original heavy lifting for converting this to a rails engine for rails 3.
 
 Much thanks goes to Brian Ketelsen for the ideas for the improved functionality for the UI.

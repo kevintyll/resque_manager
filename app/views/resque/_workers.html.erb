@@ -21,8 +21,8 @@
       <td><%= host %></td>
       <td><%= pid %></td>
       <td><%= thread %></td>
-      <td><span class="time"><%= format_time(Time.zone.parse(worker.started)) %></a></td>
-      <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('') %></td>
+      <td><span class="time"><%= format_time(Time.zone.parse(worker.started)) %></span></td>
+      <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('').html_safe %></td>
       <td><%= worker.processed %></td>
       <td><%= worker.failed %></td>
       <td class='process'>
@@ -62,7 +62,7 @@
 
         <% host, pid, thread, queues = worker.to_s.split(':') %>
         <td class='where'><%=link_to("#{host}:#{pid}:#{thread}",:action => 'workers', :id => worker.to_s.gsub(/\./,'_'))%></td>
-        <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('') %></td>
+        <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag')}.join('').html_safe %></td>
 
         <td class='process'>
           <% data = worker.processing || {} %>
@@ -94,7 +94,7 @@
   <br/>
   <hr />
   <h1 class='wi'>Start New Workers</h1>
-  <% form_tag :action =>  'start_worker' do -%>
+  <%= form_tag :action =>  'start_worker' do -%>
     <ul class='new_worker'>
       <li>
         <dl>
@@ -102,7 +102,7 @@
           <dd><%=text_field_tag :queues, nil, :size => 125 %><br/>  Prefix each worker with a '#', comma separate the list of queues you want each worker to monitor.  No Spaces. #queue1,queue2#queue3#queue2 will produce 3 workers in 3 threads.</dd>
           <dt>Host(s)/IP(s)</dt>
           <dd><%=text_field_tag :hosts, nil, :size => 125 %><br/>  Comma separate the IP address of the servers where you want your worker to run.</dd>
-          <dt><%= submit_tag "Start" %></dt>
+          <dt><%= submit_tag "Start", :id => "submit" %></dt>
         </dl>
       </li>
     </ul>

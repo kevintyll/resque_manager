@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Resque::Worker</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../lib/resque_ui/overrides/resque/worker_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/resque_ui/overrides/resque/worker.rb">lib/resque_ui/overrides/resque/worker.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link">Object</p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-start">::start</a></li>
+          
+          <li><a href="#method-c-working">::working</a></li>
+          
+          <li><a href="#method-i-all_workers_in_pid_working">#all_workers_in_pid_working</a></li>
+          
+          <li><a href="#method-i-id">#id</a></li>
+          
+          <li><a href="#method-i-ip">#ip</a></li>
+          
+          <li><a href="#method-i-local_ip">#local_ip</a></li>
+          
+          <li><a href="#method-i-pid">#pid</a></li>
+          
+          <li><a href="#method-i-prune_dead_workers">#prune_dead_workers</a></li>
+          
+          <li><a href="#method-i-queue">#queue</a></li>
+          
+          <li><a href="#method-i-queues">#queues</a></li>
+          
+          <li><a href="#method-i-queues_in_pid">#queues_in_pid</a></li>
+          
+          <li><a href="#method-i-quit">#quit</a></li>
+          
+          <li><a href="#method-i-register_signal_handlers">#register_signal_handlers</a></li>
+          
+          <li><a href="#method-i-restart">#restart</a></li>
+          
+          <li><a href="#method-i-shutdown">#shutdown</a></li>
+          
+          <li><a href="#method-i-startup">#startup</a></li>
+          
+          <li><a href="#method-i-status">#status</a></li>
+          
+          <li><a href="#method-i-status-3D">#status=</a></li>
+          
+          <li><a href="#method-i-thread">#thread</a></li>
+          
+          <li><a href="#method-i-to_s">#to_s</a></li>
+          
+          <li><a href="#method-i-work">#work</a></li>
+          
+          <li><a href="#method-i-worker_pids">#worker_pids</a></li>
+          
+          <li><a href="#method-i-workers_in_pid">#workers_in_pid</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Resque.html">Resque</a></li>
+        
+          <li><a href="../Resque/ChainedJobWithStatus.html">Resque::ChainedJobWithStatus</a></li>
+        
+          <li><a href="../Resque/Failure.html">Resque::Failure</a></li>
+        
+          <li><a href="../Resque/Job.html">Resque::Job</a></li>
+        
+          <li><a href="../Resque/JobWithStatus.html">Resque::JobWithStatus</a></li>
+        
+          <li><a href="../Resque/Status.html">Resque::Status</a></li>
+        
+          <li><a href="../Resque/Worker.html">Resque::Worker</a></li>
+        
+          <li><a href="../ResqueUi.html">ResqueUi</a></li>
+        
+          <li><a href="../ResqueUi/Cap.html">ResqueUi::Cap</a></li>
+        
+          <li><a href="../ResqueUi/Engine.html">ResqueUi::Engine</a></li>
+        
+          <li><a href="../ResqueScheduler.html">ResqueScheduler</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Resque::Worker</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="start-method" class="method-detail ">
+          <a name="method-c-start"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">start</span><span
+              class="method-args">(ips, queues)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="start-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 207</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">ips</span>, <span class="ruby-identifier">queues</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;rake QUEUE=#{queue} resque:work&quot;</span>) }
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">queues</span>, <span class="ruby-identifier">ips</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">queue</span>, <span class="ruby-identifier">ip_list</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:work host=#{ip_list} queue=#{queue}&quot;</span>) }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- start-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- start-method -->
+
+      
+        <div id="working-method" class="method-detail ">
+          <a name="method-c-working"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">working</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>logic for mappged_mget changed where it returns keys with nil values in
+latest redis gem.</p>
+            
+
+            
+            <div class="method-source-code" id="working-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 181</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">working</span>
+  <span class="ruby-identifier">names</span> = <span class="ruby-identifier">all</span>
+  <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">any?</span>
+  <span class="ruby-identifier">names</span>.<span class="ruby-identifier">map!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;worker:#{name}&quot;</span> }
+  <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">mapped_mget</span>(*<span class="ruby-identifier">names</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">find</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-string">&quot;worker:&quot;</span>, <span class="ruby-string">''</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">compact</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- working-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- working-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="all_workers_in_pid_working-method" class="method-detail ">
+          <a name="method-i-all_workers_in_pid_working"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">all_workers_in_pid_working</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="all_workers_in_pid_working-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">all_workers_in_pid_working</span>
+  <span class="ruby-identifier">workers_in_pid</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span> (<span class="ruby-identifier">hash</span> = <span class="ruby-identifier">w</span>.<span class="ruby-identifier">processing</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">hash</span>.<span class="ruby-identifier">empty?</span> }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- all_workers_in_pid_working-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- all_workers_in_pid_working-method -->
+
+      
+        <div id="id-method" class="method-detail method-alias">
+          <a name="method-i-id"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">id</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+          </div>
+
+          
+
+          
+          <div class="aliases">
+            Alias for: <a href="Worker.html#method-i-to_s">to_s</a>
+          </div>
+          
+        </div><!-- id-method -->
+
+      
+        <div id="ip-method" class="method-detail ">
+          <a name="method-i-ip"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">ip</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="ip-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ip</span>
+  <span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">':'</span>).<span class="ruby-identifier">first</span>[<span class="ruby-regexp">/\b(?:\d{1,3}\.){3}\d{1,3}\b/</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- ip-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- ip-method -->
+
+      
+        <div id="local_ip-method" class="method-detail ">
+          <a name="method-i-local_ip"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">local_ip</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="local_ip-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">local_ip</span>
+  <span class="ruby-identifier">orig</span>, <span class="ruby-constant">Socket</span>.<span class="ruby-identifier">do_not_reverse_lookup</span> = <span class="ruby-constant">Socket</span>.<span class="ruby-identifier">do_not_reverse_lookup</span>, <span class="ruby-keyword">true</span> <span class="ruby-comment"># turn off reverse DNS resolution temporarily</span>
+
+  <span class="ruby-constant">UDPSocket</span>.<span class="ruby-identifier">open</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">s</span>.<span class="ruby-identifier">connect</span> <span class="ruby-string">'64.233.187.99'</span>, <span class="ruby-value">1</span>
+    <span class="ruby-identifier">s</span>.<span class="ruby-identifier">addr</span>.<span class="ruby-identifier">last</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">ensure</span>
+  <span class="ruby-constant">Socket</span>.<span class="ruby-identifier">do_not_reverse_lookup</span> = <span class="ruby-identifier">orig</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- local_ip-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- local_ip-method -->
+
+      
+        <div id="pid-method" class="method-detail ">
+          <a name="method-i-pid"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">pid</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="pid-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pid</span>
+  <span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">':'</span>).<span class="ruby-identifier">second</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- pid-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- pid-method -->
+
+      
+        <div id="prune_dead_workers-method" class="method-detail ">
+          <a name="method-i-prune_dead_workers"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">prune_dead_workers</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Looks for any workers which should be running on this server and, if
+they’re not, removes them from Redis.</p>
+
+<p>This is a form of garbage collection. If a server is killed by a hard
+shutdown, power failure, or something else beyond our control, the <a
+href="../Resque.html">Resque</a> workers will not die gracefully and
+therefor will leave stale state information in Redis.</p>
+
+<p>By checking the current Redis state against the actual environment, we can
+determine if Redis is old and clean it up a bit.</p>
+            
+
+            
+            <div class="method-source-code" id="prune_dead_workers-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">prune_dead_workers</span>
+  <span class="ruby-constant">Worker</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">worker</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">host</span>, <span class="ruby-identifier">pid</span>, <span class="ruby-identifier">thread</span>, <span class="ruby-identifier">queues</span> = <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">':'</span>)
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">host</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">hostname</span>)
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">worker_pids</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">pid</span>)
+    <span class="ruby-identifier">log!</span> <span class="ruby-node">&quot;Pruning dead worker: #{worker}&quot;</span>
+    <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">unregister_worker</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- prune_dead_workers-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- prune_dead_workers-method -->
+
+      
+        <div id="queue-method" class="method-detail ">
+          <a name="method-i-queue"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">queue</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="queue-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">queue</span>
+  <span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">':'</span>).<span class="ruby-identifier">last</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- queue-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- queue-method -->
+
+      
+        <div id="queues-method" class="method-detail ">
+          <a name="method-i-queues"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">queues</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>OVERRIDE for multithreaded workers</p>
+            
+
+            
+            <div class="method-source-code" id="queues-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">queues</span>
+  <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>[<span class="ruby-value">:queues</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;*&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">queues</span>.<span class="ruby-identifier">sort</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>[<span class="ruby-value">:queues</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">','</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- queues-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- queues-method -->
+
+      
+        <div id="queues_in_pid-method" class="method-detail ">
+          <a name="method-i-queues_in_pid"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">queues_in_pid</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="queues_in_pid-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">queues_in_pid</span>
+  <span class="ruby-identifier">workers_in_pid</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">queue</span> }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- queues_in_pid-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- queues_in_pid-method -->
+
+      
+        <div id="quit-method" class="method-detail ">
+          <a name="method-i-quit"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">quit</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="quit-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 215</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">quit</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -INT  #{self.pid}&quot;</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- quit-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- quit-method -->
+
+      
+        <div id="register_signal_handlers-method" class="method-detail ">
+          <a name="method-i-register_signal_handlers"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">register_signal_handlers</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Jruby won’t allow you to trap the QUIT signal, so we’re changing the
+INT signal to replace it for Jruby.</p>
+            
+
+            
+            <div class="method-source-code" id="register_signal_handlers-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_signal_handlers</span>
+  <span class="ruby-identifier">trap</span>(<span class="ruby-string">'TERM'</span>) { <span class="ruby-identifier">shutdown!</span> }
+  <span class="ruby-identifier">trap</span>(<span class="ruby-string">'INT'</span>) { <span class="ruby-identifier">shutdown</span> }
+
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'QUIT'</span>) { <span class="ruby-identifier">shutdown</span> }
+    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal QUIT not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
+    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'USR1'</span>) { <span class="ruby-identifier">kill_child</span> }
+    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal USR1 not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
+    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'USR2'</span>) { <span class="ruby-identifier">pause_processing</span> }
+    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal USR2 not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
+    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'CONT'</span>) { <span class="ruby-identifier">unpause_processing</span> }
+    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal CONT not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
+    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signals QUIT, USR1, USR2, and/or CONT not supported.&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- register_signal_handlers-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- register_signal_handlers-method -->
+
+      
+        <div id="restart-method" class="method-detail ">
+          <a name="method-i-restart"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">restart</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="restart-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 223</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">restart</span>
+  <span class="ruby-identifier">queues</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">queues_in_pid</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">'#'</span>)
+  <span class="ruby-identifier">quit</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">start</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">ip</span>, <span class="ruby-identifier">queues</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- restart-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- restart-method -->
+
+      
+        <div id="shutdown-method" class="method-detail ">
+          <a name="method-i-shutdown"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">shutdown</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Schedule this worker for shutdown. Will finish processing the
+current job.</pre>
+
+<p>OVERRIDE for multithreaded workers</p>
+            
+
+            
+            <div class="method-source-code" id="shutdown-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">shutdown</span>
+  <span class="ruby-identifier">log</span> <span class="ruby-string">'Exiting...'</span>
+  <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">list</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>[<span class="ruby-value">:shutdown</span>] = <span class="ruby-keyword">true</span> }
+  <span class="ruby-ivar">@shutdown</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- shutdown-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- shutdown-method -->
+
+      
+        <div id="startup-method" class="method-detail ">
+          <a name="method-i-startup"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">startup</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Runs all the methods needed when a worker begins its lifecycle.</pre>
+
+<p>OVERRIDE for multithreaded workers</p>
+            
+
+            
+            <div class="method-source-code" id="startup-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">startup</span>
+  <span class="ruby-identifier">enable_gc_optimizations</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">main</span>
+    <span class="ruby-identifier">register_signal_handlers</span>
+    <span class="ruby-identifier">prune_dead_workers</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">run_hook</span> <span class="ruby-value">:before_first_fork</span>
+  <span class="ruby-identifier">register_worker</span>
+
+  <span class="ruby-comment"># Fix buffering so we can `rake resque:work &gt; resque.log` and</span>
+  <span class="ruby-comment"># get output from the child in there.</span>
+  <span class="ruby-identifier">$stdout</span>.<span class="ruby-identifier">sync</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- startup-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- startup-method -->
+
+      
+        <div id="status-method" class="method-detail ">
+          <a name="method-i-status"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">status</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="status-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 203</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">status</span>
+  <span class="ruby-identifier">job</span>[<span class="ruby-string">'status'</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- status-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- status-method -->
+
+      
+        <div id="status-3D-method" class="method-detail ">
+          <a name="method-i-status-3D"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">status=</span><span
+              class="method-args">(status)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="status-3D-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 198</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">status=</span>(<span class="ruby-identifier">status</span>)
+  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">encode</span>(<span class="ruby-identifier">job</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-string">'status'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">status</span>))
+  <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">set</span>(<span class="ruby-node">&quot;worker:#{self}&quot;</span>, <span class="ruby-identifier">data</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- status-3D-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- status-3D-method -->
+
+      
+        <div id="thread-method" class="method-detail ">
+          <a name="method-i-thread"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">thread</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="thread-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">thread</span>
+  <span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">':'</span>).<span class="ruby-identifier">third</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- thread-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- thread-method -->
+
+      
+        <div id="to_s-method" class="method-detail ">
+          <a name="method-i-to_s"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_s</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>The string representation is the same as the id for this worker instance.
+Can be used with `Worker.find`.</p>
+            
+
+            
+            <div class="method-source-code" id="to_s-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
+  <span class="ruby-ivar">@to_s</span> <span class="ruby-operator">||</span> <span class="ruby-node">&quot;#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:queues]}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_s-source -->
+            
+          </div>
+
+          
+          <div class="aliases">
+            Also aliased as: <a href="Worker.html#method-i-id">id</a>
+          </div>
+          
+
+          
+        </div><!-- to_s-method -->
+
+      
+        <div id="work-method" class="method-detail ">
+          <a name="method-i-work"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">work</span><span
+              class="method-args">(interval = 5, &block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>This is the main workhorse method. Called on a Worker instance,
+it begins the worker life cycle.
+
+The following events occur during a worker's life cycle:
+
+1. Startup:   Signals are registered, dead workers are pruned,
+              and this worker is registered.
+2. Work loop: Jobs are pulled from a queue and processed.
+3. Teardown:  This worker is unregistered.
+
+Can be passed an integer representing the polling frequency.
+The default is 5 seconds, but for a semi-active site you may
+want to use a smaller value.
+
+Also accepts a block which will be passed the job as soon as it
+has completed processing. Useful for testing.</pre>
+
+<p>OVERRIDE for multithreaded workers</p>
+            
+
+            
+            <div class="method-source-code" id="work-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 139</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">work</span>(<span class="ruby-identifier">interval</span> = <span class="ruby-value">5</span>, &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">$0</span> = <span class="ruby-string">&quot;resque: Starting&quot;</span>
+  <span class="ruby-identifier">startup</span>
+
+  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@shutdown</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>[<span class="ruby-value">:shutdown</span>]
+
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@paused</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">job</span> = <span class="ruby-identifier">reserve</span>
+      <span class="ruby-identifier">log</span> <span class="ruby-node">&quot;got: #{job.inspect}&quot;</span>
+      <span class="ruby-identifier">run_hook</span> <span class="ruby-value">:before_fork</span>
+      <span class="ruby-identifier">working_on</span> <span class="ruby-identifier">job</span>
+
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@child</span> = <span class="ruby-identifier">fork</span>
+        <span class="ruby-identifier">rand</span> <span class="ruby-comment"># Reseeding</span>
+        <span class="ruby-identifier">procline</span> <span class="ruby-node">&quot;Forked #{@child} at #{Time.now.to_i}&quot;</span>
+        <span class="ruby-constant">Process</span>.<span class="ruby-identifier">wait</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">procline</span> <span class="ruby-node">&quot;Processing #{job.queue} since #{Time.now.to_i}&quot;</span>
+        <span class="ruby-identifier">perform</span>(<span class="ruby-identifier">job</span>, &amp;<span class="ruby-identifier">block</span>)
+        <span class="ruby-identifier">exit!</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@cant_fork</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-identifier">done_working</span>
+      <span class="ruby-ivar">@child</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">interval</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      <span class="ruby-identifier">log!</span> <span class="ruby-node">&quot;Sleeping for #{interval.to_i}&quot;</span>
+      <span class="ruby-identifier">procline</span> <span class="ruby-ivar">@paused</span> <span class="ruby-operator">?</span> <span class="ruby-string">&quot;Paused&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;Waiting for #{@queues.join(',')}&quot;</span>
+      <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">interval</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">unregister_worker</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-comment">#hang onto the process until all threads are done</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">all_workers_in_pid_working</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">interval</span>.<span class="ruby-identifier">to_i</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">ensure</span>
+  <span class="ruby-identifier">unregister_worker</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- work-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- work-method -->
+
+      
+        <div id="worker_pids-method" class="method-detail ">
+          <a name="method-i-worker_pids"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">worker_pids</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns an array of string pids of all the other workers on this machine.
+Useful when pruning dead workers on startup.</p>
+            
+
+            
+            <div class="method-source-code" id="worker_pids-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 192</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">worker_pids</span>
+  <span class="ruby-value">`ps -A -o pid,command | grep [r]esque`</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\n&quot;</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">' '</span>)[<span class="ruby-value">0</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- worker_pids-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- worker_pids-method -->
+
+      
+        <div id="workers_in_pid-method" class="method-detail ">
+          <a name="method-i-workers_in_pid"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">workers_in_pid</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="workers_in_pid-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">workers_in_pid</span>
+  <span class="ruby-constant">Array</span>(<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">smembers</span>(<span class="ruby-value">:workers</span>)).<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-identifier">id</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/\(#{ip}\):#{pid}/</span> }.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Worker</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>) }.<span class="ruby-identifier">compact</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- workers_in_pid-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- workers_in_pid-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

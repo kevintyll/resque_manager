@@ -15,18 +15,18 @@ module ResqueScheduler
   end
 
   def self.start(ips)
-    if RAILS_ENV =~ /development|test/
+    if Rails.env =~ /development|test/
       Thread.new{system("rake resque:scheduler")}
     else
-      Thread.new(ips){|ip_list|system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:scheduler host=#{ip_list}")}
+      Thread.new(ips){|ip_list|system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:scheduler host=#{ip_list}")}
     end
   end
 
   def self.quit(ips)
-    if RAILS_ENV =~ /development|test/
+    if Rails.env =~ /development|test/
       system("rake resque:quit_scheduler")
     else
-      system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_scheduler host=#{ips}")
+      system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:quit_scheduler host=#{ips}")
     end
   end
 
@@ -37,11 +37,11 @@ module ResqueScheduler
 
   def self.farm_status
     status = {}
-    if RAILS_ENV =~ /development|test/
+    if Rails.env =~ /development|test/
       status['localhost'] = pids.present? ? 'Running' : 'Stopped'
     else
       Resque.schedule.values.collect{|job| job['ip']}.each do |ip|
-        cap = `cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:scheduler_status hosts=#{ip}`
+        cap = `cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:scheduler_status hosts=#{ip}`
         status[ip] = cap =~ /resque:scheduler is up/ ? 'Running' : 'Stopped'
       end
     end

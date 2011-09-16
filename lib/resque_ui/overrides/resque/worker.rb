@@ -1,14 +1,6 @@
 require 'socket'
 
 module Resque
-
-  def self.throttle(queue, limit = 10000, sleep_for = 60)
-    loop do
-      break if Resque.size(queue.to_s) < limit
-      sleep sleep_for
-    end
-  end
-
   class Worker
 
     def local_ip
@@ -213,18 +205,18 @@ module Resque
     end
 
     def self.start(ips, queues)
-      if RAILS_ENV =~ /development|test/
+      if Rails.env =~ /development|test/
         Thread.new(queues) { |queue| system("rake QUEUE=#{queue} resque:work") }
       else
-        Thread.new(queues, ips) { |queue, ip_list| system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:work host=#{ip_list} queue=#{queue}") }
+        Thread.new(queues, ips) { |queue, ip_list| system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:work host=#{ip_list} queue=#{queue}") }
       end
     end
 
     def quit
-      if RAILS_ENV =~ /development|test/
+      if Rails.env =~ /development|test/
         system("kill -INT  #{self.pid}")
       else
-        system("cd #{RAILS_ROOT}; #{ResqueUi::Cap.path} #{RAILS_ENV} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
+        system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
       end
     end
 
@@ -232,65 +224,6 @@ module Resque
       queues = self.queues_in_pid.join('#')
       quit
       self.class.start(self.ip, queues)
-    end
-
-  end
-
-
-  class Job
-    # Attempts to perform the work represented by this job instance.
-    # Calls #perform on the class given in the payload with the
-    # arguments given in the payload.
-    # The worker is passed in so the status can be set for the UI to display.
-    def perform
-      args ? payload_class.perform(*args) { |status| self.worker.status = status } : payload_class.perform { |status| self.worker.status = status }
-    end
-
-  end
-
-  Resque::Server.tabs << 'Statuses'
-
-  module Failure
-
-    # Creates a new failure, which is delegated to the appropriate backend.
-    #
-    # Expects a hash with the following keys:
-    #   :exception - The Exception object
-    #   :worker    - The Worker object who is reporting the failure
-    #   :queue     - The string name of the queue from which the job was pulled
-    #   :payload   - The job's payload
-    #   :failed_at - When the job originally failed.  Used when clearing a single failure  <<Optional>>
-    def self.create(options = {})
-      backend.new(*options.values_at(:exception, :worker, :queue, :payload, :failed_at)).save
-    end
-
-    # Requeues all failed jobs of a given class
-    def self.requeue(failed_class)
-      length = Resque.redis.llen(:failed)
-      i = 0
-      length.times do
-        f = Resque.list_range(:failed, i, 1)
-        if failed_class.blank? || (f["payload"]["class"] == failed_class)
-          Resque.redis.lrem(:failed, 0, f.to_json)
-          args = f["payload"]["args"]
-          Resque.enqueue(eval(f["payload"]["class"]), *args)
-        else
-          i += 1
-        end
-      end
-    end
-
-    class Base
-      #When the job originally failed.  Used when clearing a single failure
-      attr_accessor :failed_at
-
-      def initialize(exception, worker, queue, payload, failed_at = nil)
-        @exception = exception
-        @worker    = worker
-        @queue     = queue
-        @payload   = payload
-        @failed_at = failed_at
-      end
     end
 
   end

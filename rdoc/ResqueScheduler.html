@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Module: ResqueScheduler</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="module">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./lib/resque_ui/overrides/resque_scheduler/resque_scheduler_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb">lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-farm_status">::farm_status</a></li>
+          
+          <li><a href="#method-c-pids">::pids</a></li>
+          
+          <li><a href="#method-c-quit">::quit</a></li>
+          
+          <li><a href="#method-c-restart">::restart</a></li>
+          
+          <li><a href="#method-c-start">::start</a></li>
+          
+          <li><a href="#method-i-schedule">#schedule</a></li>
+          
+          <li><a href="#method-i-schedule-3D">#schedule=</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Resque.html">Resque</a></li>
+        
+          <li><a href="./Resque/ChainedJobWithStatus.html">Resque::ChainedJobWithStatus</a></li>
+        
+          <li><a href="./Resque/Failure.html">Resque::Failure</a></li>
+        
+          <li><a href="./Resque/Job.html">Resque::Job</a></li>
+        
+          <li><a href="./Resque/JobWithStatus.html">Resque::JobWithStatus</a></li>
+        
+          <li><a href="./Resque/Status.html">Resque::Status</a></li>
+        
+          <li><a href="./Resque/Worker.html">Resque::Worker</a></li>
+        
+          <li><a href="./ResqueUi.html">ResqueUi</a></li>
+        
+          <li><a href="./ResqueUi/Cap.html">ResqueUi::Cap</a></li>
+        
+          <li><a href="./ResqueUi/Engine.html">ResqueUi::Engine</a></li>
+        
+          <li><a href="./ResqueScheduler.html">ResqueScheduler</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="module">ResqueScheduler</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="farm_status-method" class="method-detail ">
+          <a name="method-c-farm_status"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">farm_status</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="farm_status-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">farm_status</span>
+  <span class="ruby-identifier">status</span> = {}
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
+    <span class="ruby-identifier">status</span>[<span class="ruby-string">'localhost'</span>] = <span class="ruby-identifier">pids</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-string">'Running'</span> <span class="ruby-operator">:</span> <span class="ruby-string">'Stopped'</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">schedule</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">job</span><span class="ruby-operator">|</span> <span class="ruby-identifier">job</span>[<span class="ruby-string">'ip'</span>]}.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ip</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">cap</span> = <span class="ruby-node">`cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:scheduler_status hosts=#{ip}`</span>
+      <span class="ruby-identifier">status</span>[<span class="ruby-identifier">ip</span>] = <span class="ruby-identifier">cap</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/resque:scheduler is up/</span> <span class="ruby-operator">?</span> <span class="ruby-string">'Running'</span> <span class="ruby-operator">:</span> <span class="ruby-string">'Stopped'</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">status</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- farm_status-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- farm_status-method -->
+
+      
+        <div id="pids-method" class="method-detail ">
+          <a name="method-c-pids"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">pids</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns an array of string pids of all the other workers on this machine.
+Useful when pruning dead workers on startup.</p>
+            
+
+            
+            <div class="method-source-code" id="pids-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pids</span>
+  <span class="ruby-value">`ps -A -o pid,command | grep [r]esque:scheduler`</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\n&quot;</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">' '</span>)[<span class="ruby-value">0</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- pids-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- pids-method -->
+
+      
+        <div id="quit-method" class="method-detail ">
+          <a name="method-c-quit"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">quit</span><span
+              class="method-args">(ips)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="quit-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">quit</span>(<span class="ruby-identifier">ips</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
+    <span class="ruby-identifier">system</span>(<span class="ruby-string">&quot;rake resque:quit_scheduler&quot;</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:quit_scheduler host=#{ips}&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- quit-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- quit-method -->
+
+      
+        <div id="restart-method" class="method-detail ">
+          <a name="method-c-restart"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">restart</span><span
+              class="method-args">(ips)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="restart-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">restart</span>(<span class="ruby-identifier">ips</span>)
+  <span class="ruby-identifier">quit</span>(<span class="ruby-identifier">ips</span>)
+  <span class="ruby-identifier">start</span>(<span class="ruby-identifier">ips</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- restart-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- restart-method -->
+
+      
+        <div id="start-method" class="method-detail ">
+          <a name="method-c-start"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">start</span><span
+              class="method-args">(ips)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="start-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">ips</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>{<span class="ruby-identifier">system</span>(<span class="ruby-string">&quot;rake resque:scheduler&quot;</span>)}
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">ips</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">ip_list</span><span class="ruby-operator">|</span><span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:scheduler host=#{ip_list}&quot;</span>)}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- start-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- start-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="schedule-method" class="method-detail ">
+          <a name="method-i-schedule"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">schedule</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns the schedule hash</p>
+            
+
+            
+            <div class="method-source-code" id="schedule-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">schedule</span>
+  <span class="ruby-comment">#the scheduler gem expects a hash, but it's now stored in</span>
+  <span class="ruby-comment">#redis as an array.</span>
+  <span class="ruby-identifier">hash</span> = {}
+  <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">list_range</span>(<span class="ruby-value">:scheduled</span>, <span class="ruby-value">0</span>, <span class="ruby-value">-0</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">job</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">job</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">hash</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- schedule-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- schedule-method -->
+
+      
+        <div id="schedule-3D-method" class="method-detail ">
+          <a name="method-i-schedule-3D"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">schedule=</span><span
+              class="method-args">(schedule_hash)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="schedule-3D-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">schedule=</span>(<span class="ruby-identifier">schedule_hash</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-string">'not implemented'</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- schedule-3D-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- schedule-3D-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

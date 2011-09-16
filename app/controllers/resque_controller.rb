@@ -12,7 +12,7 @@ class ResqueController < ApplicationController
                                      :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job,
                                      :start_scheduler, :stop_scheduler, :requeue_failures_in_class,
                                      :kill, :clear_statuses],
-         :render => {:text => "<p>Please use the POST http method to post data to this API.</p>"}
+         :render => {:text => "<p>Please use the POST http method to post data to this API.</p>".html_safe}
 
 
   def index
@@ -20,27 +20,27 @@ class ResqueController < ApplicationController
   end
 
   def working
-    render(:partial => 'working', :layout => 'resque')
+    render('_working')
   end
 
   def queues
-    render(:partial => 'queues', :layout => 'resque', :locals => {:partial => nil})
+    render('_queues', :locals => {:partial => nil})
   end
 
   def poll
     @polling = true
-    render(:text => (render_to_string(:action => params[:page], :layout => false, :resque => Resque)).gsub(/\s{1,}/, ' '))
+    render(:text => (render_to_string(:action => "#{params[:page]}.html", :layout => false, :resque => Resque)).gsub(/\s{1,}/, ' '))
   end
 
   def status_poll
-    @polling  = true
+    @polling = true
 
-    @start    = params[:start].to_i
-    @end      = @start + (params[:per_page] || 20)
+    @start = params[:start].to_i
+    @end = @start + (params[:per_page] || 20)
     @statuses = Resque::Status.statuses(@start, @end)
-    @size     = Resque::Status.status_ids.size
+    @size = Resque::Status.status_ids.size
 
-    render(:text => (render_to_string(:action => 'statuses', :layout => false)))
+    render(:text => (render_to_string(:action => 'statuses.html', :layout => false)))
   end
 
   def failed
@@ -69,7 +69,7 @@ class ResqueController < ApplicationController
   end
 
   def requeue_failures_in_class
-    Resque::Failure.requeue(params['class'])
+    Resque::Failure.requeue_class(params['class'])
     redirect_to(:action => 'failed')
   end
 
@@ -101,7 +101,7 @@ class ResqueController < ApplicationController
     end
 
     if params[:id] == 'txt'
-      info  = Resque.info
+      info = Resque.info
 
       stats = []
       stats << "resque.pending=#{info[:pending]}"
@@ -114,7 +114,7 @@ class ResqueController < ApplicationController
         stats << "queues.#{queue}=#{Resque.size(queue)}"
       end
 
-      render(:text => stats.join("</br>"))
+      render(:text => stats.join("</br>").html_safe)
     end
   end
 
@@ -140,10 +140,10 @@ class ResqueController < ApplicationController
       errors << 'You must enter the cron schedule.'
     end
     if errors.blank?
-      config = {params['name'] => {'class'       => params['class'],
-                                   'ip'          => params['ip'],
-                                   'cron'        => params['cron'],
-                                   'args'        => Resque.decode(params['args'].blank? ? nil : params['args']),
+      config = {params['name'] => {'class' => params['class'],
+                                   'ip' => params['ip'],
+                                   'cron' => params['cron'],
+                                   'args' => Resque.decode(params['args'].blank? ? nil : params['args']),
                                    'description' => params['description']}
       }
       Resque.redis.rpush(:scheduled, Resque.encode(config))
@@ -177,10 +177,10 @@ class ResqueController < ApplicationController
   end
 
   def statuses
-    @start    = params[:start].to_i
-    @end      = @start + (params[:per_page] || 20)
+    @start = params[:start].to_i
+    @end = @start + (params[:per_page] || 20)
     @statuses = Resque::Status.statuses(@start, @end)
-    @size     = Resque::Status.status_ids.size
+    @size = Resque::Status.status_ids.size
     if params[:format] == 'js'
       render :text => @statuses.to_json
     end
@@ -216,11 +216,14 @@ class ResqueController < ApplicationController
   end
 
   def remove_failure_from_list(payload)
-    Resque.list_range(:failed, 0, -1).each do |f|
-
-      if f["payload"] == payload
+    count = Resque::Failure.count - 1
+    loop do
+      f = Resque::Failure.all(count, 1)
+      if f && f['payload'] == payload
         Resque.redis.lrem(:failed, 0, f.to_json)
       end
+      count = count - 1
+      break if count < 0
     end
   end
 
@@ -230,21 +233,4 @@ class ResqueController < ApplicationController
     Resque::Worker.find("#{first_part}:#{rest.join(':')}")
   end
 
-end
-
-
-#because of load order, this can't be in the resque_overrides file like it should be.
-class Resque::Failure::Redis < Resque::Failure::Base
-  def save
-    data = {
-        :failed_at => failed_at || Time.now.strftime("%Y/%m/%d %H:%M:%S %Z"),
-        :payload   => payload,
-        :error     => exception.to_s,
-        :backtrace => exception.backtrace,
-        :worker    => worker.to_s,
-        :queue     => queue
-    }
-    data = Resque.encode(data)
-    Resque.redis.rpush(:failed, data)
-  end
 end
