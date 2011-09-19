@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kevin Tyll"]
-  s.date = %q{2011-09-16}
+  s.date = %q{2011-09-19}
   s.description = %q{A Rails UI for Resque for managing workers, failures and schedules.}
   s.email = %q{kevintyll@gmail.com}
   s.extra_rdoc_files = [
@@ -124,7 +124,7 @@ Gem::Specification.new do |s|
     "test/resque_ui_test.rb",
     "test/test_helper.rb"
   ]
-  s.homepage = %q{http://kevintyll.git.com/resque_ui}
+  s.homepage = %q{https://github.com/kevintyll/resque_ui}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.1}
   s.summary = %q{A Rails engine port of the Sinatra app that is included in Chris Wanstrath's resque gem.}
