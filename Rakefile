@@ -9,7 +9,7 @@ begin
     gemspec.name = "resque_ui"
     gemspec.author = "Kevin Tyll"
     gemspec.email = "kevintyll@gmail.com"
-    gemspec.homepage = %q{http://kevintyll.git.com/resque_ui}
+    gemspec.homepage = %q{https://github.com/kevintyll/resque_ui}
     gemspec.summary = "A Rails engine port of the Sinatra app that is included in Chris Wanstrath's resque gem."
     gemspec.description = "A Rails UI for Resque for managing workers, failures and schedules."
   end
