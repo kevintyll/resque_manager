@@ -32,9 +32,11 @@ This engine now requires redis 2.1.3 or greater for the expiration of keys to wo
 
 This engine requires the resque 1.5 or higher gem.
 
-This engine now requires the resque-status 0.2.2 or higher gem as well.
+This engine now requires the resque-status 0.2.2 or higher gem.
 
-These gems will all be installed for automatically when you install resque_ui.
+This engine now requires the resque-cleaner 0.2.6 or higher gem.
+
+These gems will all be installed for you automatically when you install resque_ui.
 
 
 Times Fixed
@@ -67,9 +69,10 @@ This is really handy for those long running jobs to give you assurance the the j
 Restart Failed Jobs
 -------------------
 
-Added the ability to restart failed jobs, and clear individual failed jobs from the list
+Added the Resque Cleaner gem to manage the failed queue.  Have complete control over the failed queue now with the
+Cleaner tab by querying and restarting failed jobs.
 
-![Restart Failed Jobs](http://img.skitch.com/20100308-mbh5s8pcw5n4ei2hrseiqtshys.png)
+See what all you can do on the github page:  https://github.com/ono/resque-cleaner
 
 Remove Items from the Queue
 ---------------------------
@@ -165,7 +168,7 @@ deployed servers.
 
 The controller calls cap tasks to manage the workers.  To include the recipes in your application, add this line to your deploy.rb file:
 
-    require File.dirname(__FILE__) + '/../vendor/engines/resque_ui/lib/resque_ui/cap_recipes'
+    require 'resque_ui/cap_recipes'
 
 You will also need to make sure you have your rake path set in the deploy.rb file.
 
@@ -272,6 +275,7 @@ time into resolving it.
 Copyright (c) 2009 Chris Wanstrath
 Copyright (c) 2010 Ben VandenBos
 Copyright (c) 2010 Aaron Quint
+Copyright (c) 2011 Tatsuya Ono
 Copyright (c) 2010 Kevin Tyll, released under the MIT license
 
 Thanks to Karl Baum for doing the original heavy lifting for converting this to a rails engine for rails 3.

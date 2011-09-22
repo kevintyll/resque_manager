@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{resque_ui}
-  s.version = "3.0.0"
+  s.version = "3.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kevin Tyll"]
-  s.date = %q{2011-09-19}
+  s.date = %q{2011-09-22}
   s.description = %q{A Rails UI for Resque for managing workers, failures and schedules.}
   s.email = %q{kevintyll@gmail.com}
   s.extra_rdoc_files = [
@@ -31,19 +31,24 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/resque/ranger.js",
     "app/assets/stylesheets/resque/resque.css",
     "app/assets/stylesheets/resque/resque_reset.css",
+    "app/assets/stylesheets/resque_cleaner/cleaner.css",
     "app/controllers/resque_controller.rb",
     "app/helpers/resque_helper.rb",
     "app/views/layouts/resque.html.erb",
     "app/views/resque/_key.html.erb",
+    "app/views/resque/_limiter.html.erb",
     "app/views/resque/_next_more.html.erb",
+    "app/views/resque/_paginate.html.erb",
     "app/views/resque/_queues.html.erb",
     "app/views/resque/_status_styles.erb",
     "app/views/resque/_workers.html.erb",
     "app/views/resque/_working.html.erb",
+    "app/views/resque/cleaner.html.erb",
+    "app/views/resque/cleaner_exec.html.erb",
+    "app/views/resque/cleaner_list.html.erb",
     "app/views/resque/delayed.html.erb",
     "app/views/resque/delayed_timestamp.html.erb",
     "app/views/resque/error.erb",
-    "app/views/resque/failed.html.erb",
     "app/views/resque/overview.html.erb",
     "app/views/resque/schedule.html.erb",
     "app/views/resque/stats.html.erb",
@@ -53,7 +58,6 @@ Gem::Specification.new do |s|
     "lib/resque_ui.rb",
     "lib/resque_ui/cap.rb",
     "lib/resque_ui/cap_recipes.rb",
-    "lib/resque_ui/overrides/resque/failure/failure.rb",
     "lib/resque_ui/overrides/resque/job.rb",
     "lib/resque_ui/overrides/resque/resque.rb",
     "lib/resque_ui/overrides/resque/worker.rb",
@@ -137,17 +141,20 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<redis>, [">= 2.1.3"])
       s.add_runtime_dependency(%q<resque>, [">= 1.5"])
       s.add_runtime_dependency(%q<resque-status>, [">= 0.2.2"])
+      s.add_runtime_dependency(%q<resque-cleaner>, [">= 0.2.6"])
     else
       s.add_dependency(%q<rails>, [">= 3.0.0"])
       s.add_dependency(%q<redis>, [">= 2.1.3"])
       s.add_dependency(%q<resque>, [">= 1.5"])
       s.add_dependency(%q<resque-status>, [">= 0.2.2"])
+      s.add_dependency(%q<resque-cleaner>, [">= 0.2.6"])
     end
   else
     s.add_dependency(%q<rails>, [">= 3.0.0"])
     s.add_dependency(%q<redis>, [">= 2.1.3"])
     s.add_dependency(%q<resque>, [">= 1.5"])
     s.add_dependency(%q<resque-status>, [">= 0.2.2"])
+    s.add_dependency(%q<resque-cleaner>, [">= 0.2.6"])
   end
 end
 

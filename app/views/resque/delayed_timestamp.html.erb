@@ -13,7 +13,7 @@
   <% jobs.each do |job| %>
     <tr>
       <td class='class'><%= job['class'] %></td>
-      <td class='args'><%=h job['args'].inspect %></td>
+      <td class='args'><%= job['args'].inspect.html_safe %></td>
     </tr>
   <% end %>
   <% if jobs.empty? %>

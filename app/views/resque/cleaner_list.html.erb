@@ -1,0 +1,172 @@
+<!-- Many code was copied from failed.erb of the original resque -->
+<div class="cleaner">
+  <div class="title clearfix">
+    <h1>Failed Jobs</h1>
+  </div>
+
+  <div class="clearfix">
+    <div class="control_panel sub_header">
+      <form method="get">
+        <span class="class_filter">
+          Class: <%= class_filter("filter_class","c",@klasses,@klass)%>
+        </span>
+        <span class="exception_filter">
+          Exception: <%= exception_filter("filter_class","ex",@exceptions,@exception)%>
+        </span>
+        <span class="time_filter">
+          From: <%= time_filter("filter_from","f",@from)%>
+        </span>
+        <span class="time_filter">
+          To: <%= time_filter("filter_to","t",@to)%>
+        </span>
+        <input type="submit" value="Filter" />
+      </form>
+    </div>
+  </div>
+
+  <% if @count > 0 %>
+    <div class="clearfix">
+      <div class="control_panel sub_header">
+        <form method="post" id="exec" action="cleaner_exec">
+          <input type="hidden" name="c" value="<%=@klass%>" />
+          <input type="hidden" name="f" value="<%=@from%>" />
+          <input type="hidden" name="t" value="<%=@to%>" />
+          <input type="hidden" name="p" value="<%=@paginate.page%>" />
+          <input type="hidden" name="ex" value="<%=@exception%>" />
+          <select id="form_action" name="form_action">
+            <option id="default_option" value="" selected="selected">-- Select Action --</option>
+            <option value="clear">Clear</option>
+            <option value="retry_and_clear">Retry and Clear</option>
+            <option value="retry">Retry</option>
+          </select>
+          <a href="#" id="select_all">select all</a>
+          <a href="#" id="reset_all">reset</a>
+
+          <% if @paginate.max_page > 1 %>
+            <input type="checkbox" name="select_all_pages" value="1" id="select_all_pages" />Select all <%=@count%> jobs
+          <% end %>
+          <input type="hidden" name="sha1" id="sha1_list" />
+
+        </form>
+      </div>
+    </div>
+  <% end %>
+
+  <% start = 0 %>
+  <% failed = @paginate.paginated_jobs%>
+  <% index = 0 %>
+  <% date_format = "%Y/%m/%d %T %z" %>
+
+  <% if @paginate.max_page > 0 %>
+    <%= render :partial => 'paginate' %>
+    <ul class='failed'>
+      <%for job in failed%>
+        <% index += 1 %>
+        <li>
+          <dl>
+            <% if job.nil? %>
+            <dt>Error</dt>
+            <dd>Job <%= index%> could not be parsed; perhaps it contains invalid JSON?</dd>
+            <% else %>
+            <dt>
+              <input type="checkbox" id="<%=Digest::SHA1.hexdigest job.to_json %>" />
+            </dt>
+            <dd>&nbsp;</dd>
+            <dt>Worker</dt>
+            <dd>
+              <a href="<%= u(:workers, job['worker']) %>"><%= job['worker'].split(':')[0...2].join(':') %></a> on <b class='queue-tag'><%= job['queue'] %></b > at <b><span class="time"><%= Time.parse(job['failed_at']).strftime(date_format) %></span></b>
+              <% if job['retried_at'] %>
+                <div class='retried'>
+                  Retried <b><span class="time"><%= job['retried_at'] %></span></b>
+                </div>
+              <% end %>
+            </dd>
+            <dt>Class</dt>
+            <dd><code><%= job['payload'] ? job['payload']['class'] : 'nil' %></code></dd>
+            <dt>Arguments</dt>
+            <dd><pre><%= job['payload'] ? show_args(job['payload']['args']).html_safe : 'nil' %></pre></dd>
+            <dt>Exception</dt>
+            <dd><code><%= job['exception'] %></code></dd>
+            <dt>Error</dt>
+            <dd class='error'>
+              <% if job['backtrace'] %>
+                <a href="#" class="backtrace"><%= h(job['error']) %></a>
+                <pre style='display:none'><%= job['backtrace'].join("\n").html_safe %></pre>
+              <% else %>
+                <%= job['error'].html_safe %>
+              <% end %>
+            </dd>
+            <% end %>
+          </dl>
+          <div class='r'>
+          </div>
+        </li>
+      <%end%>
+    </ul>
+    <%= render :partial => 'paginate' %>
+  <% else %>
+    Clean!
+  <% end %>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('#select_all_pages').click(function() {
+      updateCheckboxStaus();
+    });
+
+    $('#select_all').click(function() {
+      if (!$(this).hasClass('disabled')) {
+        $('.failed input').attr('checked','checked');
+      }
+      return false;
+    });
+    $('#reset_all').click(function() {
+      if (!$(this).hasClass('disabled')) {
+        $('.failed input').removeAttr('checked');
+      }
+      return false;
+    });
+
+    $('#form_action').change( function() {
+      if ($('#form_action option:selected').val()=='') return;
+
+      if ($('#select_all_pages:checked, .failed input:checked').length==0) {
+        alert('Please select jobs.');
+        $('#default_option').attr('selected','selected');
+        return false;
+      }
+
+      if (!confirm('Do you really want to proceed?')) {
+        $('#default_option').attr('selected','selected');
+        return false;
+      }
+
+      if ($('#select_all_pages:checked').length==0) {
+        setSha1();
+      }
+      $('#exec').submit();
+    });
+  });
+
+  function setSha1() {
+    var sha1 = "";
+    $('.failed input:checked').each( function() {
+      if (sha1.length>0) sha1 += ",";
+      sha1 += $(this).attr("id");
+    });
+
+    $('#sha1_list').val(sha1);
+  }
+
+  function updateCheckboxStaus() {
+    if ($('#select_all_pages:checked').length==1) {
+      $('#exec a').addClass('disabled');
+      $('.failed input').attr('disabled','disabled');
+    } else {
+      $('#exec a').removeClass('disabled');
+      $('.failed input').removeAttr('disabled');
+    }
+  };
+
+</script>

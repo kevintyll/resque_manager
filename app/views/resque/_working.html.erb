@@ -21,7 +21,7 @@
       <td>
         <code><%= data['payload']['class'] %></code>
       </td>
-      <td><%=h data['payload']['args'].inspect %></td>
+      <td><%= data['payload']['args'].inspect.html_safe %></td>
     </tr>
   </table>
 

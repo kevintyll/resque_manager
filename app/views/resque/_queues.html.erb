@@ -15,7 +15,7 @@
     <% for job in (jobs = resque.peek(queue, start, 20)) %>
       <tr>
         <td class='class'><%= job['class'] %></td>
-        <td class='args'><%=h job['args'].inspect %></td>
+        <td class='args'><%= job['args'].inspect.html_safe %></td>
         <td>
           <%= button_to "Remove", {:controller=>'resque', :action=> 'remove_job',:class => job['class'], :args => Resque.encode(job['args'])}, :class => 'clear-failed', :method => :post %>
             </td>
@@ -44,7 +44,7 @@
       </tr>
     <% end %>
     <tr class='failed'>
-      <td class='queue failed'><%= link_to('failed', {:action => "failed"}, :class => 'queue') %></td>
+      <td class='queue failed'><%= link_to('failed', {:action => "cleaner"}, :class => 'queue') %></td>
       <td class='size'><%= Resque::Failure.count %></td>
     </tr>
   </table>
