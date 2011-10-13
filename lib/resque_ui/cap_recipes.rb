@@ -44,7 +44,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
 
-    desc "Kill all rogue workers on all servers.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit.
+    desc "Kill all rogue workers on all servers.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit."
     task :kill_workers_with_impunity, :roles => :app do
       default_run_options[:pty] = true
       rake                      = fetch(:rake, "rake")
