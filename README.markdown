@@ -182,10 +182,13 @@ You will also need to tell resque_ui where cap is installed.  Add this line to y
 
 The cap tasks included are:
 
-    cap resque:work          # start a resque worker.
-    cap resque:workers       # start multiple resque workers.
-    cap resque:quit_worker   # Gracefully kill a worker.  If the worker is working, it will finish before shutting down.
-    cap resque:restart_workers # Restart all workers on all servers
+    cap resque:work                         # start a resque worker.
+    cap resque:workers                      # start multiple resque workers.
+    cap resque:quit_worker                  # Gracefully kill a worker.  If the worker is working, it will finish before shutting down.
+    cap resque:quit_workers                 # Gracefully kill all workers on all servers.  If the worker is working, it will finish before shutting down.
+    cap resque:kill_worker_with_impunity    # Kill a rogue worker.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit. arg: host=ip pid=pid
+    cap resque:kill_workera_with_impunity   # Kill all rogue workers on all servers.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit.
+    cap resque:restart_workers              # Restart all workers on all servers
 
 Multi-Threaded Workers
 ---------------------
@@ -211,13 +214,7 @@ After Deploy Hooks
 The resque:restart_workers cap task can be added as an after deploy task to refresh your workers.  Without this, your workers will
 continue to run your old code base after a deployment.
 
-To make it work:
-Set one of the servers in your app role as the resque_restart server:
-
-    role :app, "your.first.ip.1","your.second.ip"
-    role :app,  "your.first.ip.1", :resque_restart => true
-
-Then add the callbacks:
+To make it work add the callbacks in your deploy.rb file:
 
     after "deploy", "resque:restart_workers"
     after "deploy:migrations", "resque:restart_workers"

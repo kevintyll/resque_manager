@@ -1,3 +1,10 @@
+== 3.1.1 2011-10-13
+
+*  Modified the restart_workers and quit_workers cap tasks to no longer use the , :only => {:resque_restart => true} flag.
+    -   These tasks now execute the rake tasks on all servers in the farm
+*  Modified the restart_workers and quit_workers rake tasks to not execute separate cap tasks for each worker.
+    -   Task now iterates through the workers and restarts the ones on the box the rake task is executing on.
+
 == 3.1.0 2011-09-22
 
 *  Added Resque Cleaner to manage the failed queue.  Removed the Failed tab.

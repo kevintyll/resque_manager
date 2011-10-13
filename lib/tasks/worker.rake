@@ -4,14 +4,14 @@ namespace :resque do
   task :work => :setup do
     require 'resque'
 
-    worker                  = nil
-    queues                  = (ENV['QUEUES'] || ENV['QUEUE']).to_s.split('#').delete_if { |a| a.blank? }
-    threads                 = []
-    mqueue                  = queues.shift
+    worker = nil
+    queues = (ENV['QUEUES'] || ENV['QUEUE']).to_s.split('#').delete_if { |a| a.blank? }
+    threads = []
+    mqueue = queues.shift
     Thread.current[:queues] = mqueue
-    mworker                 = Resque::Worker.new(mqueue)
-    mworker.verbose         = true #ENV['LOGGING'] || ENV['VERBOSE']
-    mworker.very_verbose    = true #ENV['VVERBOSE']
+    mworker = Resque::Worker.new(mqueue)
+    mworker.verbose = true #ENV['LOGGING'] || ENV['VERBOSE']
+    mworker.very_verbose = true #ENV['VVERBOSE']
 
     if ENV['PIDFILE']
       File.open(ENV['PIDFILE'], 'w') { |f| f << mworker.pid }
@@ -21,9 +21,9 @@ namespace :resque do
       threads << Thread.new do
         begin
           Thread.current[:queues] = queue
-          worker                  = Resque::Worker.new(queue)
-          worker.verbose          = ENV['LOGGING'] || ENV['VERBOSE']
-          worker.very_verbose     = ENV['VVERBOSE']
+          worker = Resque::Worker.new(queue)
+          worker.verbose = ENV['LOGGING'] || ENV['VERBOSE']
+          worker.very_verbose = ENV['VVERBOSE']
         rescue Resque::NoQueueError
           abort "set QUEUE env var, e.g. $ QUEUE=critical,high rake resque:work"
         end
@@ -45,10 +45,16 @@ namespace :resque do
   task :restart_workers => :setup do
     require 'resque'
     pid = ''
+    queues = ''
+    local_ip = Resque.workers.first.local_ip rescue '';
     Resque.workers.sort_by { |w| w.to_s }.each do |worker|
-      if pid != worker.pid
-        worker.restart
-        pid = worker.pid
+      if local_ip == worker.ip # only restart the workers that are on this server
+        if pid != worker.pid
+          system("kill -INT  #{worker.pid}")
+          queues = worker.queues_in_pid.join('#')
+          Thread.new(queues) { |queue| system("nohup rake RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
+          pid = worker.pid
+        end
       end
     end
   end
@@ -57,10 +63,13 @@ namespace :resque do
   task :quit_workers => :setup do
     require 'resque'
     pid = ''
+    local_ip = Resque.workers.first.local_ip
     Resque.workers.sort_by { |w| w.to_s }.each do |worker|
-      if pid != worker.pid
-        worker.quit
-        pid = worker.pid
+      if local_ip == worker.ip # only quit the workers that are on this server
+        if pid != worker.pid
+          system("kill -INT  #{worker.pid}")
+          pid = worker.pid
+        end
       end
     end
   end
@@ -69,10 +78,13 @@ namespace :resque do
   task :kill_workers_with_impunity => :setup do
     require 'resque'
     pid = ''
+    local_ip = Resque.workers.first.local_ip
     Resque.workers.sort_by { |w| w.to_s }.each do |worker|
-      if pid != worker.pid
-        `kill -9 #{worker.pid}`
-        pid = worker.pid
+      if local_ip == worker.ip # only kill the pids that are on this server
+        if pid != worker.pid # only kill it once
+          `kill -9 #{worker.pid}`
+          pid = worker.pid
+        end
       end
     end
   end

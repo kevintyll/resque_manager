@@ -206,7 +206,7 @@ module Resque
 
     def self.start(ips, queues)
       if Rails.env =~ /development|test/
-        Thread.new(queues) { |queue| system("rake QUEUE=#{queue} resque:work") }
+        Thread.new(queues) { |queue| system("rake RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
       else
         Thread.new(queues, ips) { |queue, ip_list| system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:work host=#{ip_list} queue=#{queue}") }
       end

@@ -18,10 +18,5 @@ Resque::Server.tabs.delete 'Failed'
 
 module ResqueUi
   class Engine < Rails::Engine
-    rake_tasks do
-      load 'tasks/worker.rake'
-      load 'tasks/failure.rake'
-      load 'tasks/scheduler.rake' if Resque.respond_to? :schedule
-    end
   end
 end

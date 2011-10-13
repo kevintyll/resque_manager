@@ -28,13 +28,13 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
 
     desc "Gracefully kill all workers on all servers.  If the worker is working, it will finish before shutting down."
-    task :quit_workers, :roles => :app, :only => {:resque_restart => true} do
+    task :quit_workers, :roles => :app do
       default_run_options[:pty] = true
       rake                      = fetch(:rake, "rake")
       run("cd #{current_path}; #{rake} RAILS_ENV=#{stage} resque:quit_workers")
     end
 
-    desc "Kill a rogue worker.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtExit. arg: host=ip pid=pid"
+    desc "Kill a rogue worker.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit. arg: host=ip pid=pid"
     task :kill_worker_with_impunity, :roles => :app do
       if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
         puts 'You must enter the host and pid to kill..cap resque:quit host=ip pid=pid'
@@ -44,7 +44,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
 
-    desc "Kill all rogue workers on all servers.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtExit. arg: host=ip pid=pid"
+    desc "Kill all rogue workers on all servers.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit.
     task :kill_workers_with_impunity, :roles => :app do
       default_run_options[:pty] = true
       rake                      = fetch(:rake, "rake")
@@ -62,7 +62,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
 
     desc "Restart all workers on all servers"
-    task :restart_workers, :roles => :app, :only => {:resque_restart => true} do
+    task :restart_workers, :roles => :app do
       default_run_options[:pty] = true
       rake                      = fetch(:rake, "rake")
       run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:restart_workers")
