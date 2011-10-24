@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{resque_ui}
-  s.version = "3.1.2"
+  s.version = "3.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kevin Tyll"]
-  s.date = %q{2011-10-13}
+  s.date = %q{2011-10-24}
   s.description = %q{A Rails UI for Resque for managing workers, failures and schedules.}
   s.email = %q{kevintyll@gmail.com}
   s.extra_rdoc_files = [

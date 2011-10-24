@@ -93,7 +93,7 @@
                 <a href="#" class="backtrace"><%= h(job['error']) %></a>
                 <pre style='display:none'><%= job['backtrace'].join("\n").html_safe %></pre>
               <% else %>
-                <%= job['error'].html_safe %>
+                <%= job['error'].to_s.html_safe %>
               <% end %>
             </dd>
             <% end %>
