@@ -1,3 +1,11 @@
+== 3.1.4 2011-10-27
+
+*  Changed all the cap tasks to use the :resque role.
+    - You now need to define the :resque role in your deploy/<environment>.rb file with the servers that will run your workers.
+        role :resque, 'server1', 'server2'
+      The cap tasks used to run the :app role, but this has been changed to allow you to better refine your servers.  You may not run
+      the resque workers on all, or even any of your :app servers.
+
 == 3.1.3 2011-10-24
 
 *  Guard against nil in templates

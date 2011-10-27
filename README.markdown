@@ -170,6 +170,10 @@ The controller calls cap tasks to manage the workers.  To include the recipes in
 
     require 'resque_ui/cap_recipes'
 
+You will also need to define the :resque role in your deploy/<environment>.rb file with the servers that will run your workers.
+
+    role :resque, 'server1', 'server2'
+
 You will also need to make sure you have your rake path set in the deploy.rb file.
 
     set :rake, "/opt/ruby-enterprise-1.8.6-20090421/bin/rake"
