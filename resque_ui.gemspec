@@ -68,6 +68,7 @@ Gem::Specification.new do |s|
     "lib/tasks/failure.rake",
     "lib/tasks/scheduler.rake",
     "lib/tasks/worker.rake",
+    "rdoc/Object.html",
     "rdoc/Resque.html",
     "rdoc/Resque/ChainedJobWithStatus.html",
     "rdoc/Resque/Job.html",
