@@ -1,3 +1,48 @@
+== 3.1.5 2011-11-01
+
+*  Added the ability to set an optional :resque_rake variable in your deploy.rb file that is used by the resque:work task if set.
+   -This allows you to set alternate options, particularly useful for jruby.
+    ex.
+    go through jexec so we get the right path and java settings
+     set :rake, "script/jexec rake"
+     set :resque_rake, "script/jexec -p rake" #extra memory settings for resque workers
+
+    -the jexec file in script/ may look like:
+
+    scriptdir=`dirname $0`
+
+    # Hack to get things working under capistrano (used for torquebox to get rake working, still needed?)
+    if [ "$1" = "-j" ]; then
+        shift
+        export JRUBY_HOME=$1
+        shift
+    fi
+
+    if [ "$1" = "-m" ]; then
+            shift
+            export JAVA_MEM="-Xmx2048m -Xms256m -XX:PermSize=1024m -XX:MaxPermSize=1024m"
+            export JAVA_STACK=-Xss4096k
+    fi
+
+    export PATH=$scriptdir:/opt/jruby/bin:$PATH
+
+    # Configuration settings for all Rake Tasks and Resque Workers
+    if [ "$1" = "-p" ]; then
+            shift
+            # Set Heap Space for Young/Eden GC: 512MB
+            # Initial Heap size: 2GB
+            # Max Heap size: 4GB
+            # Use server JVM
+            # PermGenSize: 64MB
+            # Max PermGenSize: 128MB
+            # Thread Stack Size: 1024k
+            export JRUBY_OPTS="-J-Xmn512m -J-Xms2048m -J-Xmx4096m -J-server -J-XX:PermSize=64m -J-XX:MaxPermSize=128m -J-Xss1024k"
+            echo "JRUBY_OPTS=${JRUBY_OPTS}"
+            nohup $* & #cap task runs in background
+    else
+            exec $*
+    fi
+
 == 3.1.4 2011-10-27
 
 *  Changed all the cap tasks to use the :resque role.
