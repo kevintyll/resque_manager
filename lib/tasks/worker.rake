@@ -47,12 +47,13 @@ namespace :resque do
     pid = ''
     queues = ''
     local_ip = Resque.workers.first.local_ip rescue '';
+    rake = ENV['RAKE_WITH_OPTS'] || 'rake'
     Resque.workers.sort_by { |w| w.to_s }.each do |worker|
       if local_ip == worker.ip # only restart the workers that are on this server
         if pid != worker.pid
           system("kill -INT  #{worker.pid}")
           queues = worker.queues_in_pid.join('#')
-          Thread.new(queues) { |queue| system("nohup rake RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
+          Thread.new(queues) { |queue| system("nohup #{rake} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
           pid = worker.pid
         end
       end

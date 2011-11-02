@@ -1,3 +1,7 @@
+== 3.1.6 2011-11-02
+
+*  Need the resque:restart cap task to pass the resque_rake value to the resque:restart rake task so it can start workers with the modified rake options
+
 == 3.1.5 2011-11-01
 
 *  Added the ability to set an optional :resque_rake variable in your deploy.rb file that is used by the resque:work task if set.

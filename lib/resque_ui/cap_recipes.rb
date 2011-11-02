@@ -113,7 +113,8 @@ Capistrano::Configuration.instance(:must_exist).load do
     task :restart_workers, :roles => :resque do
       default_run_options[:pty] = true
       rake                      = fetch(:rake, "rake")
-      run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:restart_workers")
+      #pass the rake options to the rake task so the workers can be started with the options.
+      run("cd #{current_path}; RAILS_ENV=#{stage} RAKE_WITH_OPTS='#{get_rake}' nohup #{rake} resque:restart_workers")
     end
 
     # ====================================
