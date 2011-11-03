@@ -89,8 +89,6 @@
           
           <li><a href="#method-i-quit">#quit</a></li>
           
-          <li><a href="#method-i-register_signal_handlers">#register_signal_handlers</a></li>
-          
           <li><a href="#method-i-restart">#restart</a></li>
           
           <li><a href="#method-i-shutdown">#shutdown</a></li>
@@ -211,7 +209,7 @@
             
             <div class="method-source-code" id="start-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 207</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 188</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">ips</span>, <span class="ruby-identifier">queues</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
     <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;rake RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work&quot;</span>) }
@@ -249,7 +247,7 @@ latest redis gem.</p>
             
             <div class="method-source-code" id="working-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 181</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 162</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">working</span>
   <span class="ruby-identifier">names</span> = <span class="ruby-identifier">all</span>
   <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">any?</span>
@@ -608,10 +606,17 @@ determine if Redis is old and clean it up a bit.</p>
             
             <div class="method-source-code" id="quit-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 215</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 196</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">quit</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -INT  #{self.pid}&quot;</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">RUBY_PLATFORM</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/java/</span>
+      <span class="ruby-comment">#jruby doesn't trap the -QUIT signal</span>
+      <span class="ruby-comment">#-TERM gracefully kills the main pid and does a -9 on the child if there is one.</span>
+      <span class="ruby-comment">#Since jruby doesn't fork a child, the main worker is gracefully killed.</span>
+      <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -TERM  #{self.pid}&quot;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -QUIT  #{self.pid}&quot;</span>)
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
   <span class="ruby-keyword">end</span>
@@ -624,54 +629,6 @@ determine if Redis is old and clean it up a bit.</p>
 
           
         </div><!-- quit-method -->
-
-      
-        <div id="register_signal_handlers-method" class="method-detail ">
-          <a name="method-i-register_signal_handlers"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">register_signal_handlers</span><span
-              class="method-args">()</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>Jruby won’t allow you to trap the QUIT signal, so we’re changing the
-INT signal to replace it for Jruby.</p>
-            
-
-            
-            <div class="method-source-code" id="register_signal_handlers-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 104</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_signal_handlers</span>
-  <span class="ruby-identifier">trap</span>(<span class="ruby-string">'TERM'</span>) { <span class="ruby-identifier">shutdown!</span> }
-  <span class="ruby-identifier">trap</span>(<span class="ruby-string">'INT'</span>) { <span class="ruby-identifier">shutdown</span> }
-
-  <span class="ruby-keyword">begin</span>
-    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'QUIT'</span>) { <span class="ruby-identifier">shutdown</span> }
-    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal QUIT not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
-    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'USR1'</span>) { <span class="ruby-identifier">kill_child</span> }
-    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal USR1 not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
-    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'USR2'</span>) { <span class="ruby-identifier">pause_processing</span> }
-    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal USR2 not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
-    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">trap</span>(<span class="ruby-string">'CONT'</span>) { <span class="ruby-identifier">unpause_processing</span> }
-    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signal CONT not supported.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
-  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
-    <span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;Signals QUIT, USR1, USR2, and/or CONT not supported.&quot;</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- register_signal_handlers-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- register_signal_handlers-method -->
 
       
         <div id="restart-method" class="method-detail ">
@@ -693,7 +650,7 @@ INT signal to replace it for Jruby.</p>
             
             <div class="method-source-code" id="restart-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 223</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 211</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restart</span>
   <span class="ruby-identifier">queues</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">queues_in_pid</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">'#'</span>)
   <span class="ruby-identifier">quit</span>
@@ -811,7 +768,7 @@ current job.</pre>
             
             <div class="method-source-code" id="status-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 203</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 184</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">status</span>
   <span class="ruby-identifier">job</span>[<span class="ruby-string">'status'</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -844,7 +801,7 @@ current job.</pre>
             
             <div class="method-source-code" id="status-3D-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 198</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 179</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">status=</span>(<span class="ruby-identifier">status</span>)
   <span class="ruby-identifier">data</span> = <span class="ruby-identifier">encode</span>(<span class="ruby-identifier">job</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-string">'status'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">status</span>))
   <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">set</span>(<span class="ruby-node">&quot;worker:#{self}&quot;</span>, <span class="ruby-identifier">data</span>)
@@ -966,7 +923,7 @@ has completed processing. Useful for testing.</pre>
             
             <div class="method-source-code" id="work-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 139</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 120</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">work</span>(<span class="ruby-identifier">interval</span> = <span class="ruby-value">5</span>, &amp;<span class="ruby-identifier">block</span>)
   <span class="ruby-identifier">$0</span> = <span class="ruby-string">&quot;resque: Starting&quot;</span>
   <span class="ruby-identifier">startup</span>
@@ -1037,7 +994,7 @@ Useful when pruning dead workers on startup.</p>
             
             <div class="method-source-code" id="worker_pids-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 192</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 173</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">worker_pids</span>
   <span class="ruby-value">`ps -A -o pid,command | grep [r]esque`</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\n&quot;</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">' '</span>)[<span class="ruby-value">0</span>]

@@ -51,7 +51,14 @@ namespace :resque do
     Resque.workers.sort_by { |w| w.to_s }.each do |worker|
       if local_ip == worker.ip # only restart the workers that are on this server
         if pid != worker.pid
-          system("kill -INT  #{worker.pid}")
+          if RUBY_PLATFORM =~ /java/
+            #jruby doesn't trap the -QUIT signal
+            #-TERM gracefully kills the main pid and does a -9 on the child if there is one.
+            #Since jruby doesn't fork a child, the main worker is gracefully killed.
+            system("kill -TERM  #{worker.pid}")
+          else
+            system("kill -QUIT  #{worker.pid}")
+          end
           queues = worker.queues_in_pid.join('#')
           Thread.new(queues) { |queue| system("nohup #{rake} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
           pid = worker.pid
@@ -68,7 +75,14 @@ namespace :resque do
     Resque.workers.sort_by { |w| w.to_s }.each do |worker|
       if local_ip == worker.ip # only quit the workers that are on this server
         if pid != worker.pid
-          system("kill -INT  #{worker.pid}")
+          if RUBY_PLATFORM =~ /java/
+            #jruby doesn't trap the -QUIT signal
+            #-TERM gracefully kills the main pid and does a -9 on the child if there is one.
+            #Since jruby doesn't fork a child, the main worker is gracefully killed.
+            system("kill -TERM  #{worker.pid}")
+          else
+            system("kill -QUIT  #{worker.pid}")
+          end
           pid = worker.pid
         end
       end

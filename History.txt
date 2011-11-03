@@ -1,3 +1,10 @@
+== 3.1.7 2011-11-03
+
+*  It seems that when jruby workers are started in server mode, they don't accept the -INT signal.
+   Changed the logic to send the -TERM signal if jruby, and -QUIT otherwise.
+   -TERM gracefully kills the main pid and does a -9 on the child if there is one.
+   Since jruby doesn't fork a child, the main worker is gracefully killed.
+
 == 3.1.6 2011-11-02
 
 *  Need the resque:restart cap task to pass the resque_rake value to the resque:restart rake task so it can start workers with the modified rake options

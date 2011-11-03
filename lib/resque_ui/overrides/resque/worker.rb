@@ -100,25 +100,6 @@ module Resque
       workers_in_pid.select { |w| (hash = w.processing) && !hash.empty? }
     end
 
-    # Jruby won't allow you to trap the QUIT signal, so we're changing the INT signal to replace it for Jruby.
-    def register_signal_handlers
-      trap('TERM') { shutdown! }
-      trap('INT') { shutdown }
-
-      begin
-        s = trap('QUIT') { shutdown }
-        warn "Signal QUIT not supported." unless s
-        s = trap('USR1') { kill_child }
-        warn "Signal USR1 not supported." unless s
-        s = trap('USR2') { pause_processing }
-        warn "Signal USR2 not supported." unless s
-        s = trap('CONT') { unpause_processing }
-        warn "Signal CONT not supported." unless s
-      rescue ArgumentError
-        warn "Signals QUIT, USR1, USR2, and/or CONT not supported."
-      end
-    end
-
     # This is the main workhorse method. Called on a Worker instance,
     # it begins the worker life cycle.
     #
@@ -214,7 +195,14 @@ module Resque
 
     def quit
       if Rails.env =~ /development|test/
-        system("kill -INT  #{self.pid}")
+        if RUBY_PLATFORM =~ /java/
+          #jruby doesn't trap the -QUIT signal
+          #-TERM gracefully kills the main pid and does a -9 on the child if there is one.
+          #Since jruby doesn't fork a child, the main worker is gracefully killed.
+          system("kill -TERM  #{self.pid}")
+        else
+          system("kill -QUIT  #{self.pid}")
+        end
       else
         system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
       end

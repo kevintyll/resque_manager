@@ -50,18 +50,18 @@
 #fi
 
 Capistrano::Configuration.instance(:must_exist).load do
-  
+
   def get_rake
     fetch(:resque_rake, fetch(:rake, "rake"))
   end
-  
+
   namespace :resque do
     desc "start a resque worker. optional arg: host=ip queue=name"
     task :work, :roles => :resque do
       default_run_options[:pty] = true
-      hosts                     = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-      queue                     = ENV['queue'] || '*'
-      rake                      = get_rake
+      hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
+      queue = ENV['queue'] || '*'
+      rake = get_rake
       run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} QUEUE=#{queue} resque:work >> log/resque_worker.log 2>&1", :hosts => hosts)
     end
 
@@ -71,14 +71,21 @@ Capistrano::Configuration.instance(:must_exist).load do
         puts 'You must enter the host and pid to kill..cap resque:quit host=ip pid=pid'
       else
         hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-        run("kill -INT #{ENV['pid']}", :hosts => hosts)
+        if RUBY_PLATFORM =~ /java/
+          #jruby doesn't trap the -QUIT signal
+          #-TERM gracefully kills the main pid and does a -9 on the child if there is one.
+          #Since jruby doesn't fork a child, the main worker is gracefully killed.
+          run("kill -TERM #{ENV['pid']}", :hosts => hosts)
+        else
+          run("kill -QUIT #{ENV['pid']}", :hosts => hosts)
+        end
       end
     end
 
     desc "Gracefully kill all workers on all servers.  If the worker is working, it will finish before shutting down."
     task :quit_workers, :roles => :resque do
       default_run_options[:pty] = true
-      rake                      = fetch(:rake, "rake")
+      rake = fetch(:rake, "rake")
       run("cd #{current_path}; #{rake} RAILS_ENV=#{stage} resque:quit_workers")
     end
 
@@ -95,24 +102,24 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "Kill all rogue workers on all servers.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit."
     task :kill_workers_with_impunity, :roles => :resque do
       default_run_options[:pty] = true
-      rake                      = fetch(:rake, "rake")
+      rake = fetch(:rake, "rake")
       run("cd #{current_path}; #{rake} RAILS_ENV=#{stage} resque:kill_workers_with_impunity")
     end
 
     desc "start multiple resque workers. arg:count=x optional arg: host=ip queue=name"
     task :workers, :roles => :resque do
       default_run_options[:pty] = true
-      hosts                     = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-      queue                     = ENV['queue'] || '*'
-      count                     = ENV['count'] || '1'
-      rake                      = get_rake
+      hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
+      queue = ENV['queue'] || '*'
+      count = ENV['count'] || '1'
+      rake = get_rake
       run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} COUNT=#{count} QUEUE=#{queue} resque:work >> log/resque_worker.log 2>&1", :hosts => hosts)
     end
 
     desc "Restart all workers on all servers"
     task :restart_workers, :roles => :resque do
       default_run_options[:pty] = true
-      rake                      = fetch(:rake, "rake")
+      rake = fetch(:rake, "rake")
       #pass the rake options to the rake task so the workers can be started with the options.
       run("cd #{current_path}; RAILS_ENV=#{stage} RAKE_WITH_OPTS='#{get_rake}' nohup #{rake} resque:restart_workers")
     end
@@ -124,8 +131,8 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "start a resque worker. optional arg: host=ip queue=name"
     task :scheduler, :roles => :resque do
       default_run_options[:pty] = true
-      hosts                     = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-      rake                      = fetch(:rake, "rake")
+      hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
+      rake = fetch(:rake, "rake")
       run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:scheduler", :hosts => hosts)
     end
 
@@ -135,14 +142,14 @@ Capistrano::Configuration.instance(:must_exist).load do
         puts 'You must enter the host to kill..cap resque:quit_scheduler host=ip pid=pid'
       else
         hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-        rake  = fetch(:rake, "rake")
+        rake = fetch(:rake, "rake")
         run("cd #{current_path}; nohup #{rake} RAILS_ENV=#{stage} resque:quit_scheduler", :hosts => hosts)
       end
     end
 
     desc "Determine if the scheduler is running or not on a server"
     task :scheduler_status, :roles => :resque do
-      hosts  = ENV['hosts'].to_s.split(',') || find_servers_for_task(current_task).collect { |s| s.host }
+      hosts = ENV['hosts'].to_s.split(',') || find_servers_for_task(current_task).collect { |s| s.host }
 
       status = nil
 
