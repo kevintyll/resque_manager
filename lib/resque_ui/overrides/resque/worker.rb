@@ -22,8 +22,10 @@ module Resque
 
     alias_method :id, :to_s
 
-    def pid
-      to_s.split(':').second
+    # When the worker gets the -USR2 signal, to_s may give a different value for the thread and queue portion
+    def pause_key
+      key = to_s.split(':')
+      "worker:#{key.first}:#{key.second}:all_workers:paused"
     end
 
     def thread
@@ -76,6 +78,35 @@ module Resque
       @shutdown = true
     end
 
+    def paused
+      redis.get pause_key
+    end
+
+    # are we paused?
+    # OVERRIDE so UI can tell if we're paused
+    def paused?
+      @paused || paused.present?
+    end
+
+    # Stop processing jobs after the current one has completed (if we're
+    # currently running one).
+    #OVERRIDE to set a redis key so UI knows it's paused too
+    # Would prefer to call super but get no superclass method error
+    def pause_processing
+      log "USR2 received; pausing job processing"
+      @paused = true
+      redis.set(pause_key, Time.now.to_s)
+    end
+
+    # Start processing jobs again after a pause
+    #OVERRIDE to set remove redis key so UI knows it's unpaused too
+    # Would prefer to call super but get no superclass method error
+    def unpause_processing
+      log "CONT received; resuming job processing"
+      @paused = false
+      redis.del(pause_key)
+    end
+
     # Looks for any workers which should be running on this server
     # and, if they're not, removes them from Redis.
     #
@@ -94,6 +125,29 @@ module Resque
         log! "Pruning dead worker: #{worker}"
         worker.unregister_worker
       end
+    end
+
+    # Unregisters ourself as a worker. Useful when shutting down.
+    # OVERRIDE to also remove the pause key
+    # Would prefer to call super but get no superclass method error
+    def unregister_worker
+      # If we're still processing a job, make sure it gets logged as a
+      # failure.
+      if (hash = processing) && !hash.empty?
+        job = Job.new(hash['queue'], hash['payload'])
+        # Ensure the proper worker is attached to this job, even if
+        # it's not the precise instance that died.
+        job.worker = self
+        job.fail(DirtyExit.new)
+      end
+
+      redis.srem(:workers, self)
+      redis.del("worker:#{self}")
+      redis.del("worker:#{self}:started")
+      redis.del(pause_key)
+
+      Stat.clear("processed:#{self}")
+      Stat.clear("failed:#{self}")
     end
 
     def all_workers_in_pid_working
@@ -168,14 +222,6 @@ module Resque
       end.compact
     end
 
-    # Returns an array of string pids of all the other workers on this
-    # machine. Useful when pruning dead workers on startup.
-    def worker_pids
-      `ps -A -o pid,command | grep [r]esque`.split("\n").map do |line|
-        line.split(' ')[0]
-      end
-    end
-
     def status=(status)
       data = encode(job.merge('status' => status))
       redis.set("worker:#{self}", data)
@@ -205,6 +251,22 @@ module Resque
         end
       else
         system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
+      end
+    end
+
+    def pause
+      if Rails.env =~ /development|test/
+        system("kill -USR2  #{self.pid}")
+      else
+        system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:pause_worker pid=#{self.pid} host=#{self.ip}")
+      end
+    end
+
+    def continue
+      if Rails.env =~ /development|test/
+        system("kill -CONT  #{self.pid}")
+      else
+        system("cd #{Rails.root}; #{ResqueUi::Cap.path} #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}")
       end
     end
 

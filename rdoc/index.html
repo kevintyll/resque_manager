@@ -6,7 +6,7 @@
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 
-  <title>ResqueUi 3.1.7</title>
+  <title>ResqueUi 3.2.0</title>
 
   <link type="text/css" media="screen" href="rdoc.css" rel="stylesheet" />
 
@@ -19,10 +19,10 @@
 <body class="indexpage">
 
   
-  <h1>ResqueUi 3.1.7</h1>
+  <h1>ResqueUi 3.2.0</h1>
 
   
-  <p>This is the API documentation for 'ResqueUi 3.1.7'.</p>
+  <p>This is the API documentation for 'ResqueUi 3.2.0'.</p>
   
 
   
@@ -72,6 +72,10 @@
     
       <li><a href="Resque/Status.html#method-c-incr_counter">::incr_counter &mdash; Resque::Status</a></li>
     
+      <li><a href="Resque/JobWithStatus.html#method-c-new">::new &mdash; Resque::JobWithStatus</a></li>
+    
+      <li><a href="Resque/JobWithStatus.html#method-c-perform">::perform &mdash; Resque::JobWithStatus</a></li>
+    
       <li><a href="ResqueScheduler.html#method-c-pids">::pids &mdash; ResqueScheduler</a></li>
     
       <li><a href="ResqueScheduler.html#method-c-quit">::quit &mdash; ResqueScheduler</a></li>
@@ -92,6 +96,8 @@
     
       <li><a href="Resque/ChainedJobWithStatus.html#method-i-completed">#completed &mdash; Resque::ChainedJobWithStatus</a></li>
     
+      <li><a href="Resque/Worker.html#method-i-continue">#continue &mdash; Resque::Worker</a></li>
+    
       <li><a href="Resque/JobWithStatus.html#method-i-counter">#counter &mdash; Resque::JobWithStatus</a></li>
     
       <li><a href="Object.html#method-i-get_rake">#get_rake &mdash; Object</a></li>
@@ -108,9 +114,21 @@
     
       <li><a href="Resque/ChainedJobWithStatus.html#method-i-name">#name &mdash; Resque::ChainedJobWithStatus</a></li>
     
-      <li><a href="Resque/Job.html#method-i-perform">#perform &mdash; Resque::Job</a></li>
+      <li><a href="Resque/Worker.html#method-i-pause">#pause &mdash; Resque::Worker</a></li>
     
-      <li><a href="Resque/Worker.html#method-i-pid">#pid &mdash; Resque::Worker</a></li>
+      <li><a href="Resque/JobWithStatus.html#method-i-pause-21">#pause! &mdash; Resque::JobWithStatus</a></li>
+    
+      <li><a href="Resque/Worker.html#method-i-pause_key">#pause_key &mdash; Resque::Worker</a></li>
+    
+      <li><a href="Resque/Worker.html#method-i-pause_processing">#pause_processing &mdash; Resque::Worker</a></li>
+    
+      <li><a href="Resque/Worker.html#method-i-paused">#paused &mdash; Resque::Worker</a></li>
+    
+      <li><a href="Resque/Status.html#method-i-paused-3F">#paused? &mdash; Resque::Status</a></li>
+    
+      <li><a href="Resque/Worker.html#method-i-paused-3F">#paused? &mdash; Resque::Worker</a></li>
+    
+      <li><a href="Resque/Job.html#method-i-perform">#perform &mdash; Resque::Job</a></li>
     
       <li><a href="Resque/Worker.html#method-i-prune_dead_workers">#prune_dead_workers &mdash; Resque::Worker</a></li>
     
@@ -144,9 +162,11 @@
     
       <li><a href="Resque/Worker.html#method-i-to_s">#to_s &mdash; Resque::Worker</a></li>
     
-      <li><a href="Resque/Worker.html#method-i-work">#work &mdash; Resque::Worker</a></li>
+      <li><a href="Resque/Worker.html#method-i-unpause_processing">#unpause_processing &mdash; Resque::Worker</a></li>
     
-      <li><a href="Resque/Worker.html#method-i-worker_pids">#worker_pids &mdash; Resque::Worker</a></li>
+      <li><a href="Resque/Worker.html#method-i-unregister_worker">#unregister_worker &mdash; Resque::Worker</a></li>
+    
+      <li><a href="Resque/Worker.html#method-i-work">#work &mdash; Resque::Worker</a></li>
     
       <li><a href="Resque/Worker.html#method-i-workers_in_pid">#workers_in_pid &mdash; Resque::Worker</a></li>
     

@@ -75,6 +75,8 @@
           
           <li><a href="#method-c-status_ids">::status_ids</a></li>
           
+          <li><a href="#method-i-paused-3F">#paused?</a></li>
+          
         </ul>
       </div>
       
@@ -176,7 +178,7 @@ info about ranges</p>
             
             <div class="method-source-code" id="clear-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 25</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clear</span>(<span class="ruby-identifier">range_start</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">range_end</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">status_ids</span>(<span class="ruby-identifier">range_start</span>, <span class="ruby-identifier">range_end</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">zrem</span>(<span class="ruby-identifier">set_key</span>, <span class="ruby-identifier">id</span>)
@@ -214,7 +216,7 @@ info about ranges</p>
             
             <div class="method-source-code" id="counter-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 40</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">counter</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-identifier">redis</span>[<span class="ruby-identifier">counter_key</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)].<span class="ruby-identifier">to_i</span>
 <span class="ruby-keyword">end</span></pre>
@@ -249,7 +251,7 @@ use a counter and call incr on it instead</p>
             
             <div class="method-source-code" id="counter_key-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 36</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">counter_key</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-node">&quot;#{counter}:#{uuid}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -282,7 +284,7 @@ use a counter and call incr on it instead</p>
             
             <div class="method-source-code" id="incr_counter-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 44</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 50</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">incr_counter</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-identifier">key</span> = <span class="ruby-identifier">counter_key</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-identifier">n</span> = <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">incr</span>(<span class="ruby-identifier">key</span>)
@@ -322,7 +324,7 @@ use a counter and call incr on it instead</p>
             
             <div class="method-source-code" id="status_ids-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 5</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">status_ids</span>(<span class="ruby-identifier">range_start</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">range_end</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">range_end</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">range_start</span>
     <span class="ruby-comment"># Because we want a reverse chronological order, we need to get a range starting</span>
@@ -351,6 +353,46 @@ use a counter and call incr on it instead</p>
 
       
       </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="paused-3F-method" class="method-detail ">
+          <a name="method-i-paused-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">paused?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>The STATUSES constant is frozen, so we’ll just manually add the paused?
+method here</p>
+            
+
+            
+            <div class="method-source-code" id="paused-3F-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">paused?</span>
+    <span class="ruby-keyword">self</span>[<span class="ruby-string">'status'</span>] <span class="ruby-operator">===</span> <span class="ruby-string">'paused'</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- paused-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- paused-3F-method -->
+
+      
+      </div><!-- public-instance-method-details -->
     
     </div><!-- 5Buntitled-5D -->
   

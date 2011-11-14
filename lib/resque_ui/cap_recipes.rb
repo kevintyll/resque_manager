@@ -68,7 +68,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "Gracefully kill a worker.  If the worker is working, it will finish before shutting down. arg: host=ip pid=pid"
     task :quit_worker, :roles => :resque do
       if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
-        puts 'You must enter the host and pid to kill..cap resque:quit host=ip pid=pid'
+        puts 'You must enter the host and pid to kill..cap resque:quit_worker host=ip pid=pid'
       else
         hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
         if RUBY_PLATFORM =~ /java/
@@ -79,6 +79,26 @@ Capistrano::Configuration.instance(:must_exist).load do
         else
           run("kill -QUIT #{ENV['pid']}", :hosts => hosts)
         end
+      end
+    end
+
+    desc "Pause all workers in a single process. arg: host=ip pid=pid"
+    task :pause_worker, :roles => :resque do
+      if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
+        puts 'You must enter the host and pid to kill..cap resque:pause_worker host=ip pid=pid'
+      else
+        hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
+        run("kill -USR2 #{ENV['pid']}", :hosts => hosts)
+      end
+    end
+
+    desc "Continue all workers in a single process that have been paused. arg: host=ip pid=pid"
+    task :continue_worker, :roles => :resque do
+      if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
+        puts 'You must enter the host and pid to kill..cap resque:continue_worker host=ip pid=pid'
+      else
+        hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
+        run("kill -CONT #{ENV['pid']}", :hosts => hosts)
       end
     end
 

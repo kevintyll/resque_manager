@@ -49,15 +49,16 @@ Display Process Status
 ----------------------
 
 Added the ability to display process status in the worker "Processing" column on the workers and working pages.
-To do this, yield the status message back in your perform method.
+To do this, yield the status message back in your perform method.  You should check that a block was sent. If you
+set Resque.inline = true in development, then the block is not passed.
 
     Class YourClass
 
       self.perform(arg)
       ...your code here
-      yield "Your status message"
+      yield "Your status message" if block_given?
       ...more code
-      yield "Another status message"
+      yield "Another status message" if block_given?
       ...more code
       end
     end
@@ -128,7 +129,7 @@ the chained job from the preceding job, you just need to pass {'uuid' => uuid} a
     end
 
 So now, the data_contribution worker and the single_record_loader workers will update the same status on the status page.
-You can call tick or set_status to add messages along the way too.
+You can call #tick or #set_status to add messages along the way too.
 
 You will want to override the completed method so that it isn't called until the very end of the entire process.
 
@@ -140,6 +141,94 @@ for different purposes.  We keep track of different validation issues for each r
 symbol to read the integer back.  The redis entries created by these methods all get cleaned up with a call to Resque::Status.clear(uuid)
 
 When you kill a job on the UI, it will kill all the workers in the chain.
+
+Pause a Worker
+--------------
+
+The workers page now has a button for every worker to pause that worker.
+
+### Regular Workers
+
+For workers that do not inherit from JobWithStatus, this will pause the worker, but not the job.  So if the worker is in
+the middle of a job when it is paused, it will finish it's process, but then will not pick anything else up off the queue.
+
+You can manually pause the processing though.
+
+yield, which is used to set the workers status, as described above, now returns the worker.
+
+    Class YourClass
+
+      self.perform(arg)
+      ...your code here
+      worker = yield "Your status message" if block_given?
+
+      if worker && worker.paused?
+          loop do
+            break unless worker.paused?
+            sleep 60
+          end
+        end
+      end
+
+      ...continue
+    end
+
+Remember to check that a block was sent. If you set Resque.inline = true in development, then the block is not passed.
+
+
+### JobWithStatus Workers
+
+For workers that do inherit from JobWithStatus or ChainedJobWithStatus, this will pause the worker, and will automatically pause the job it is processing
+on the next call to #tick.  The worker is also available to JobWithStatus so you can manually check it's status as well.
+
+    Class YourClass << Resque::JobWithStatus
+
+    def perform
+      ...your code here
+      tick "Retrieving file."  #You're process with pause here automatically and the status on the Status tab will be set to paused if the worker is paused.
+
+      #Alternatively, you have access to the worker, so you can pause the process yourself too.
+      if worker && worker.paused?
+          # There could be workers in a chained job still doing work.
+          loop do
+            pause! unless status.paused?
+            break unless worker.paused?
+            sleep 60
+          end
+          tick("Job resumed at #{Time.now}")
+        end
+
+      ...continue
+    end
+
+    This will only pause the work being processed by the worker that was paused.  If the job is paused by the call to #tick,
+    the job will sleep for 60 seconds before checking the status again.
+
+    You may have a series of ChainedJobWithStatus and you want all processing in the chain stopped.
+
+    Class YourClass << Resque::ChainedJobWithStatus
+
+    def perform
+      ...your code here
+      tick "Retrieving file."  #You're process with pause here automatically and the status on the Status tab will be set to paused if the worker is paused.
+
+      #Alternatively, you have access to the worker, so you can pause the process yourself too.
+      if (worker && worker.paused?) || status.paused?
+          # There could be workers in a chained job still doing work.
+          loop do
+            pause! unless status.paused?
+            break unless worker.paused?
+            sleep 60
+          end
+          tick("Job resumed at #{Time.now}")
+        end
+
+      ...continue
+    end
+
+    By looking at the status.paused? method too, this process will stop, even if it's worker has not been paused.
+    But be aware, if this worker does other jobs, it will not process anything else and it's queue could get backed up.
+    This is where pausing one worker, could affect other, unrelated workers and jobs from getting backed up as well.
 
 Throttle a Queue
 ----------------

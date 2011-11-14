@@ -1,5 +1,10 @@
 module Resque
   class Status
+    # The STATUSES constant is frozen, so we'll just manually add the paused? method here
+    def paused?
+        self['status'] === 'paused'
+    end
+
     # Return the <tt>num</tt> most recent status/job UUIDs in reverse chronological order.
     #override the gem to fix the ordering
     def self.status_ids(range_start = nil, range_end = nil)

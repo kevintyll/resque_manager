@@ -163,16 +163,80 @@
             
             <p>Attempts to perform the work represented by this job instance. Calls <a
 href="Job.html#method-i-perform">perform</a> on the class given in the
-payload with the arguments given in the payload. The worker is passed in so
-the status can be set for the UI to display.</p>
+payload with the arguments given in the payload. A block is sent so a
+message can be yielded back to be set in the worker.</p>
             
 
             
             <div class="method-source-code" id="perform-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/job.rb, line 7</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/job.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>
-  <span class="ruby-identifier">args</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">payload_class</span>.<span class="ruby-identifier">perform</span>(*<span class="ruby-identifier">args</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>.<span class="ruby-identifier">status</span> = <span class="ruby-identifier">status</span> } <span class="ruby-operator">:</span> <span class="ruby-identifier">payload_class</span>.<span class="ruby-identifier">perform</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>.<span class="ruby-identifier">status</span> = <span class="ruby-identifier">status</span> }
+  <span class="ruby-identifier">job</span> = <span class="ruby-identifier">payload_class</span>
+  <span class="ruby-identifier">job_args</span> = <span class="ruby-identifier">args</span> <span class="ruby-operator">||</span> []
+  <span class="ruby-identifier">job_was_performed</span> = <span class="ruby-keyword">false</span>
+
+  <span class="ruby-identifier">before_hooks</span> = <span class="ruby-constant">Plugin</span>.<span class="ruby-identifier">before_hooks</span>(<span class="ruby-identifier">job</span>)
+  <span class="ruby-identifier">around_hooks</span> = <span class="ruby-constant">Plugin</span>.<span class="ruby-identifier">around_hooks</span>(<span class="ruby-identifier">job</span>)
+  <span class="ruby-identifier">after_hooks</span> = <span class="ruby-constant">Plugin</span>.<span class="ruby-identifier">after_hooks</span>(<span class="ruby-identifier">job</span>)
+  <span class="ruby-identifier">failure_hooks</span> = <span class="ruby-constant">Plugin</span>.<span class="ruby-identifier">failure_hooks</span>(<span class="ruby-identifier">job</span>)
+
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-comment"># Execute before_perform hook. Abort the job gracefully if</span>
+    <span class="ruby-comment"># Resque::DontPerform is raised.</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">before_hooks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">hook</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">job</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">hook</span>, *<span class="ruby-identifier">job_args</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">DontPerform</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># Execute the job. Do it in an around_perform hook if available.</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">around_hooks</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">job</span>.<span class="ruby-identifier">perform</span>(*<span class="ruby-identifier">job_args</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>.<span class="ruby-identifier">status</span> = <span class="ruby-identifier">status</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">present?</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">job_was_performed</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># We want to nest all around_perform plugins, with the last one</span>
+      <span class="ruby-comment"># finally calling perform</span>
+      <span class="ruby-identifier">stack</span> = <span class="ruby-identifier">around_hooks</span>.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-keyword">nil</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">last_hook</span>, <span class="ruby-identifier">hook</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">last_hook</span>
+          <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-identifier">job</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">hook</span>, *<span class="ruby-identifier">job_args</span>) { <span class="ruby-identifier">last_hook</span>.<span class="ruby-identifier">call</span> }
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-identifier">job</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">hook</span>, *<span class="ruby-identifier">job_args</span>) <span class="ruby-keyword">do</span>
+              <span class="ruby-identifier">result</span> = <span class="ruby-identifier">job</span>.<span class="ruby-identifier">perform</span>(*<span class="ruby-identifier">job_args</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>.<span class="ruby-identifier">status</span> = <span class="ruby-identifier">status</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>
+              <span class="ruby-keyword">end</span>
+              <span class="ruby-identifier">job_was_performed</span> = <span class="ruby-keyword">true</span>
+              <span class="ruby-identifier">result</span>
+            <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">stack</span>.<span class="ruby-identifier">call</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># Execute after_perform hook</span>
+    <span class="ruby-identifier">after_hooks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">hook</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">job</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">hook</span>, *<span class="ruby-identifier">job_args</span>)
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># Return true if the job was performed</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">job_was_performed</span>
+
+      <span class="ruby-comment"># If an exception occurs during the job execution, look for an</span>
+      <span class="ruby-comment"># on_failure hook then re-raise.</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">failure_hooks</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">hook</span><span class="ruby-operator">|</span> <span class="ruby-identifier">job</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">hook</span>, <span class="ruby-identifier">e</span>, *<span class="ruby-identifier">job_args</span>) }
+    <span class="ruby-identifier">raise</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
             </div><!-- perform-source -->
             

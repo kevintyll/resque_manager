@@ -1,3 +1,9 @@
+== 3.2.0 2011-11-14
+
+*  Added the ability to pause workers from the UI.
+*  If the worker is processing a job, it will pause the job on the next call to tick.
+*  JobWithStatus class now exposed the worker so the job can manually inspect the worker's status if necessary.
+
 == 3.1.7 2011-11-03
 
 *  It seems that when jruby workers are started in server mode, they don't accept the -INT signal.

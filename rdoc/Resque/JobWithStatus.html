@@ -67,11 +67,17 @@
           
           <li><a href="#method-c-enqueue">::enqueue</a></li>
           
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-c-perform">::perform</a></li>
+          
           <li><a href="#method-i-counter">#counter</a></li>
           
           <li><a href="#method-i-incr_counter">#incr_counter</a></li>
           
           <li><a href="#method-i-name">#name</a></li>
+          
+          <li><a href="#method-i-pause-21">#pause!</a></li>
           
           <li><a href="#method-i-safe_perform-21">#safe_perform!</a></li>
           
@@ -151,6 +157,28 @@
       
 
       
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="worker-attribute-method" class="method-detail">
+          <a name="worker"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">worker</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
 
       <!-- Methods -->
       
@@ -180,7 +208,7 @@ with existing resque jobs.</p>
             
             <div class="method-source-code" id="enqueue-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 6</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">enqueue</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">uuid</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>.<span class="ruby-identifier">create</span> <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{self.name}: #{options.inspect}&quot;</span>
   <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">enqueue</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">uuid</span>, <span class="ruby-identifier">options</span>)
@@ -194,6 +222,85 @@ with existing resque jobs.</p>
 
           
         </div><!-- enqueue-method -->
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(uuid, worker, options = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Create a new instance with <tt>uuid</tt> and <tt>options</tt> OVERRIDE to
+add the worker attr</p>
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">uuid</span>, <span class="ruby-identifier">worker</span>, <span class="ruby-identifier">options</span> = {})
+  <span class="ruby-ivar">@uuid</span> = <span class="ruby-identifier">uuid</span>
+  <span class="ruby-ivar">@options</span> = <span class="ruby-identifier">options</span>
+  <span class="ruby-ivar">@worker</span> = <span class="ruby-identifier">worker</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+        <div id="perform-method" class="method-detail ">
+          <a name="method-c-perform"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">perform</span><span
+              class="method-args">(uuid=nil, options = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>This is the method called by <a href="Worker.html">Resque::Worker</a> when
+processing jobs. It creates a new instance of the job class and populates
+it with the uuid and options.</p>
+
+<p>You should not override this method, rather the <tt>perform</tt> instance
+method. OVERRIDE to pass the block in order to set the worker status,
+returns the worker object</p>
+            
+
+            
+            <div class="method-source-code" id="perform-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-identifier">uuid</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = {})
+  <span class="ruby-identifier">uuid</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>.<span class="ruby-identifier">generate_uuid</span>
+  <span class="ruby-identifier">worker</span> = <span class="ruby-keyword">yield</span>
+  <span class="ruby-identifier">instance</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">uuid</span>, <span class="ruby-identifier">worker</span>, <span class="ruby-identifier">options</span>)
+  <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">safe_perform!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span> }
+  <span class="ruby-identifier">instance</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- perform-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- perform-method -->
 
       
       </div><!-- public-class-method-details -->
@@ -221,7 +328,7 @@ with existing resque jobs.</p>
             
             <div class="method-source-code" id="counter-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 55</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 99</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">counter</span>(<span class="ruby-identifier">counter</span>)
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>.<span class="ruby-identifier">counter</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -254,7 +361,7 @@ with existing resque jobs.</p>
             
             <div class="method-source-code" id="incr_counter-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 51</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">incr_counter</span>(<span class="ruby-identifier">counter</span>)
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>.<span class="ruby-identifier">incr_counter</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -287,7 +394,7 @@ with existing resque jobs.</p>
             
             <div class="method-source-code" id="name-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 47</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 91</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
   <span class="ruby-node">&quot;#{self.class.name}: #{options.inspect}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -299,6 +406,42 @@ with existing resque jobs.</p>
 
           
         </div><!-- name-method -->
+
+      
+        <div id="pause-21-method" class="method-detail ">
+          <a name="method-i-pause-21"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">pause!</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Pause the current job, setting the status to ‘paused’</p>
+            
+
+            
+            <div class="method-source-code" id="pause-21-source">
+<pre>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pause!</span>
+  <span class="ruby-identifier">set_status</span>({
+                 <span class="ruby-string">'status'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'paused'</span>,
+                 <span class="ruby-string">'message'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{worker} paused at #{Time.now}&quot;</span>
+             })
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- pause-21-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- pause-21-method -->
 
       
         <div id="safe_perform-21-method" class="method-detail ">
@@ -323,11 +466,11 @@ work, it will set the status as failed and re-raise the error.</p>
             
             <div class="method-source-code" id="safe_perform-21-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 25</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">safe_perform!</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">should_kill?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">status</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">killed?</span>)
     <span class="ruby-identifier">set_status</span>({<span class="ruby-string">'status'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'working'</span>})
-    <span class="ruby-identifier">perform</span>
+    <span class="ruby-identifier">perform</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>  }
     <span class="ruby-identifier">kill!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">should_kill?</span>
     <span class="ruby-identifier">completed</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">completed?</span>
     <span class="ruby-identifier">on_success</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:on_success</span>)
@@ -377,10 +520,21 @@ This will kill the job if it has been added to the kill list with
             
             <div class="method-source-code" id="tick-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 16</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tick</span>(*<span class="ruby-identifier">messages</span>)
   <span class="ruby-identifier">kill!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">should_kill?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">killed?</span>
   <span class="ruby-identifier">set_status</span>({<span class="ruby-string">'status'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'working'</span>}, *<span class="ruby-identifier">messages</span>)
+  <span class="ruby-comment"># check to see if the worker doing the job has been paused, pause the job if so</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>
+    <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-comment"># Set the status to paused.</span>
+      <span class="ruby-comment"># May need to do this repeatedly because there could be workers in a chained job still doing work.</span>
+      <span class="ruby-identifier">pause!</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">paused?</span>
+      <span class="ruby-keyword">break</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>
+      <span class="ruby-identifier">sleep</span> <span class="ruby-value">60</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">set_status</span>({<span class="ruby-string">'status'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'working'</span>}, *<span class="ruby-identifier">messages</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">status</span>.<span class="ruby-identifier">completed?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">paused?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">killed?</span>)
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
             </div><!-- tick-source -->
             

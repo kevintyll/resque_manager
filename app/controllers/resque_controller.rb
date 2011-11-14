@@ -58,6 +58,18 @@ class ResqueController < ApplicationController
     redirect_to(:action => "workers")
   end
 
+  def pause_worker
+    worker = find_worker(params[:worker])
+    worker.pause if worker
+    redirect_to(:action => "workers")
+  end
+
+  def continue_worker
+    worker = find_worker(params[:worker])
+    worker.continue if worker
+    redirect_to(:action => "workers")
+  end
+
   def restart_worker
     worker = find_worker(params[:worker])
     worker.restart if worker

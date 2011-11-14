@@ -1,5 +1,8 @@
 module Resque
   class JobWithStatus
+
+    attr_reader :worker
+
     # Adds a job of type <tt>klass<tt> to the queue with <tt>options<tt>.
     # Returns the UUID of the job
     # override to pass actual parameters instead of a single hash, to make backward compatible with existing resque jobs.
@@ -16,6 +19,47 @@ module Resque
     def tick(*messages)
       kill! if should_kill? || status.killed?
       set_status({'status' => 'working'}, *messages)
+      # check to see if the worker doing the job has been paused, pause the job if so
+      if self.worker && self.worker.paused?
+        loop do
+          # Set the status to paused.
+          # May need to do this repeatedly because there could be workers in a chained job still doing work.
+          pause! unless status.paused?
+          break unless self.worker.paused?
+          sleep 60
+        end
+        set_status({'status' => 'working'}, *messages) unless status && (status.completed? || status.paused? || status.killed?)
+      end
+    end
+
+    # Pause the current job, setting the status to 'paused'
+    def pause!
+      set_status({
+                     'status' => 'paused',
+                     'message' => "#{worker} paused at #{Time.now}"
+                 })
+    end
+
+    # Create a new instance with <tt>uuid</tt> and <tt>options</tt>
+    # OVERRIDE to add the worker attr
+    def initialize(uuid, worker, options = {})
+      @uuid = uuid
+      @options = options
+      @worker = worker
+    end
+
+    # This is the method called by Resque::Worker when processing jobs. It
+    # creates a new instance of the job class and populates it with the uuid and
+    # options.
+    #
+    # You should not override this method, rather the <tt>perform</tt> instance method.
+    # OVERRIDE to pass the block in order to set the worker status, returns the worker object
+    def self.perform(uuid=nil, options = {})
+      uuid ||= Resque::Status.generate_uuid
+      worker = yield
+      instance = new(uuid, worker, options)
+      instance.safe_perform! { |status| yield status if block_given? }
+      instance
     end
 
     # Run by the Resque::Worker when processing this job. It wraps the <tt>perform</tt>
@@ -25,7 +69,7 @@ module Resque
     def safe_perform!
       unless should_kill? || (status && status.killed?)
         set_status({'status' => 'working'})
-        perform
+        perform { |status| yield status if block_given?  }
         kill! if should_kill?
         completed unless status && status.completed?
         on_success if respond_to?(:on_success)
