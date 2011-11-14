@@ -56,7 +56,7 @@ module Resque
     # OVERRIDE to pass the block in order to set the worker status, returns the worker object
     def self.perform(uuid=nil, options = {})
       uuid ||= Resque::Status.generate_uuid
-      worker = yield
+      worker = yield if block_given?
       instance = new(uuid, worker, options)
       instance.safe_perform! { |status| yield status if block_given? }
       instance

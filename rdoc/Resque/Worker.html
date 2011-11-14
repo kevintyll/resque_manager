@@ -514,7 +514,7 @@ the thread and queue portion</p>
             
             <div class="method-source-code" id="pause_key-source">
 <pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 25</span>
+<span class="ruby-comment"># File lib/resque_ui/overrides/resque/worker.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pause_key</span>
   <span class="ruby-identifier">key</span> = <span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">':'</span>)
   <span class="ruby-node">&quot;worker:#{key.first}:#{key.second}:all_workers:paused&quot;</span>

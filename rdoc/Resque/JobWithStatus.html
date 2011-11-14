@@ -288,7 +288,7 @@ returns the worker object</p>
 <span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 57</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-identifier">uuid</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">uuid</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>.<span class="ruby-identifier">generate_uuid</span>
-  <span class="ruby-identifier">worker</span> = <span class="ruby-keyword">yield</span>
+  <span class="ruby-identifier">worker</span> = <span class="ruby-keyword">yield</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
   <span class="ruby-identifier">instance</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">uuid</span>, <span class="ruby-identifier">worker</span>, <span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">safe_perform!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span> }
   <span class="ruby-identifier">instance</span>
