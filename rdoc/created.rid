@@ -1,4 +1,4 @@
-Mon, 14 Nov 2011 16:06:59 -0500
+Tue, 15 Nov 2011 13:24:38 -0500
 README.markdown	Mon, 14 Nov 2011 15:34:09 -0500
 lib/resque_ui.rb	Thu, 10 Nov 2011 11:09:00 -0500
 lib/resque_ui/cap.rb	Wed, 14 Sep 2011 16:39:33 -0400
@@ -8,5 +8,5 @@ lib/resque_ui/overrides/resque/resque.rb	Thu, 15 Sep 2011 12:15:57 -0400
 lib/resque_ui/overrides/resque/worker.rb	Mon, 14 Nov 2011 15:41:51 -0500
 lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb	Thu, 15 Sep 2011 11:57:02 -0400
 lib/resque_ui/overrides/resque_status/chained_job_with_status.rb	Thu, 15 Sep 2011 12:06:19 -0400
-lib/resque_ui/overrides/resque_status/job_with_status.rb	Mon, 14 Nov 2011 15:58:20 -0500
+lib/resque_ui/overrides/resque_status/job_with_status.rb	Tue, 15 Nov 2011 12:14:57 -0500
 lib/resque_ui/overrides/resque_status/status.rb	Mon, 14 Nov 2011 15:41:51 -0500

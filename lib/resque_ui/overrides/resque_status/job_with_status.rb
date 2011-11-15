@@ -42,7 +42,7 @@ module Resque
 
     # Create a new instance with <tt>uuid</tt> and <tt>options</tt>
     # OVERRIDE to add the worker attr
-    def initialize(uuid, worker, options = {})
+    def initialize(uuid, worker = nil, options = {})
       @uuid = uuid
       @options = options
       @worker = worker

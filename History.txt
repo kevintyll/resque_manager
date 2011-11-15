@@ -1,3 +1,7 @@
+== 3.2.2 2011-11-15
+
+*  Initialize the worker to nil.
+
 == 3.2.1 2011-11-14
 
 *  I know that was in there before.

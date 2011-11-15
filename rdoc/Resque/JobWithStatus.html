@@ -230,7 +230,7 @@ with existing resque jobs.</p>
           
           <div class="method-heading">
             <span class="method-name">new</span><span
-              class="method-args">(uuid, worker, options = {})</span>
+              class="method-args">(uuid, worker = nil, options = {})</span>
             <span class="method-click-advice">click to toggle source</span>
           </div>
           
@@ -245,7 +245,7 @@ add the worker attr</p>
             <div class="method-source-code" id="new-source">
 <pre>
 <span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/job_with_status.rb, line 45</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">uuid</span>, <span class="ruby-identifier">worker</span>, <span class="ruby-identifier">options</span> = {})
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">uuid</span>, <span class="ruby-identifier">worker</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-ivar">@uuid</span> = <span class="ruby-identifier">uuid</span>
   <span class="ruby-ivar">@options</span> = <span class="ruby-identifier">options</span>
   <span class="ruby-ivar">@worker</span> = <span class="ruby-identifier">worker</span>
