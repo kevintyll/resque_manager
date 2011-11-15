@@ -1,3 +1,7 @@
+== 3.2.3 2011-11-15
+
+*  Fixes resque-cleaner UI bug.  It was always showing Just now for when the job was retried.
+
 == 3.2.2 2011-11-15
 
 *  Initialize the worker to nil.
