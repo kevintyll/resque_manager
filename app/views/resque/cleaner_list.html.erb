@@ -89,7 +89,7 @@
             <dd><code><%= job['exception'] %></code></dd>
             <dt>Error</dt>
             <dd class='error'>
-              <% if job['backtrace'] %>
+              <% if job['backtrace'].present? %>
                 <a href="#" class="backtrace"><%= h(job['error']) %></a>
                 <pre style='display:none'><%= job['backtrace'].join("\n").html_safe %></pre>
               <% else %>

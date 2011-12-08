@@ -1,3 +1,8 @@
+== 3.2.4 2011-12-08
+
+*  Override the filter_backtrace method for the redis backend failure object introduced in resque 1.18.0.
+   Filter needs to be different for resque_ui, otherwise backtrace is always an empty array on the cleaner page.
+
 == 3.2.3 2011-11-15
 
 *  Fixes resque-cleaner UI bug.  It was always showing Just now for when the job was retried.

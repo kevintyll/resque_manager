@@ -1,184 +1,174 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+
+<html>
 <head>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-  <title>Class: Resque::Status</title>
+<title>Class: Resque::Status</title>
 
-  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
-  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
 
-</head>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
 <body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
 
-  <div id="metadata">
-    <div id="home-metadata">
-      <div id="home-section" class="section">
-        <h3 class="section-header">
-          <a href="../index.html">Home</a>
-          <a href="../index.html#classes">Classes</a>
-          <a href="../index.html#methods">Methods</a>
-        </h3>
-      </div>
-    </div>
 
-    <div id="file-metadata">
-      <div id="file-list-section" class="section">
-        <h3 class="section-header">In Files</h3>
-        <div class="section-body">
-          <ul>
-          
-            <li><a href="../lib/resque_ui/overrides/resque_status/status_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
-              class="thickbox" title="lib/resque_ui/overrides/resque_status/status.rb">lib/resque_ui/overrides/resque_status/status.rb</a></li>
-          
-          </ul>
-        </div>
-      </div>
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
 
-      
-    </div>
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
 
-    <div id="class-metadata">
-      
-      <!-- Parent Class -->
-      <div id="parent-class-section" class="section">
-        <h3 class="section-header">Parent</h3>
-        
-        <p class="link"><a href="../Object.html">Object</a></p>
-        
-      </div>
-      
 
-      
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/resque_ui/overrides/resque_status/status.rb
+  </ul>
+</nav>
 
-      
-
-      
-      <!-- Method Quickref -->
-      <div id="method-list-section" class="section">
-        <h3 class="section-header">Methods</h3>
-        <ul class="link-list">
-          
-          <li><a href="#method-c-clear">::clear</a></li>
-          
-          <li><a href="#method-c-counter">::counter</a></li>
-          
-          <li><a href="#method-c-counter_key">::counter_key</a></li>
-          
-          <li><a href="#method-c-incr_counter">::incr_counter</a></li>
-          
-          <li><a href="#method-c-status_ids">::status_ids</a></li>
-          
-          <li><a href="#method-i-paused-3F">#paused?</a></li>
-          
-        </ul>
-      </div>
-      
-
-      
-    </div>
-
-    <div id="project-metadata">
-      
-      
-
-      <div id="classindex-section" class="section project-section">
-        <h3 class="section-header">Class/Module Index
-          <span class="search-toggle"><img src="../images/find.png"
-            height="16" width="16" alt="[+]"
-            title="show/hide quicksearch" /></span></h3>
-        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
-        <fieldset>
-          <legend>Quicksearch</legend>
-          <input type="text" name="quicksearch" value=""
-            class="quicksearch-field" />
-        </fieldset>
-        </form>
-
-        <ul class="link-list">
-        
-          <li><a href="../Resque.html">Resque</a></li>
-        
-          <li><a href="../Resque/ChainedJobWithStatus.html">Resque::ChainedJobWithStatus</a></li>
-        
-          <li><a href="../Resque/Job.html">Resque::Job</a></li>
-        
-          <li><a href="../Resque/JobWithStatus.html">Resque::JobWithStatus</a></li>
-        
-          <li><a href="../Resque/Status.html">Resque::Status</a></li>
-        
-          <li><a href="../Resque/Worker.html">Resque::Worker</a></li>
-        
-          <li><a href="../ResqueUi.html">ResqueUi</a></li>
-        
-          <li><a href="../ResqueUi/Cap.html">ResqueUi::Cap</a></li>
-        
-          <li><a href="../ResqueUi/Engine.html">ResqueUi::Engine</a></li>
-        
-          <li><a href="../Object.html">Object</a></li>
-        
-          <li><a href="../ResqueScheduler.html">ResqueScheduler</a></li>
-        
-        </ul>
-        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
-      </div>
-
-      
-    </div>
+    
   </div>
 
-  <div id="documentation">
-    <h1 class="class">Resque::Status</h1>
-
-    <div id="description" class="description">
-      
-    </div><!-- description -->
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
 
     
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-c-clear">::clear</a>
     
-    <div id="5Buntitled-5D" class="documentation-section">
-      
+    <li><a href="#method-c-counter">::counter</a>
+    
+    <li><a href="#method-c-counter_key">::counter_key</a>
+    
+    <li><a href="#method-c-incr_counter">::incr_counter</a>
+    
+    <li><a href="#method-c-status_ids">::status_ids</a>
+    
+    <li><a href="#method-i-paused-3F">#paused?</a>
+    
+  </ul>
+</nav>
 
-      
+  </div>
 
-      
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
 
-      
+  <ul class="link-list">
+  
+    <li><a href="../Resque.html">Resque</a>
+  
+    <li><a href="../Resque/ChainedJobWithStatus.html">Resque::ChainedJobWithStatus</a>
+  
+    <li><a href="../Resque/Failure.html">Resque::Failure</a>
+  
+    <li><a href="../Resque/Failure/Redis.html">Resque::Failure::Redis</a>
+  
+    <li><a href="../Resque/Job.html">Resque::Job</a>
+  
+    <li><a href="../Resque/JobWithStatus.html">Resque::JobWithStatus</a>
+  
+    <li><a href="../Resque/Status.html">Resque::Status</a>
+  
+    <li><a href="../Resque/Worker.html">Resque::Worker</a>
+  
+    <li><a href="../ResqueUi.html">ResqueUi</a>
+  
+    <li><a href="../ResqueUi/Cap.html">ResqueUi::Cap</a>
+  
+    <li><a href="../ResqueUi/Engine.html">ResqueUi::Engine</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../ResqueScheduler.html">ResqueScheduler</a>
+  
+  </ul>
+</nav>
 
-      <!-- Methods -->
-      
-      <div id="public-class-method-details" class="method-section section">
-        <h3 class="section-header">Public Class Methods</h3>
+  </div>
+</nav>
 
-      
-        <div id="clear-method" class="method-detail ">
-          <a name="method-c-clear"></a>
+<div id="documentation">
+  <h1 class="class">class Resque::Status</h1>
 
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-clear" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear</span><span
+            class="method-args">(range_start = nil, range_end = nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
           
-          <div class="method-heading">
-            <span class="method-name">clear</span><span
-              class="method-args">(range_start = nil, range_end = nil)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>clear statuses from redis passing an optional range. See `statuses` for
+          <p>clear statuses from redis passing an optional range. See `statuses` for
 info about ranges</p>
-            
+          
 
-            
-            <div class="method-source-code" id="clear-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 30</span>
+          
+          <div class="method-source-code" id="clear-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clear</span>(<span class="ruby-identifier">range_start</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">range_end</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">status_ids</span>(<span class="ruby-identifier">range_start</span>, <span class="ruby-identifier">range_end</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">zrem</span>(<span class="ruby-identifier">set_key</span>, <span class="ruby-identifier">id</span>)
@@ -187,104 +177,95 @@ info about ranges</p>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- clear-source -->
-            
-          </div>
+          </div><!-- clear-source -->
+          
+        </div>
 
+        
+
+        
+      </div><!-- clear-method -->
+
+    
+      <div id="method-c-counter" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">counter</span><span
+            class="method-args">(counter, uuid)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
           
 
           
-        </div><!-- clear-method -->
-
-      
-        <div id="counter-method" class="method-detail ">
-          <a name="method-c-counter"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">counter</span><span
-              class="method-args">(counter, uuid)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="counter-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 45</span>
+          <div class="method-source-code" id="counter-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 45</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">counter</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-identifier">redis</span>[<span class="ruby-identifier">counter_key</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)].<span class="ruby-identifier">to_i</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- counter-source -->
-            
-          </div>
-
+          </div><!-- counter-source -->
           
+        </div>
 
+        
+
+        
+      </div><!-- counter-method -->
+
+    
+      <div id="method-c-counter_key" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">counter_key</span><span
+            class="method-args">(counter, uuid)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
           
-        </div><!-- counter-method -->
-
-      
-        <div id="counter_key-method" class="method-detail ">
-          <a name="method-c-counter_key"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">counter_key</span><span
-              class="method-args">(counter, uuid)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>If multiple workers are running at once and you need an incrementer, you
+          <p>If multiple workers are running at once and you need an incrementer, you
 can’t use the status’ num attribute because of race conditions. You can
 use a counter and call incr on it instead</p>
-            
+          
 
-            
-            <div class="method-source-code" id="counter_key-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 41</span>
+          
+          <div class="method-source-code" id="counter_key-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 41</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">counter_key</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-node">&quot;#{counter}:#{uuid}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- counter_key-source -->
-            
-          </div>
+          </div><!-- counter_key-source -->
+          
+        </div>
 
+        
+
+        
+      </div><!-- counter_key-method -->
+
+    
+      <div id="method-c-incr_counter" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">incr_counter</span><span
+            class="method-args">(counter, uuid)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
           
 
           
-        </div><!-- counter_key-method -->
-
-      
-        <div id="incr_counter-method" class="method-detail ">
-          <a name="method-c-incr_counter"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">incr_counter</span><span
-              class="method-args">(counter, uuid)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="incr_counter-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 49</span>
+          <div class="method-source-code" id="incr_counter-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">incr_counter</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-identifier">key</span> = <span class="ruby-identifier">counter_key</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">uuid</span>)
   <span class="ruby-identifier">n</span> = <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">incr</span>(<span class="ruby-identifier">key</span>)
@@ -293,38 +274,35 @@ use a counter and call incr on it instead</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">n</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- incr_counter-source -->
-            
-          </div>
-
+          </div><!-- incr_counter-source -->
           
+        </div>
 
+        
+
+        
+      </div><!-- incr_counter-method -->
+
+    
+      <div id="method-c-status_ids" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">status_ids</span><span
+            class="method-args">(range_start = nil, range_end = nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
           
-        </div><!-- incr_counter-method -->
-
-      
-        <div id="status_ids-method" class="method-detail ">
-          <a name="method-c-status_ids"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">status_ids</span><span
-              class="method-args">(range_start = nil, range_end = nil)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <pre>Return the &lt;tt&gt;num&lt;/tt&gt; most recent status/job UUIDs in reverse chronological order.</pre>
+          <pre>Return the &lt;tt&gt;num&lt;/tt&gt; most recent status/job UUIDs in reverse chronological order.</pre>
 
 <p>override the gem to fix the ordering</p>
-            
+          
 
-            
-            <div class="method-source-code" id="status_ids-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 10</span>
+          
+          <div class="method-source-code" id="status_ids-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">status_ids</span>(<span class="ruby-identifier">range_start</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">range_end</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">range_end</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">range_start</span>
     <span class="ruby-comment"># Because we want a reverse chronological order, we need to get a range starting</span>
@@ -342,69 +320,63 @@ use a counter and call incr on it instead</p>
     (<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">zrange</span>(<span class="ruby-identifier">set_key</span>, <span class="ruby-operator">-</span>(<span class="ruby-identifier">range_end</span>.<span class="ruby-identifier">abs</span>), <span class="ruby-operator">-</span>(<span class="ruby-identifier">range_start</span>.<span class="ruby-identifier">abs</span>)) <span class="ruby-operator">||</span> []).<span class="ruby-identifier">reverse</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- status_ids-source -->
-            
-          </div>
-
+          </div><!-- status_ids-source -->
           
+        </div>
 
-          
-        </div><!-- status_ids-method -->
+        
 
-      
-      </div><!-- public-class-method-details -->
+        
+      </div><!-- status_ids-method -->
+
     
-      <div id="public-instance-method-details" class="method-section section">
-        <h3 class="section-header">Public Instance Methods</h3>
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
 
-      
-        <div id="paused-3F-method" class="method-detail ">
-          <a name="method-i-paused-3F"></a>
+    
+      <div id="method-i-paused-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">paused?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
           
-          <div class="method-heading">
-            <span class="method-name">paused?</span><span
-              class="method-args">()</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>The STATUSES constant is frozen, so we’ll just manually add the paused?
+          <p>The STATUSES constant is frozen, so we’ll just manually add the paused?
 method here</p>
-            
+          
 
-            
-            <div class="method-source-code" id="paused-3F-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 4</span>
+          
+          <div class="method-source-code" id="paused-3F-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/status.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">paused?</span>
     <span class="ruby-keyword">self</span>[<span class="ruby-string">'status'</span>] <span class="ruby-operator">===</span> <span class="ruby-string">'paused'</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- paused-3F-source -->
-            
-          </div>
-
+          </div><!-- paused-3F-source -->
           
+        </div>
 
-          
-        </div><!-- paused-3F-method -->
+        
 
-      
-      </div><!-- public-instance-method-details -->
+        
+      </div><!-- paused-3F-method -->
+
     
-    </div><!-- 5Buntitled-5D -->
+    </section><!-- public-instance-method-details -->
   
+  </section><!-- 5Buntitled-5D -->
 
-  </div><!-- documentation -->
+</div><!-- documentation -->
 
-  <div id="validator-badges">
-    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
-    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
-      Rdoc Generator</a> 2</small>.</p>
-  </div>
 
-</body>
-</html>
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
 

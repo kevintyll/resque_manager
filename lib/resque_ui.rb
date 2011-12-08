@@ -3,6 +3,7 @@ require 'resque_ui/cap'
 require 'resque_ui/overrides/resque/worker'
 require 'resque_ui/overrides/resque/resque'
 require 'resque_ui/overrides/resque/job'
+require 'resque_ui/overrides/resque/failure/redis'
 if Resque.respond_to? :schedule
   require 'resque_scheduler/tasks'
   require 'resque_ui/overrides/resque_scheduler/resque_scheduler'

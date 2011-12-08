@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{resque_ui}
-  s.version = "3.2.3"
+  s.version = "3.2.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Kevin Tyll}]
-  s.date = %q{2011-11-15}
+  s.date = %q{2011-12-08}
   s.description = %q{A Rails UI for Resque for managing workers, failures and schedules.}
   s.email = %q{kevintyll@gmail.com}
   s.extra_rdoc_files = [
@@ -58,6 +58,7 @@ Gem::Specification.new do |s|
     "lib/resque_ui.rb",
     "lib/resque_ui/cap.rb",
     "lib/resque_ui/cap_recipes.rb",
+    "lib/resque_ui/overrides/resque/failure/redis.rb",
     "lib/resque_ui/overrides/resque/job.rb",
     "lib/resque_ui/overrides/resque/resque.rb",
     "lib/resque_ui/overrides/resque/worker.rb",

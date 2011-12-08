@@ -1,177 +1,167 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+
+<html>
 <head>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-  <title>Class: Resque::ChainedJobWithStatus</title>
+<title>Class: Resque::ChainedJobWithStatus</title>
 
-  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
-  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
 
-</head>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
 <body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
 
-  <div id="metadata">
-    <div id="home-metadata">
-      <div id="home-section" class="section">
-        <h3 class="section-header">
-          <a href="../index.html">Home</a>
-          <a href="../index.html#classes">Classes</a>
-          <a href="../index.html#methods">Methods</a>
-        </h3>
-      </div>
-    </div>
 
-    <div id="file-metadata">
-      <div id="file-list-section" class="section">
-        <h3 class="section-header">In Files</h3>
-        <div class="section-body">
-          <ul>
-          
-            <li><a href="../lib/resque_ui/overrides/resque_status/chained_job_with_status_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
-              class="thickbox" title="lib/resque_ui/overrides/resque_status/chained_job_with_status.rb">lib/resque_ui/overrides/resque_status/chained_job_with_status.rb</a></li>
-          
-          </ul>
-        </div>
-      </div>
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
 
-      
-    </div>
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
 
-    <div id="class-metadata">
-      
-      <!-- Parent Class -->
-      <div id="parent-class-section" class="section">
-        <h3 class="section-header">Parent</h3>
-        
-        <p class="link">JobWithStatus</p>
-        
-      </div>
-      
 
-      
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/resque_ui/overrides/resque_status/chained_job_with_status.rb
+  </ul>
+</nav>
 
-      
-
-      
-      <!-- Method Quickref -->
-      <div id="method-list-section" class="section">
-        <h3 class="section-header">Methods</h3>
-        <ul class="link-list">
-          
-          <li><a href="#method-c-enqueue">::enqueue</a></li>
-          
-          <li><a href="#method-i-completed">#completed</a></li>
-          
-          <li><a href="#method-i-name">#name</a></li>
-          
-        </ul>
-      </div>
-      
-
-      
-    </div>
-
-    <div id="project-metadata">
-      
-      
-
-      <div id="classindex-section" class="section project-section">
-        <h3 class="section-header">Class/Module Index
-          <span class="search-toggle"><img src="../images/find.png"
-            height="16" width="16" alt="[+]"
-            title="show/hide quicksearch" /></span></h3>
-        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
-        <fieldset>
-          <legend>Quicksearch</legend>
-          <input type="text" name="quicksearch" value=""
-            class="quicksearch-field" />
-        </fieldset>
-        </form>
-
-        <ul class="link-list">
-        
-          <li><a href="../Resque.html">Resque</a></li>
-        
-          <li><a href="../Resque/ChainedJobWithStatus.html">Resque::ChainedJobWithStatus</a></li>
-        
-          <li><a href="../Resque/Job.html">Resque::Job</a></li>
-        
-          <li><a href="../Resque/JobWithStatus.html">Resque::JobWithStatus</a></li>
-        
-          <li><a href="../Resque/Status.html">Resque::Status</a></li>
-        
-          <li><a href="../Resque/Worker.html">Resque::Worker</a></li>
-        
-          <li><a href="../ResqueUi.html">ResqueUi</a></li>
-        
-          <li><a href="../ResqueUi/Cap.html">ResqueUi::Cap</a></li>
-        
-          <li><a href="../ResqueUi/Engine.html">ResqueUi::Engine</a></li>
-        
-          <li><a href="../Object.html">Object</a></li>
-        
-          <li><a href="../ResqueScheduler.html">ResqueScheduler</a></li>
-        
-        </ul>
-        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
-      </div>
-
-      
-    </div>
+    
   </div>
 
-  <div id="documentation">
-    <h1 class="class">Resque::ChainedJobWithStatus</h1>
-
-    <div id="description" class="description">
-      
-    </div><!-- description -->
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">JobWithStatus
+  
+</nav>
 
     
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-c-enqueue">::enqueue</a>
     
-    <div id="5Buntitled-5D" class="documentation-section">
-      
+    <li><a href="#method-i-completed">#completed</a>
+    
+    <li><a href="#method-i-name">#name</a>
+    
+  </ul>
+</nav>
 
-      
+  </div>
 
-      
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
 
-      
+  <ul class="link-list">
+  
+    <li><a href="../Resque.html">Resque</a>
+  
+    <li><a href="../Resque/ChainedJobWithStatus.html">Resque::ChainedJobWithStatus</a>
+  
+    <li><a href="../Resque/Failure.html">Resque::Failure</a>
+  
+    <li><a href="../Resque/Failure/Redis.html">Resque::Failure::Redis</a>
+  
+    <li><a href="../Resque/Job.html">Resque::Job</a>
+  
+    <li><a href="../Resque/JobWithStatus.html">Resque::JobWithStatus</a>
+  
+    <li><a href="../Resque/Status.html">Resque::Status</a>
+  
+    <li><a href="../Resque/Worker.html">Resque::Worker</a>
+  
+    <li><a href="../ResqueUi.html">ResqueUi</a>
+  
+    <li><a href="../ResqueUi/Cap.html">ResqueUi::Cap</a>
+  
+    <li><a href="../ResqueUi/Engine.html">ResqueUi::Engine</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../ResqueScheduler.html">ResqueScheduler</a>
+  
+  </ul>
+</nav>
 
-      <!-- Methods -->
-      
-      <div id="public-class-method-details" class="method-section section">
-        <h3 class="section-header">Public Class Methods</h3>
+  </div>
+</nav>
 
-      
-        <div id="enqueue-method" class="method-detail ">
-          <a name="method-c-enqueue"></a>
+<div id="documentation">
+  <h1 class="class">class Resque::ChainedJobWithStatus</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-enqueue" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enqueue</span><span
+            class="method-args">(klass, options = {})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
 
           
-          <div class="method-heading">
-            <span class="method-name">enqueue</span><span
-              class="method-args">(klass, options = {})</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="enqueue-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/chained_job_with_status.rb, line 15</span>
+          <div class="method-source-code" id="enqueue-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/chained_job_with_status.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">enqueue</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-comment">#tie this job to the status of the calling job</span>
   <span class="ruby-identifier">opts</span> = <span class="ruby-constant">HashWithIndifferentAccess</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">options</span>)
@@ -180,42 +170,39 @@
   <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">enqueue</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">uuid</span>, <span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">uuid</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- enqueue-source -->
-            
-          </div>
-
+          </div><!-- enqueue-source -->
           
+        </div>
 
-          
-        </div><!-- enqueue-method -->
+        
 
-      
-      </div><!-- public-class-method-details -->
+        
+      </div><!-- enqueue-method -->
+
     
-      <div id="public-instance-method-details" class="method-section section">
-        <h3 class="section-header">Public Instance Methods</h3>
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
 
-      
-        <div id="completed-method" class="method-detail ">
-          <a name="method-i-completed"></a>
+    
+      <div id="method-i-completed" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">completed</span><span
+            class="method-args">(*messages)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
 
           
-          <div class="method-heading">
-            <span class="method-name">completed</span><span
-              class="method-args">(*messages)</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="completed-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/chained_job_with_status.rb, line 7</span>
+          <div class="method-source-code" id="completed-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/chained_job_with_status.rb, line 7</span>
     <span class="ruby-keyword">def</span> <span class="ruby-identifier">completed</span>(*<span class="ruby-identifier">messages</span>)
       <span class="ruby-keyword">super</span>(*<span class="ruby-identifier">messages</span>)
       <span class="ruby-comment"># &quot;You must override this method to provide your own logic of when to actually call complete.&quot;</span>
@@ -223,62 +210,56 @@
 <span class="ruby-comment">#        super</span>
 <span class="ruby-comment">#      end</span>
     <span class="ruby-keyword">end</span></pre>
-            </div><!-- completed-source -->
-            
-          </div>
+          </div><!-- completed-source -->
+          
+        </div>
 
+        
+
+        
+      </div><!-- completed-method -->
+
+    
+      <div id="method-i-name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">name</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
           
 
           
-        </div><!-- completed-method -->
-
-      
-        <div id="name-method" class="method-detail ">
-          <a name="method-i-name"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">name</span><span
-              class="method-args">()</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            
-            
-
-            
-            <div class="method-source-code" id="name-source">
-<pre>
-<span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/chained_job_with_status.rb, line 3</span>
+          <div class="method-source-code" id="name-source">
+            <pre><span class="ruby-comment"># File lib/resque_ui/overrides/resque_status/chained_job_with_status.rb, line 3</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
   <span class="ruby-identifier">status</span>.<span class="ruby-identifier">name</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
-            </div><!-- name-source -->
-            
-          </div>
-
+          </div><!-- name-source -->
           
+        </div>
 
-          
-        </div><!-- name-method -->
+        
 
-      
-      </div><!-- public-instance-method-details -->
+        
+      </div><!-- name-method -->
+
     
-    </div><!-- 5Buntitled-5D -->
+    </section><!-- public-instance-method-details -->
   
+  </section><!-- 5Buntitled-5D -->
 
-  </div><!-- documentation -->
+</div><!-- documentation -->
 
-  <div id="validator-badges">
-    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
-    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
-      Rdoc Generator</a> 2</small>.</p>
-  </div>
 
-</body>
-</html>
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
 
