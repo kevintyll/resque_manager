@@ -443,11 +443,11 @@ job’s work, it will set the status as failed and re-raise the error.</p>
     <span class="ruby-identifier">on_success</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:on_success</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Killed</span>
-  <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Job #{self} Killed at #{Time.now}&quot;</span>
+  <span class="ruby-identifier">Rails.logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Job #{self} Killed at #{Time.now}&quot;</span>
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>.<span class="ruby-identifier">killed</span>(<span class="ruby-identifier">uuid</span>)
   <span class="ruby-identifier">on_killed</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:on_killed</span>)
 <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
-  <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-identifier">Rails.logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-identifier">e</span>
   <span class="ruby-identifier">failed</span>(<span class="ruby-node">&quot;The task failed because of an error: #{e}&quot;</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:on_failure</span>)
     <span class="ruby-identifier">on_failure</span>(<span class="ruby-identifier">e</span>)

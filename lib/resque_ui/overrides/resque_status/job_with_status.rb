@@ -55,7 +55,7 @@ module Resque
     # You should not override this method, rather the <tt>perform</tt> instance method.
     # OVERRIDE to pass the block in order to set the worker status, returns the worker object
     def self.perform(uuid=nil, options = {})
-      uuid ||= Resque::Status.generate_uuid
+      uuid ||= Resque::Plugins::Status::Hash.generate_uuid
       worker = yield if block_given?
       instance = new(uuid, worker, options)
       instance.safe_perform! { |status| yield status if block_given? }
@@ -75,11 +75,11 @@ module Resque
         on_success if respond_to?(:on_success)
       end
     rescue Killed
-      logger.info "Job #{self} Killed at #{Time.now}"
+      Rails.logger.info "Job #{self} Killed at #{Time.now}"
       Resque::Status.killed(uuid)
       on_killed if respond_to?(:on_killed)
     rescue => e
-      logger.error e
+      Rails.logger.error e
       failed("The task failed because of an error: #{e}")
       if respond_to?(:on_failure)
         on_failure(e)

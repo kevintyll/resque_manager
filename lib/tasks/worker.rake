@@ -33,7 +33,7 @@ namespace :resque do
           worker.work(ENV['INTERVAL'] || 5) # interval, will block
         rescue Exception => e
           puts "********** e.message = " + e.message.inspect
-          RAILS_DEFAULT_LOGGER.info "********** e.message = " + e.message.inspect
+          Rails.logger.info "********** e.message = " + e.message.inspect
         end
       end
     end

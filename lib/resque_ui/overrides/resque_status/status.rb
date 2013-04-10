@@ -11,7 +11,7 @@ module Resque
       unless range_end && range_start
         # Because we want a reverse chronological order, we need to get a range starting
         # by the higest negative number.
-        redis.zrevrange(set_key, 0, -1) || []
+        Resque.redis.zrevrange(set_key, 0, -1) || []
       else
         # Because we want a reverse chronological order, we need to get a range starting
         # by the higest negative number. The ordering is transparent from the API user's
@@ -21,7 +21,7 @@ module Resque
         else
           range_start += 1
         end
-        (redis.zrange(set_key, -(range_end.abs), -(range_start.abs)) || []).reverse
+        (Resque.redis.zrange(set_key, -(range_end.abs), -(range_start.abs)) || []).reverse
       end
     end
 
@@ -29,7 +29,7 @@ module Resque
     # about ranges
     def self.clear(range_start = nil, range_end = nil)
       status_ids(range_start, range_end).each do |id|
-        redis.zrem(set_key, id)
+        Resque.redis.zrem(set_key, id)
         Resque.redis.keys("*#{id}").each do |key|
           Resque.redis.del(key)
         end
@@ -48,9 +48,9 @@ module Resque
 
     def self.incr_counter(counter, uuid)
       key = counter_key(counter, uuid)
-      n = redis.incr(key)
-      if expire_in
-        redis.expire(key, expire_in)
+      n = Resque.redis.incr(key)
+      if Resque::Plugins::Status::Hash.expire_in
+        Resque.redis.expire(key, Resque::Plugins::Status::Hash.expire_in)
       end
       n
     end

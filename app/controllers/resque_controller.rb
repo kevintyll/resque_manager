@@ -12,11 +12,11 @@ class ResqueController < ApplicationController
 
   before_filter :get_cleaner, :only => [:cleaner, :cleaner_exec, :cleaner_list, :cleaner_stale, :cleaner_dump]
 
-  verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure, :stop_worker, :restart_worker,
-                                     :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job,
-                                     :start_scheduler, :stop_scheduler, :requeue_failures_in_class,
-                                     :kill, :clear_statuses, :cleaner_exec, :cleaner_stale],
-         :render => {:text => "<p>Please use the POST http method to post data to this API.</p>".html_safe}
+  #verify :method => :post, :only => [:clear_failures, :clear_failure, :requeue_failure, :stop_worker, :restart_worker,
+  #                                   :start_worker, :schedule_requeue, :remove_from_schedule, :add_scheduled_job,
+  #                                   :start_scheduler, :stop_scheduler, :requeue_failures_in_class,
+  #                                   :kill, :clear_statuses, :cleaner_exec, :cleaner_stale],
+  #       :render => {:text => "<p>Please use the POST http method to post data to this API.</p>".html_safe}
 
 
   def index
@@ -41,8 +41,8 @@ class ResqueController < ApplicationController
 
     @start = params[:start].to_i
     @end = @start + (params[:per_page] || 20)
-    @statuses = Resque::Status.statuses(@start, @end)
-    @size = Resque::Status.status_ids.size
+    @statuses = Resque::Plugings::Status.statuses(@start, @end)
+    @size = Resque::Plugings::Status.status_ids.size
 
     render(:text => (render_to_string(:action => 'statuses.html', :layout => false)))
   end
@@ -169,30 +169,30 @@ class ResqueController < ApplicationController
   def statuses
     @start = params[:start].to_i
     @end = @start + (params[:per_page] || 20)
-    @statuses = Resque::Status.statuses(@start, @end)
-    @size = Resque::Status.status_ids.size
+    @statuses = Resque::Plugings::Status.statuses(@start, @end)
+    @size = Resque::Plugings::Status.status_ids.size
     if params[:format] == 'js'
       render :text => @statuses.to_json
     end
   end
 
   def clear_statuses
-    Resque::Status.clear
+    Resque::Plugings::Status.clear
     redirect_to(:action => 'statuses')
   end
 
   def status
-    @status = Resque::Status.get(params[:id])
+    @status = Resque::Plugings::Status.get(params[:id])
     if params[:format] == 'js'
       render :text => @status.to_json
     end
   end
 
   def kill
-    Resque::Status.kill(params[:id])
-    s = Resque::Status.get(params[:id])
+    Resque::Plugings::Status.kill(params[:id])
+    s = Resque::Plugings::Status.get(params[:id])
     s.status = 'killed'
-    Resque::Status.set(params[:id], s)
+    Resque::Plugings::Status.set(params[:id], s)
     redirect_to(:action => 'statuses')
   end
 

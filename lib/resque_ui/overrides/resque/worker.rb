@@ -37,7 +37,7 @@ module Resque
     end
 
     def workers_in_pid
-      Array(redis.smembers(:workers)).select { |id| id =~ /\(#{ip}\):#{pid}/ }.map { |id| Resque::Worker.find(id) }.compact
+      Array(Resque.redis.smembers(:workers)).select { |id| id =~ /\(#{ip}\):#{pid}/ }.map { |id| Resque::Worker.find(id) }.compact
     end
 
     def ip
@@ -79,7 +79,7 @@ module Resque
     end
 
     def paused
-      redis.get pause_key
+      Resque.redis.get pause_key
     end
 
     # are we paused?
@@ -95,7 +95,7 @@ module Resque
     def pause_processing
       log "USR2 received; pausing job processing"
       @paused = true
-      redis.set(pause_key, Time.now.to_s)
+      Resque.redis.set(pause_key, Time.now.to_s)
     end
 
     # Start processing jobs again after a pause
@@ -104,7 +104,7 @@ module Resque
     def unpause_processing
       log "CONT received; resuming job processing"
       @paused = false
-      redis.del(pause_key)
+      Resque.redis.del(pause_key)
     end
 
     # Looks for any workers which should be running on this server
@@ -141,10 +141,10 @@ module Resque
         job.fail(DirtyExit.new)
       end
 
-      redis.srem(:workers, self)
-      redis.del("worker:#{self}")
-      redis.del("worker:#{self}:started")
-      redis.del(pause_key)
+      Resque.redis.srem(:workers, self)
+      Resque.redis.del("worker:#{self}")
+      Resque.redis.del("worker:#{self}:started")
+      Resque.redis.del(pause_key)
 
       Stat.clear("processed:#{self}")
       Stat.clear("failed:#{self}")
@@ -217,14 +217,14 @@ module Resque
       names = all
       return [] unless names.any?
       names.map! { |name| "worker:#{name}" }
-      redis.mapped_mget(*names).map do |key, value|
+      Resque.redis.mapped_mget(*names).map do |key, value|
         find key.sub("worker:", '') unless value.nil?
       end.compact
     end
 
     def status=(status)
       data = encode(job.merge('status' => status))
-      redis.set("worker:#{self}", data)
+      Resque.redis.set("worker:#{self}", data)
     end
 
     def status

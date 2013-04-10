@@ -1,3 +1,7 @@
+== 3.3.0
+*  Use upgraded resque_status gem
+*  Make compatible with rails 3.2
+
 == 3.2.4 2011-12-08
 
 *  Override the filter_backtrace method for the redis backend failure object introduced in resque 1.18.0.
