@@ -66,7 +66,7 @@ Capistrano Configuration
 
 Added the ability to stop, start, and restart workers from the workers page.  This requires capistrano, and capistrano-ext to be installed on all deployed servers.
 
-![Manage Workers](http://img.skitch.com/20100308-ds6bgsnwqe6j9jn9yx8x7cxre3.png)
+http://img.skitch.com/20100308-ds6bgsnwqe6j9jn9yx8x7cxre3.png
 
 
 The controller calls cap tasks to manage the workers.  To include the recipes in your application, add this line to your deploy.rb file:
@@ -124,7 +124,7 @@ To do this, set the overview_status to the status message in your perform method
 
 This is really handy for those long running jobs to give you assurance the the job is really running or not.
 
-![Status Messages](http://img.skitch.com/20100308-8mk5hrwnu462q2d23d51n8cjxp.png)
+http://img.skitch.com/20100308-8mk5hrwnu462q2d23d51n8cjxp.png
 
 Restart Failed Jobs
 -------------------
@@ -139,12 +139,12 @@ Remove Items from the Queue
 
 Added the ability to remove jobs, from a queue
 
-![Remove Items from the Queue](http://img.skitch.com/20100308-qukiw7bpsnr9y1saap7f8276qx.png)
+http://img.skitch.com/20100308-qukiw7bpsnr9y1saap7f8276qx.png
 
 View Processed Job Info
 -----------------------
 
-![Job Status](https://img.skitch.com/20110309-r9mhfgnn8w63ep29sik4c6khcj.png)
+http://img.skitch.com/20110309-r9mhfgnn8w63ep29sik4c6khcj.png
 
 resque_manager now incorporates the resque-status gem and replaced the Processed tab with the Status tab. You can read about
 what you can do with resque-status [here](https://github.com/quirkey/resque-status).
@@ -345,7 +345,7 @@ See the sample initializer above.
 By setting the applications hash, a select box will display on the workers page so you can select the application where the
 worker is you want to start.
 
-![Multiple Apps](https://www.evernote.com/shard/s198/sh/04538799-da21-48b4-ab63-ac19c815dc85/62f73190d926844e5f97ea74f0bedb6c/deep/0/Pasted%20Image%207/30/13%2010:30%20AM.png)
+https://www.evernote.com/shard/s198/sh/04538799-da21-48b4-ab63-ac19c815dc85/62f73190d926844e5f97ea74f0bedb6c/deep/0/Pasted%20Image%207/30/13%2010:30%20AM.png
 
 You do not need to include the application that has mounted the resque_manager UI in this hash.  If you do not select an application
 from the drop down, it will assume the worker is in the same app.
@@ -380,7 +380,7 @@ You can also create different schedules on different servers in your farm.  You 
 the IP address you want to schedule a job to run on, and it will add the job to the schedule on that server.  You can also start and
 stop the scheduler on each server from the Schedule tab.
 
-![Resque Scheduler](http://img.skitch.com/20100308-quccysfiwtgubpw286ka2enr9m.png)
+http://img.skitch.com/20100308-quccysfiwtgubpw286ka2enr9m.png
 
 The caveat to this is the Arguments value must be entered in the text box as JSON in order for the arguments to get parsed and stored
 in the schedule correctly.  I find the easiest thing to do is to perform a Resque.encode on my parameters list in script/console.  If
