@@ -1,13 +1,14 @@
-Thu, 08 Dec 2011 11:45:05 -0500
-README.markdown	Mon, 14 Nov 2011 15:34:09 -0500
-lib/resque_ui.rb	Thu, 08 Dec 2011 11:15:19 -0500
-lib/resque_ui/cap.rb	Wed, 14 Sep 2011 16:39:33 -0400
-lib/resque_ui/cap_recipes.rb	Wed, 09 Nov 2011 13:52:53 -0500
-lib/resque_ui/overrides/resque/job.rb	Mon, 14 Nov 2011 15:39:13 -0500
-lib/resque_ui/overrides/resque/resque.rb	Thu, 15 Sep 2011 12:15:57 -0400
-lib/resque_ui/overrides/resque/worker.rb	Mon, 14 Nov 2011 15:41:51 -0500
-lib/resque_ui/overrides/resque/failure/redis.rb	Thu, 08 Dec 2011 11:44:51 -0500
-lib/resque_ui/overrides/resque_scheduler/resque_scheduler.rb	Thu, 15 Sep 2011 11:57:02 -0400
-lib/resque_ui/overrides/resque_status/chained_job_with_status.rb	Thu, 15 Sep 2011 12:06:19 -0400
-lib/resque_ui/overrides/resque_status/job_with_status.rb	Tue, 15 Nov 2011 12:14:57 -0500
-lib/resque_ui/overrides/resque_status/status.rb	Mon, 14 Nov 2011 15:41:51 -0500
+Tue, 30 Jul 2013 10:47:37 -0400
+README.rdoc	Tue, 30 Jul 2013 10:34:15 -0400
+lib/resque_manager.rb	Mon, 29 Jul 2013 15:02:47 -0400
+lib/resque_manager/engine.rb	Fri, 12 Jul 2013 10:23:28 -0400
+lib/resque_manager/overrides/resque/failure/redis.rb	Mon, 15 Jul 2013 09:21:20 -0400
+lib/resque_manager/overrides/resque/job.rb	Wed, 17 Jul 2013 12:23:25 -0400
+lib/resque_manager/overrides/resque/resque.rb	Wed, 12 Jun 2013 10:29:24 -0400
+lib/resque_manager/overrides/resque/worker.rb	Tue, 30 Jul 2013 10:46:10 -0400
+lib/resque_manager/overrides/resque_scheduler/resque_scheduler.rb	Mon, 15 Jul 2013 13:45:29 -0400
+lib/resque_manager/overrides/resque_status/chained_status.rb	Mon, 15 Jul 2013 11:33:40 -0400
+lib/resque_manager/overrides/resque_status/hash.rb	Wed, 10 Jul 2013 13:47:30 -0400
+lib/resque_manager/overrides/resque_status/status.rb	Wed, 17 Jul 2013 13:47:53 -0400
+lib/resque_manager/recipes.rb	Tue, 30 Jul 2013 10:46:10 -0400
+lib/resque_manager/version.rb	Fri, 12 Jul 2013 11:31:39 -0400

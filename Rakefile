@@ -1,49 +1,40 @@
-require 'rake'
-require 'rake/testtask'
-require 'rdoc/task'
-require 'yaml'
-
+#!/usr/bin/env rake
 begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gemspec|
-    gemspec.name = "resque_ui"
-    gemspec.author = "Kevin Tyll"
-    gemspec.email = "kevintyll@gmail.com"
-    gemspec.homepage = %q{https://github.com/kevintyll/resque_ui}
-    gemspec.summary = "A Rails engine port of the Sinatra app that is included in Chris Wanstrath's resque gem."
-    gemspec.description = "A Rails UI for Resque for managing workers, failures and schedules."
-  end
-
-  Jeweler::GemcutterTasks.new
-
+  require 'bundler/setup'
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+end
+begin
+  require 'rdoc/task'
+rescue LoadError
+  require 'rdoc/rdoc'
+  require 'rake/rdoctask'
+  RDoc::Task = Rake::RDocTask
 end
 
-desc 'Default: run unit tests.'
-task :default => :test
+RDoc::Task.new(:rdoc) do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = 'ResqueManager'
+  rdoc.options << '--line-numbers'
+  rdoc.rdoc_files.include('README.rdoc')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
 
-desc 'Test the resque_ui engine.'
+APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
+load 'rails/tasks/engine.rake'
+
+
+
+Bundler::GemHelper.install_tasks
+
+require 'rake/testtask'
+
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
   t.libs << 'test'
   t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+  t.verbose = false
 end
 
-desc 'Generate documentation for the resque_ui engine.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  if File.exist?('VERSION.yml')
-    config = YAML.load(File.read('VERSION.yml'))
-    version = "#{config[:major]}.#{config[:minor]}.#{config[:patch]}"
-  else
-    version = ""
-  end
 
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = "ResqueUi #{version}"
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('LICENSE*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+task :default => :test

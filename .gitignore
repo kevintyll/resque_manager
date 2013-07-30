@@ -1,5 +1,8 @@
-*.sw?
 .DS_Store
-nbproject
-.idea
-pkg
+.bundle/
+log/*.log
+pkg/
+test/dummy/db/*.sqlite3
+test/dummy/log/*.log
+test/dummy/tmp/
+test/dummy/.sass-cache

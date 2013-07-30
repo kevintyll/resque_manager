@@ -1,4 +1,6 @@
 == 3.3.0
+*  Change name to resque_manager
+*  Convert the gem to a true mountable rails engine
 *  Use upgraded resque_status gem
 *  Make compatible with rails 3.2
 

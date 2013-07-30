@@ -1,0 +1,24 @@
+development: &default
+  key_expiration: 604800 #<%= 1.week %>
+  inline: true
+  cap_path: /Users/ktyll/.rvm/gems/ruby-2.0.0-p247@claserv/bin/cap
+  applications:
+    application1: /Users/ktyll/rails_sites/git/application1
+    application2: /Users/ktyll/rails_sites/git/application2
+
+test:
+  <<: *default
+
+release:
+  <<: *default
+  inline: false
+  cap_path: PATH=/opt/jruby/bin:$PATH cap
+  application1: /var/www/rails/application1/current
+  application2: /var/www/rails/application2/current
+
+production:
+  <<: *default
+  inline: false
+  cap_path: PATH=/opt/jruby/bin:$PATH cap
+  application1: /var/www/rails/application1/current
+  application2: /var/www/rails/application2/current

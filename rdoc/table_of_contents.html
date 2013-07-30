@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>Table of Contents</title>
+<title>Table of Contents - ResqueManager</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -21,16 +21,20 @@
 
 
 <body class="indexpage">
-<h1>Table of Contents</h1>
+<h1>Table of Contents - ResqueManager</h1>
 
+<h2>Pages</h2>
+<ul>
+  <li class="file">
+    <a href="README_rdoc.html">README</a>
+  </li>
+  
+</ul>
 
 <h2 id="classes">Classes/Modules</h2>
 <ul>
   <li class="module">
     <a href="Resque.html">Resque</a>
-  </li>
-    <li class="class">
-    <a href="Resque/ChainedJobWithStatus.html">Resque::ChainedJobWithStatus</a>
   </li>
     <li class="module">
     <a href="Resque/Failure.html">Resque::Failure</a>
@@ -41,23 +45,32 @@
     <li class="class">
     <a href="Resque/Job.html">Resque::Job</a>
   </li>
-    <li class="class">
-    <a href="Resque/JobWithStatus.html">Resque::JobWithStatus</a>
+    <li class="module">
+    <a href="Resque/Plugins.html">Resque::Plugins</a>
+  </li>
+    <li class="module">
+    <a href="Resque/Plugins/ChainedStatus.html">Resque::Plugins::ChainedStatus</a>
+  </li>
+    <li class="module">
+    <a href="Resque/Plugins/ChainedStatus/ClassOverrides.html">Resque::Plugins::ChainedStatus::ClassOverrides</a>
+  </li>
+    <li class="module">
+    <a href="Resque/Plugins/Status.html">Resque::Plugins::Status</a>
+  </li>
+    <li class="module">
+    <a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html">Resque::Plugins::Status::ClassOverridesAndExtensions</a>
   </li>
     <li class="class">
-    <a href="Resque/Status.html">Resque::Status</a>
+    <a href="Resque/Plugins/Status/Hash.html">Resque::Plugins::Status::Hash</a>
   </li>
     <li class="class">
     <a href="Resque/Worker.html">Resque::Worker</a>
   </li>
     <li class="module">
-    <a href="ResqueUi.html">ResqueUi</a>
+    <a href="ResqueManager.html">ResqueManager</a>
   </li>
     <li class="class">
-    <a href="ResqueUi/Cap.html">ResqueUi::Cap</a>
-  </li>
-    <li class="class">
-    <a href="ResqueUi/Engine.html">ResqueUi::Engine</a>
+    <a href="ResqueManager/Engine.html">ResqueManager::Engine</a>
   </li>
     <li class="class">
     <a href="Object.html">Object</a>
@@ -71,23 +84,15 @@
 <h2 id="methods">Methods</h2>
 <ul>
   
-    <li class="method"><a href="Resque/Status.html#method-c-clear">::clear &mdash; Resque::Status</a>
-  
-    <li class="method"><a href="Resque/Status.html#method-c-counter">::counter &mdash; Resque::Status</a>
-  
-    <li class="method"><a href="Resque/Status.html#method-c-counter_key">::counter_key &mdash; Resque::Status</a>
-  
-    <li class="method"><a href="Resque/JobWithStatus.html#method-c-enqueue">::enqueue &mdash; Resque::JobWithStatus</a>
-  
-    <li class="method"><a href="Resque/ChainedJobWithStatus.html#method-c-enqueue">::enqueue &mdash; Resque::ChainedJobWithStatus</a>
+    <li class="method"><a href="ResqueManager.html#method-c-configure">::configure &mdash; ResqueManager</a>
   
     <li class="method"><a href="ResqueScheduler.html#method-c-farm_status">::farm_status &mdash; ResqueScheduler</a>
   
-    <li class="method"><a href="Resque/Status.html#method-c-incr_counter">::incr_counter &mdash; Resque::Status</a>
+    <li class="method"><a href="Resque/Plugins/Status.html#method-c-included">::included &mdash; Resque::Plugins::Status</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-c-new">::new &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/ChainedStatus.html#method-c-included">::included &mdash; Resque::Plugins::ChainedStatus</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-c-perform">::perform &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/Status.html#method-c-new">::new &mdash; Resque::Plugins::Status</a>
   
     <li class="method"><a href="ResqueScheduler.html#method-c-pids">::pids &mdash; ResqueScheduler</a>
   
@@ -99,39 +104,51 @@
   
     <li class="method"><a href="Resque/Worker.html#method-c-start">::start &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/Status.html#method-c-status_ids">::status_ids &mdash; Resque::Status</a>
-  
     <li class="method"><a href="Resque.html#method-c-throttle">::throttle &mdash; Resque</a>
   
     <li class="method"><a href="Resque/Worker.html#method-c-working">::working &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-all_workers_in_pid_working">#all_workers_in_pid_working &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/ChainedJobWithStatus.html#method-i-completed">#completed &mdash; Resque::ChainedJobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/ChainedStatus.html#method-i-completed">#completed &mdash; Resque::Plugins::ChainedStatus</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-continue">#continue &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-i-counter">#counter &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-counter">#counter &mdash; Resque::Plugins::Status</a>
+  
+    <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-counter">#counter &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
+  
+    <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-counter_key">#counter_key &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
+  
+    <li class="method"><a href="Resque/Plugins/ChainedStatus/ClassOverrides.html#method-i-enqueue_to">#enqueue_to &mdash; Resque::Plugins::ChainedStatus::ClassOverrides</a>
   
     <li class="method"><a href="Resque/Failure/Redis.html#method-i-filter_backtrace">#filter_backtrace &mdash; Resque::Failure::Redis</a>
   
     <li class="method"><a href="Object.html#method-i-get_rake">#get_rake &mdash; Object</a>
   
+    <li class="method"><a href="Object.html#method-i-get_worker_path">#get_worker_path &mdash; Object</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-id">#id &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-i-incr_counter">#incr_counter &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-incr_counter">#incr_counter &mdash; Resque::Plugins::Status</a>
+  
+    <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-incr_counter">#incr_counter &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-ip">#ip &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-local_ip">#local_ip &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-i-name">#name &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/ChainedStatus.html#method-i-name">#name &mdash; Resque::Plugins::ChainedStatus</a>
   
-    <li class="method"><a href="Resque/ChainedJobWithStatus.html#method-i-name">#name &mdash; Resque::ChainedJobWithStatus</a>
+    <li class="method"><a href="Resque/Worker.html#method-i-overview_message">#overview_message &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="Resque/Worker.html#method-i-overview_message-3D">#overview_message= &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-overview_message-3D">#overview_message= &mdash; Resque::Plugins::Status</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-pause">#pause &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-i-pause-21">#pause! &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-pause-21">#pause! &mdash; Resque::Plugins::Status</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-pause_key">#pause_key &mdash; Resque::Worker</a>
   
@@ -139,11 +156,15 @@
   
     <li class="method"><a href="Resque/Worker.html#method-i-paused">#paused &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="Resque/Plugins/Status/Hash.html#method-i-paused-3F">#paused? &mdash; Resque::Plugins::Status::Hash</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-paused-3F">#paused? &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/Status.html#method-i-paused-3F">#paused? &mdash; Resque::Status</a>
+    <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-perform">#perform &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
   
     <li class="method"><a href="Resque/Job.html#method-i-perform">#perform &mdash; Resque::Job</a>
+  
+    <li class="method"><a href="Resque/Worker.html#method-i-pid">#pid &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-prune_dead_workers">#prune_dead_workers &mdash; Resque::Worker</a>
   
@@ -155,9 +176,11 @@
   
     <li class="method"><a href="Resque/Worker.html#method-i-quit">#quit &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-remove">#remove &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-restart">#restart &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-i-safe_perform-21">#safe_perform! &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-safe_perform-21">#safe_perform! &mdash; Resque::Plugins::Status</a>
   
     <li class="method"><a href="ResqueScheduler.html#method-i-schedule">#schedule &mdash; ResqueScheduler</a>
   
@@ -167,13 +190,9 @@
   
     <li class="method"><a href="Resque/Worker.html#method-i-startup">#startup &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/Worker.html#method-i-status">#status &mdash; Resque::Worker</a>
-  
-    <li class="method"><a href="Resque/Worker.html#method-i-status-3D">#status= &mdash; Resque::Worker</a>
-  
     <li class="method"><a href="Resque/Worker.html#method-i-thread">#thread &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/JobWithStatus.html#method-i-tick">#tick &mdash; Resque::JobWithStatus</a>
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-tick">#tick &mdash; Resque::Plugins::Status</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-to_s">#to_s &mdash; Resque::Worker</a>
   
@@ -190,7 +209,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

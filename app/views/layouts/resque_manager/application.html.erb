@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ResqueManager</title>
+  <%= stylesheet_link_tag    "resque_manager/application", :media => "all" %>
+  <%= javascript_include_tag "resque_manager/application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+    <div class="header">
+      <ul class='nav'>
+        <li><%=link_to("Home",url_for('/'))%></li>
+        <% Resque::Server.tabs.each do |name| -%>
+        <%= tab name -%>
+        <%end-%>
+      </ul>
+    </div>
+
+    <% if @subtabs %>
+      <ul class='subnav'>
+        <% for subtab in @subtabs %>
+          <li <%= class_if_current "#{current_section}/#{subtab}" %>><%= link_to(subtab, :action => current_section, :id => subtab) %> </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <div id="main">
+      <%= yield %>
+    </div>
+
+    <div id="footer">
+      <p>Powered by <a href="http://github.com/defunkt/resque">Resque</a> v<%=Resque::Version%></p>
+      <p>Connected to Redis namespace <%= Resque.redis.namespace %> on <%=Resque.redis_id%></p>
+    </div>
+
+  </body>
+</html>
