@@ -13,12 +13,14 @@ release:
   <<: *default
   inline: false
   cap_path: PATH=/opt/jruby/bin:$PATH cap
-  application1: /var/www/rails/application1/current
-  application2: /var/www/rails/application2/current
+  applications:
+    application1: /var/www/rails/application1/current
+    application2: /var/www/rails/application2/current
 
 production:
   <<: *default
   inline: false
   cap_path: PATH=/opt/jruby/bin:$PATH cap
-  application1: /var/www/rails/application1/current
-  application2: /var/www/rails/application2/current
+  applications:
+    application1: /var/www/rails/application1/current
+    application2: /var/www/rails/application2/current
