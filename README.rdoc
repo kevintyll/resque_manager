@@ -144,7 +144,7 @@ Added the ability to remove jobs, from a queue
 View Processed Job Info
 -----------------------
 
-![Job Status](https://img.skitch.com/20110309-r9mhfgnn8w63ep29sik4c6khcj.png)
+![Job Status](http://img.skitch.com/20110309-r9mhfgnn8w63ep29sik4c6khcj.png)
 
 resque_manager now incorporates the resque-status gem and replaced the Processed tab with the Status tab. You can read about
 what you can do with resque-status [here](https://github.com/quirkey/resque-status).
@@ -345,7 +345,7 @@ See the sample initializer above.
 By setting the applications hash, a select box will display on the workers page so you can select the application where the
 worker is you want to start.
 
-![Multiple Apps](https://www.evernote.com/shard/s198/sh/04538799-da21-48b4-ab63-ac19c815dc85/62f73190d926844e5f97ea74f0bedb6c/deep/0/Pasted%20Image%207/30/13%2010:30%20AM.png)
+![Multiple Apps](http://www.evernote.com/shard/s198/sh/04538799-da21-48b4-ab63-ac19c815dc85/62f73190d926844e5f97ea74f0bedb6c/deep/0/Pasted%20Image%207/30/13%2010:30%20AM.png)
 
 You do not need to include the application that has mounted the resque_manager UI in this hash.  If you do not select an application
 from the drop down, it will assume the worker is in the same app.
