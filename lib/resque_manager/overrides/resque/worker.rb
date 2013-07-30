@@ -241,7 +241,7 @@ module Resque
       if Rails.env =~ /development|test/
         Thread.new(application_path, queues) { |application_path, queue| system("cd #{ResqueManager.applications.with_indifferent_access[application] || '.'}; bundle exec #{ResqueManager.resque_worker_rake || 'rake'} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
       else
-        Thread.new(ips, application_path, queues) { |ip_list, application_path, queue| system("cd #{Rails.root}; #{ResqueManager.cap_path} #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}") }
+        Thread.new(ips, application_path, queues) { |ip_list, application_path, queue| system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}") }
       end
     end
 
