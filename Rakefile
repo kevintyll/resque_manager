@@ -16,8 +16,9 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'ResqueManager'
   rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.rdoc')
+  rdoc.rdoc_files.include('README.markdown')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include('app/**/*.rb')
 end
 
 APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)

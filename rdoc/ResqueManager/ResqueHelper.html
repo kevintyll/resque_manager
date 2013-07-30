@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module ResqueManager::ResqueHelper - ResqueManager</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/helpers/resque_manager/resque_helper.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-class_filter">#class_filter</a>
+    
+    <li><a href="#method-i-class_if_current">#class_if_current</a>
+    
+    <li><a href="#method-i-current_page">#current_page</a>
+    
+    <li><a href="#method-i-current_section">#current_section</a>
+    
+    <li><a href="#method-i-exception_filter">#exception_filter</a>
+    
+    <li><a href="#method-i-find_worker">#find_worker</a>
+    
+    <li><a href="#method-i-flash_helper">#flash_helper</a>
+    
+    <li><a href="#method-i-format_time">#format_time</a>
+    
+    <li><a href="#method-i-partial-3F">#partial?</a>
+    
+    <li><a href="#method-i-path_prefix">#path_prefix</a>
+    
+    <li><a href="#method-i-poll">#poll</a>
+    
+    <li><a href="#method-i-redis_get_size">#redis_get_size</a>
+    
+    <li><a href="#method-i-redis_get_value_as_array">#redis_get_value_as_array</a>
+    
+    <li><a href="#method-i-resque">#resque</a>
+    
+    <li><a href="#method-i-show_args">#show_args</a>
+    
+    <li><a href="#method-i-status_poll">#status_poll</a>
+    
+    <li><a href="#method-i-tab">#tab</a>
+    
+    <li><a href="#method-i-time_filter">#time_filter</a>
+    
+    <li><a href="#method-i-u">#u</a>
+    
+    <li><a href="#method-i-url">#url</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Resque.html">Resque</a>
+  
+    <li><a href="../Resque/Failure.html">Resque::Failure</a>
+  
+    <li><a href="../Resque/Failure/Redis.html">Resque::Failure::Redis</a>
+  
+    <li><a href="../Resque/Job.html">Resque::Job</a>
+  
+    <li><a href="../Resque/Plugins.html">Resque::Plugins</a>
+  
+    <li><a href="../Resque/Plugins/ChainedStatus.html">Resque::Plugins::ChainedStatus</a>
+  
+    <li><a href="../Resque/Plugins/ChainedStatus/ClassOverrides.html">Resque::Plugins::ChainedStatus::ClassOverrides</a>
+  
+    <li><a href="../Resque/Plugins/Status.html">Resque::Plugins::Status</a>
+  
+    <li><a href="../Resque/Plugins/Status/ClassOverridesAndExtensions.html">Resque::Plugins::Status::ClassOverridesAndExtensions</a>
+  
+    <li><a href="../Resque/Plugins/Status/Hash.html">Resque::Plugins::Status::Hash</a>
+  
+    <li><a href="../Resque/Worker.html">Resque::Worker</a>
+  
+    <li><a href="../ResqueManager.html">ResqueManager</a>
+  
+    <li><a href="../ResqueManager/ApplicationHelper.html">ResqueManager::ApplicationHelper</a>
+  
+    <li><a href="../ResqueManager/Engine.html">ResqueManager::Engine</a>
+  
+    <li><a href="../ResqueManager/Paginate.html">ResqueManager::Paginate</a>
+  
+    <li><a href="../ResqueManager/ResqueController.html">ResqueManager::ResqueController</a>
+  
+    <li><a href="../ResqueManager/ResqueHelper.html">ResqueManager::ResqueHelper</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../ResqueScheduler.html">ResqueScheduler</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module ResqueManager::ResqueHelper</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-class_filter" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">class_filter</span><span
+            class="method-args">(id, name, klasses, value)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="class_filter-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">class_filter</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">klasses</span>, <span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">html</span> = <span class="ruby-node">&quot;&lt;select id=\&quot;#{id}\&quot; name=\&quot;#{name}\&quot;&gt;&quot;</span>
+  <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;&lt;option value=\&quot;\&quot;&gt;-&lt;/option&gt;&quot;</span>
+  <span class="ruby-identifier">klasses</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">selected</span> = <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;selected=&quot;selected&quot;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;&lt;option #{selected} value=\&quot;#{k}\&quot;&gt;#{k}&lt;/option&gt;&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;&lt;/select&gt;&quot;</span>
+  <span class="ruby-identifier">html</span>.<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- class_filter-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- class_filter-method -->
+
+    
+      <div id="method-i-class_if_current" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">class_if_current</span><span
+            class="method-args">(page = '')</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="class_if_current-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">class_if_current</span>(<span class="ruby-identifier">page</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-string">&#39;class=&quot;current&quot;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_page</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">page</span>.<span class="ruby-identifier">to_s</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- class_if_current-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- class_if_current-method -->
+
+    
+      <div id="method-i-current_page" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_page</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="current_page-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_page</span>
+  <span class="ruby-identifier">url</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">path_info</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-string">&#39;/&#39;</span>, <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">downcase</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- current_page-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- current_page-method -->
+
+    
+      <div id="method-i-current_section" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_section</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="current_section-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_section</span>
+  (<span class="ruby-identifier">request</span>.<span class="ruby-identifier">path_info</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-string">&#39;/&#39;</span>, <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;/&#39;</span>).<span class="ruby-identifier">first</span> <span class="ruby-operator">||</span> <span class="ruby-string">&#39;overview&#39;</span>).<span class="ruby-identifier">downcase</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- current_section-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- current_section-method -->
+
+    
+      <div id="method-i-exception_filter" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">exception_filter</span><span
+            class="method-args">(id, name, exceptions, value)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="exception_filter-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">exception_filter</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">exceptions</span>, <span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">html</span> = <span class="ruby-node">&quot;&lt;select id=\&quot;#{id}\&quot; name=\&quot;#{name}\&quot;&gt;&quot;</span>
+  <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;&lt;option value=\&quot;\&quot;&gt;-&lt;/option&gt;&quot;</span>
+  <span class="ruby-identifier">exceptions</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ex</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">selected</span> = <span class="ruby-identifier">ex</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;selected=&quot;selected&quot;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;&lt;option #{selected} value=\&quot;#{ex}\&quot;&gt;#{ex}&lt;/option&gt;&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;&lt;/select&gt;&quot;</span>
+  <span class="ruby-identifier">html</span>.<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- exception_filter-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- exception_filter-method -->
+
+    
+      <div id="method-i-find_worker" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_worker</span><span
+            class="method-args">(worker)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_worker-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_worker</span>(<span class="ruby-identifier">worker</span>)
+  <span class="ruby-identifier">first_part</span>, *<span class="ruby-identifier">rest</span> = <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)
+  <span class="ruby-identifier">first_part</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/_/</span>, <span class="ruby-string">&#39;.&#39;</span>)
+  <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Worker</span>.<span class="ruby-identifier">find</span>(<span class="ruby-node">&quot;#{first_part}:#{rest.join(&#39;:&#39;)}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- find_worker-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- find_worker-method -->
+
+    
+      <div id="method-i-flash_helper" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">flash_helper</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="flash_helper-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">flash_helper</span>
+  [<span class="ruby-value">:notice</span>, <span class="ruby-value">:warning</span>, <span class="ruby-value">:message</span>, <span class="ruby-value">:error</span>].<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">content_tag</span>(<span class="ruby-value">:div</span>, <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">key</span>], <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;flash #{key}&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">join</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- flash_helper-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- flash_helper-method -->
+
+    
+      <div id="method-i-format_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">format_time</span><span
+            class="method-args">(t)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="format_time-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">format_time</span>(<span class="ruby-identifier">t</span>)
+  <span class="ruby-identifier">t</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y/%m/%d %H:%M:%S %Z&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- format_time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- format_time-method -->
+
+    
+      <div id="method-i-partial-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">partial?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="partial-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">partial?</span>
+  <span class="ruby-ivar">@partial</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- partial-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- partial-3F-method -->
+
+    
+      <div id="method-i-path_prefix" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">path_prefix</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="path_prefix-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">path_prefix</span>
+  <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-string">&#39;SCRIPT_NAME&#39;</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- path_prefix-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- path_prefix-method -->
+
+    
+      <div id="method-i-poll" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">poll</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="poll-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">poll</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@polling</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-node">&quot;Last Updated: #{Time.now.strftime(&quot;%H:%M:%S&quot;)}&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-identifier">link_to</span>(<span class="ruby-string">&#39;Live Poll&#39;</span>, {<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;poll&#39;</span>, <span class="ruby-value">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_section</span>}, <span class="ruby-value">:rel</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;poll&#39;</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-node">&quot;&lt;p class=&#39;poll&#39;&gt;#{text}&lt;/p&gt;&quot;</span>.<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- poll-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- poll-method -->
+
+    
+      <div id="method-i-redis_get_size" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">redis_get_size</span><span
+            class="method-args">(key)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="redis_get_size-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">redis_get_size</span>(<span class="ruby-identifier">key</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">type</span>(<span class="ruby-identifier">key</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;none&#39;</span>
+      []
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;list&#39;</span>
+      <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">llen</span>(<span class="ruby-identifier">key</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;set&#39;</span>
+      <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">scard</span>(<span class="ruby-identifier">key</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;string&#39;</span>
+      <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">key</span>).<span class="ruby-identifier">length</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- redis_get_size-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- redis_get_size-method -->
+
+    
+      <div id="method-i-redis_get_value_as_array" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">redis_get_value_as_array</span><span
+            class="method-args">(key)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="redis_get_value_as_array-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">redis_get_value_as_array</span>(<span class="ruby-identifier">key</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">type</span>(<span class="ruby-identifier">key</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;none&#39;</span>
+      []
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;list&#39;</span>
+      <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">list_range</span>(<span class="ruby-identifier">key</span>, <span class="ruby-value">0</span>, <span class="ruby-value">20</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;set&#39;</span>
+      <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">smembers</span>(<span class="ruby-identifier">key</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;string&#39;</span>
+      [<span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">key</span>)]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- redis_get_value_as_array-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- redis_get_value_as_array-method -->
+
+    
+      <div id="method-i-resque" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">resque</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="resque-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">resque</span>
+  <span class="ruby-constant">Resque</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- resque-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- resque-method -->
+
+    
+      <div id="method-i-show_args" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show_args</span><span
+            class="method-args">(args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="show_args-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show_args</span>(<span class="ruby-identifier">args</span>)
+  <span class="ruby-constant">Array</span>(<span class="ruby-identifier">args</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">inspect</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- show_args-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- show_args-method -->
+
+    
+      <div id="method-i-status_poll" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">status_poll</span><span
+            class="method-args">(start)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="status_poll-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">status_poll</span>(<span class="ruby-identifier">start</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@polling</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-node">&quot;Last Updated: #{Time.now.strftime(&quot;%H:%M:%S&quot;)}&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-identifier">link_to</span>(<span class="ruby-string">&#39;Live Poll&#39;</span>, {<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;status_poll&#39;</span>, <span class="ruby-value">:start</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">start</span>}, <span class="ruby-value">:rel</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;poll&#39;</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-node">&quot;&lt;p class=&#39;poll&#39;&gt;#{text}&lt;/p&gt;&quot;</span>.<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- status_poll-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- status_poll-method -->
+
+    
+      <div id="method-i-tab" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tab</span><span
+            class="method-args">(name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tab-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tab</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">dname</span> = <span class="ruby-node">&quot;#{name.to_s.downcase}&quot;</span>
+  <span class="ruby-node">&quot;&lt;li #{class_if_current(dname)}&gt;#{link_to(name, url(dname))}&lt;/li&gt;&quot;</span>.<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- tab-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- tab-method -->
+
+    
+      <div id="method-i-time_filter" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time_filter</span><span
+            class="method-args">(id, name, value)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>resque-cleaner helpers</p>
+          
+
+          
+          <div class="method-source-code" id="time_filter-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time_filter</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">html</span> = <span class="ruby-node">&quot;&lt;select id=\&quot;#{id}\&quot; name=\&quot;#{name}\&quot;&gt;&quot;</span>
+  <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;&lt;option value=\&quot;\&quot;&gt;-&lt;/option&gt;&quot;</span>
+  [<span class="ruby-value">1</span>, <span class="ruby-value">3</span>, <span class="ruby-value">6</span>, <span class="ruby-value">12</span>, <span class="ruby-value">24</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">selected</span> = <span class="ruby-identifier">h</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;selected=&quot;selected&quot;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;&lt;option #{selected} value=\&quot;#{h}\&quot;&gt;#{h} #{h==1 ? &quot;hour&quot; : &quot;hours&quot;} ago&lt;/option&gt;&quot;</span>
+  <span class="ruby-keyword">end</span>
+  [<span class="ruby-value">3</span>, <span class="ruby-value">7</span>, <span class="ruby-value">14</span>, <span class="ruby-value">28</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">selected</span> = (<span class="ruby-identifier">d</span>*<span class="ruby-value">24</span>).<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;selected=&quot;selected&quot;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;&lt;option #{selected} value=\&quot;#{d*24}\&quot;&gt;#{d} days ago&lt;/option&gt;&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">html</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;&lt;/select&gt;&quot;</span>
+  <span class="ruby-identifier">html</span>.<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time_filter-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time_filter-method -->
+
+    
+      <div id="method-i-u" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">u</span><span
+            class="method-args">(*path_parts)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="ResqueHelper.html#method-i-url">url</a>
+        </div>
+        
+      </div><!-- u-method -->
+
+    
+      <div id="method-i-url" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url</span><span
+            class="method-args">(*path_parts)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="url-source">
+            <pre><span class="ruby-comment"># File app/helpers/resque_manager/resque_helper.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url</span>(*<span class="ruby-identifier">path_parts</span>)
+  [<span class="ruby-identifier">path_prefix</span>, <span class="ruby-identifier">path_parts</span>].<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;/&quot;</span>).<span class="ruby-identifier">squeeze</span>(<span class="ruby-string">&#39;/&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- url-source -->
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="ResqueHelper.html#method-i-u">u</a>
+        </div>
+        
+
+        
+      </div><!-- url-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

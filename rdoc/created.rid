@@ -1,5 +1,5 @@
-Tue, 30 Jul 2013 10:47:37 -0400
-README.rdoc	Tue, 30 Jul 2013 10:34:15 -0400
+Tue, 30 Jul 2013 11:29:22 -0400
+README.markdown	Tue, 30 Jul 2013 11:27:09 -0400
 lib/resque_manager.rb	Mon, 29 Jul 2013 15:02:47 -0400
 lib/resque_manager/engine.rb	Fri, 12 Jul 2013 10:23:28 -0400
 lib/resque_manager/overrides/resque/failure/redis.rb	Mon, 15 Jul 2013 09:21:20 -0400
@@ -12,3 +12,7 @@ lib/resque_manager/overrides/resque_status/hash.rb	Wed, 10 Jul 2013 13:47:30 -04
 lib/resque_manager/overrides/resque_status/status.rb	Wed, 17 Jul 2013 13:47:53 -0400
 lib/resque_manager/recipes.rb	Tue, 30 Jul 2013 10:46:10 -0400
 lib/resque_manager/version.rb	Fri, 12 Jul 2013 11:31:39 -0400
+app/controllers/resque_manager/resque_controller.rb	Thu, 25 Jul 2013 13:10:39 -0400
+app/helpers/resque_manager/application_helper.rb	Fri, 12 Jul 2013 10:23:28 -0400
+app/helpers/resque_manager/resque_helper.rb	Fri, 12 Jul 2013 14:40:50 -0400
+app/models/resque_manager/paginate.rb	Fri, 12 Jul 2013 14:46:48 -0400

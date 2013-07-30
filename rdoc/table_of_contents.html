@@ -23,13 +23,6 @@
 <body class="indexpage">
 <h1>Table of Contents - ResqueManager</h1>
 
-<h2>Pages</h2>
-<ul>
-  <li class="file">
-    <a href="README_rdoc.html">README</a>
-  </li>
-  
-</ul>
 
 <h2 id="classes">Classes/Modules</h2>
 <ul>
@@ -69,8 +62,20 @@
     <li class="module">
     <a href="ResqueManager.html">ResqueManager</a>
   </li>
+    <li class="module">
+    <a href="ResqueManager/ApplicationHelper.html">ResqueManager::ApplicationHelper</a>
+  </li>
     <li class="class">
     <a href="ResqueManager/Engine.html">ResqueManager::Engine</a>
+  </li>
+    <li class="class">
+    <a href="ResqueManager/Paginate.html">ResqueManager::Paginate</a>
+  </li>
+    <li class="class">
+    <a href="ResqueManager/ResqueController.html">ResqueManager::ResqueController</a>
+  </li>
+    <li class="module">
+    <a href="ResqueManager/ResqueHelper.html">ResqueManager::ResqueHelper</a>
   </li>
     <li class="class">
     <a href="Object.html">Object</a>
@@ -94,35 +99,73 @@
   
     <li class="method"><a href="Resque/Plugins/Status.html#method-c-new">::new &mdash; Resque::Plugins::Status</a>
   
+    <li class="method"><a href="ResqueManager/Paginate.html#method-c-new">::new &mdash; ResqueManager::Paginate</a>
+  
     <li class="method"><a href="ResqueScheduler.html#method-c-pids">::pids &mdash; ResqueScheduler</a>
   
     <li class="method"><a href="ResqueScheduler.html#method-c-quit">::quit &mdash; ResqueScheduler</a>
   
     <li class="method"><a href="ResqueScheduler.html#method-c-restart">::restart &mdash; ResqueScheduler</a>
   
-    <li class="method"><a href="ResqueScheduler.html#method-c-start">::start &mdash; ResqueScheduler</a>
-  
     <li class="method"><a href="Resque/Worker.html#method-c-start">::start &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="ResqueScheduler.html#method-c-start">::start &mdash; ResqueScheduler</a>
   
     <li class="method"><a href="Resque.html#method-c-throttle">::throttle &mdash; Resque</a>
   
     <li class="method"><a href="Resque/Worker.html#method-c-working">::working &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-add_scheduled_job">#add_scheduled_job &mdash; ResqueManager::ResqueController</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-all_workers_in_pid_working">#all_workers_in_pid_working &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-class_filter">#class_filter &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-class_if_current">#class_if_current &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-cleaner">#cleaner &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-cleaner_dump">#cleaner_dump &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-cleaner_exec">#cleaner_exec &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-cleaner_list">#cleaner_list &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-cleaner_stale">#cleaner_stale &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-clear_statuses">#clear_statuses &mdash; ResqueManager::ResqueController</a>
   
     <li class="method"><a href="Resque/Plugins/ChainedStatus.html#method-i-completed">#completed &mdash; Resque::Plugins::ChainedStatus</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-continue">#continue &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/Plugins/Status.html#method-i-counter">#counter &mdash; Resque::Plugins::Status</a>
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-continue_worker">#continue_worker &mdash; ResqueManager::ResqueController</a>
   
     <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-counter">#counter &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
   
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-counter">#counter &mdash; Resque::Plugins::Status</a>
+  
     <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-counter_key">#counter_key &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-current_page">#current_page &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-current_section">#current_section &mdash; ResqueManager::ResqueHelper</a>
   
     <li class="method"><a href="Resque/Plugins/ChainedStatus/ClassOverrides.html#method-i-enqueue_to">#enqueue_to &mdash; Resque::Plugins::ChainedStatus::ClassOverrides</a>
   
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-exception_filter">#exception_filter &mdash; ResqueManager::ResqueHelper</a>
+  
     <li class="method"><a href="Resque/Failure/Redis.html#method-i-filter_backtrace">#filter_backtrace &mdash; Resque::Failure::Redis</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-find_worker">#find_worker &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-first_index">#first_index &mdash; ResqueManager::Paginate</a>
+  
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-first_page-3F">#first_page? &mdash; ResqueManager::Paginate</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-flash_helper">#flash_helper &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-format_time">#format_time &mdash; ResqueManager::ResqueHelper</a>
   
     <li class="method"><a href="Object.html#method-i-get_rake">#get_rake &mdash; Object</a>
   
@@ -136,15 +179,31 @@
   
     <li class="method"><a href="Resque/Worker.html#method-i-ip">#ip &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-kill">#kill &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-last_index">#last_index &mdash; ResqueManager::Paginate</a>
+  
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-last_page-3F">#last_page? &mdash; ResqueManager::Paginate</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-local_ip">#local_ip &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-max_page">#max_page &mdash; ResqueManager::Paginate</a>
   
     <li class="method"><a href="Resque/Plugins/ChainedStatus.html#method-i-name">#name &mdash; Resque::Plugins::ChainedStatus</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-overview_message">#overview_message &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="Resque/Plugins/Status.html#method-i-overview_message-3D">#overview_message= &mdash; Resque::Plugins::Status</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-overview_message-3D">#overview_message= &mdash; Resque::Worker</a>
   
-    <li class="method"><a href="Resque/Plugins/Status.html#method-i-overview_message-3D">#overview_message= &mdash; Resque::Plugins::Status</a>
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-page_url">#page_url &mdash; ResqueManager::Paginate</a>
+  
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-paginated_jobs">#paginated_jobs &mdash; ResqueManager::Paginate</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-partial-3F">#partial? &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-path_prefix">#path_prefix &mdash; ResqueManager::ResqueHelper</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-pause">#pause &mdash; Resque::Worker</a>
   
@@ -153,6 +212,8 @@
     <li class="method"><a href="Resque/Worker.html#method-i-pause_key">#pause_key &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-pause_processing">#pause_processing &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-pause_worker">#pause_worker &mdash; ResqueManager::ResqueController</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-paused">#paused &mdash; Resque::Worker</a>
   
@@ -166,43 +227,97 @@
   
     <li class="method"><a href="Resque/Worker.html#method-i-pid">#pid &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-poll">#poll &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-poll">#poll &mdash; ResqueManager::ResqueController</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-prune_dead_workers">#prune_dead_workers &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-queue">#queue &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-queues">#queues &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-queues">#queues &mdash; ResqueManager::ResqueController</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-queues_in_pid">#queues_in_pid &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-quit">#quit &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-redis_get_size">#redis_get_size &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-redis_get_value_as_array">#redis_get_value_as_array &mdash; ResqueManager::ResqueHelper</a>
+  
     <li class="method"><a href="Resque/Plugins/Status/ClassOverridesAndExtensions.html#method-i-remove">#remove &mdash; Resque::Plugins::Status::ClassOverridesAndExtensions</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-remove_from_schedule">#remove_from_schedule &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-remove_job">#remove_job &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-resque">#resque &mdash; ResqueManager::ResqueHelper</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-restart">#restart &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-restart_worker">#restart_worker &mdash; ResqueManager::ResqueController</a>
+  
     <li class="method"><a href="Resque/Plugins/Status.html#method-i-safe_perform-21">#safe_perform! &mdash; Resque::Plugins::Status</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-schedule">#schedule &mdash; ResqueManager::ResqueController</a>
   
     <li class="method"><a href="ResqueScheduler.html#method-i-schedule">#schedule &mdash; ResqueScheduler</a>
   
     <li class="method"><a href="ResqueScheduler.html#method-i-schedule-3D">#schedule= &mdash; ResqueScheduler</a>
   
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-schedule_requeue">#schedule_requeue &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-show_args">#show_args &mdash; ResqueManager::ResqueHelper</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-shutdown">#shutdown &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-start_scheduler">#start_scheduler &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-start_worker">#start_worker &mdash; ResqueManager::ResqueController</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-startup">#startup &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-stats">#stats &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-status">#status &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-status_poll">#status_poll &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-status_poll">#status_poll &mdash; ResqueManager::ResqueHelper</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-statuses">#statuses &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-stop_scheduler">#stop_scheduler &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-stop_worker">#stop_worker &mdash; ResqueManager::ResqueController</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-tab">#tab &mdash; ResqueManager::ResqueHelper</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-thread">#thread &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Plugins/Status.html#method-i-tick">#tick &mdash; Resque::Plugins::Status</a>
   
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-time_filter">#time_filter &mdash; ResqueManager::ResqueHelper</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-to_s">#to_s &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="ResqueManager/Paginate.html#method-i-total_size">#total_size &mdash; ResqueManager::Paginate</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-u">#u &mdash; ResqueManager::ResqueHelper</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-unpause_processing">#unpause_processing &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-unregister_worker">#unregister_worker &mdash; Resque::Worker</a>
   
+    <li class="method"><a href="ResqueManager/ResqueHelper.html#method-i-url">#url &mdash; ResqueManager::ResqueHelper</a>
+  
     <li class="method"><a href="Resque/Worker.html#method-i-work">#work &mdash; Resque::Worker</a>
   
     <li class="method"><a href="Resque/Worker.html#method-i-workers_in_pid">#workers_in_pid &mdash; Resque::Worker</a>
+  
+    <li class="method"><a href="ResqueManager/ResqueController.html#method-i-working">#working &mdash; ResqueManager::ResqueController</a>
   
 </ul>
 
