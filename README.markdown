@@ -52,8 +52,6 @@ ResqueManager.configure do |config|
   config.key_expiration = resque_manager_config['key_expiration']
   # optional - Tell whether to run jobs inline or not.
   config.inline = resque_manager_config['inline']
-  # set the path to your cap executable
-  config.cap_path = resque_manager_config['cap_path']
   # optional - If you have workers in multiple applications that you want to control through a single app's UI, this this
   # to a hash where the keys are your application names, and the values are the paths where the app is deployed.
   config.applications = resque_manager_config['applications']
@@ -81,11 +79,6 @@ You will also need to make sure you have your rake path set in the deploy.rb fil
 
     set :rake, "/opt/ruby-enterprise-1.8.6-20090421/bin/rake"
 
-You will also need to tell resque_manager where cap is installed.  Add this line to your application.rb file or in an initializer:
-
-    ResqueManager.cap_path           = '/opt/ruby-enterprise-1.8.6-20090421/bin/cap'
-
-    or see initializer above.
 
 ...using your own path of course.
 

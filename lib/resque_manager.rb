@@ -38,9 +38,6 @@ module ResqueManager
   mattr_accessor :inline
   @@inline
 
-  mattr_accessor :cap_path
-  @@cap_path = 'REPLACE WITH THE PATH TO YOUR CAP INSTALLATION: ie. /opt/ruby-enterprise-1.8.6-20090421/bin/cap'
-
   def self.configure
     yield self
     Resque.redis = Redis.new(redis_config)
