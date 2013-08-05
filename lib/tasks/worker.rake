@@ -67,7 +67,21 @@ namespace :resque do
     end
   end
 
-  desc "Gracefully kill all the workers.  If the worker is working, it will finish before shutting down. arg: host=ip pid=pid"
+  desc "Gracefully kill a single worker.  If the worker is working, it will finish before shutting down. arg: pid=pid
+       This used to be done directly in the cap task, but since workers can now live in multiple apps, we need to send
+       the correct signal based on the worker's platform."
+  task :quit_worker => :setup do
+    if RUBY_PLATFORM =~ /java/
+      #jruby doesn't trap the -QUIT signal
+      #-TERM gracefully kills the main pid and does a -9 on the child if there is one.
+      #Since jruby doesn't fork a child, the main worker is gracefully killed.
+      system("kill -TERM  #{ENV['pid']}")
+    else
+      system("kill -QUIT  #{ENV['pid']}")
+    end
+  end
+
+  desc "Gracefully kill all the workers.  If the worker is working, it will finish before shutting down."
   task :quit_workers => :setup do
     require 'resque'
     pid = ''

@@ -279,7 +279,7 @@ module Resque
     def restart
       queues = self.queues_in_pid.join('#')
       quit
-      self.class.start(self.ip, queues)
+      self.class.start(hosts: self.ip, queues: queues)
     end
 
   end

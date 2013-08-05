@@ -78,35 +78,30 @@ Capistrano::Configuration.instance(:must_exist).load do
       if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
         puts 'You must enter the host and pid to kill..cap resque:quit_worker host=ip pid=pid'
       else
-        hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-        if RUBY_PLATFORM =~ /java/
-          #jruby doesn't trap the -QUIT signal
-          #-TERM gracefully kills the main pid and does a -9 on the child if there is one.
-          #Since jruby doesn't fork a child, the main worker is gracefully killed.
-          run("kill -TERM #{ENV['pid']}", :hosts => hosts)
-        else
-          run("kill -QUIT #{ENV['pid']}", :hosts => hosts)
-        end
+        #The kill command used to be done directly in the cap task, but since workers can now live in multiple apps, we need to send
+        #the correct signal based on the worker's platform which has to be done in the rake task."
+        hosts = ENV[' host '] || find_servers_for_task(current_task).collect { |s| s.host }
+        run("cd #{get_worker_path}, nohup #{get_rake} RAILS_ENV=#{stage} resque:quit_worker pid=#{ENV[' pid ']}", :hosts => hosts)
       end
     end
 
     desc "Pause all workers in a single process. arg: host=ip pid=pid"
     task :pause_worker, :roles => :resque do
-      if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
-        puts 'You must enter the host and pid to kill..cap resque:pause_worker host=ip pid=pid'
+      if ENV[' host '].nil? || ENV[' host '].empty? || ENV[' pid '].nil? || ENV[' pid '].empty?
+        puts ' You must enter the host and pid to kill..cap resque : pause_worker host=ip pid=pid '
       else
-        hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-        run("kill -USR2 #{ENV['pid']}", :hosts => hosts)
+        hosts = ENV[' host '] || find_servers_for_task(current_task).collect { |s| s.host }
+        run("kill -USR2 #{ENV[' pid ']}", :hosts => hosts)
       end
     end
 
     desc "Continue all workers in a single process that have been paused. arg: host=ip pid=pid"
     task :continue_worker, :roles => :resque do
-      if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
-        puts 'You must enter the host and pid to kill..cap resque:continue_worker host=ip pid=pid'
+      if ENV[' host '].nil? || ENV[' host '].empty? || ENV[' pid '].nil? || ENV[' pid '].empty?
+        puts ' You must enter the host and pid to kill..cap resque : continue_worker host=ip pid=pid '
       else
-        hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-        run("kill -CONT #{ENV['pid']}", :hosts => hosts)
+        hosts = ENV[' host '] || find_servers_for_task(current_task).collect { |s| s.host }
+        run("kill -CONT #{ENV[' pid ']}", :hosts => hosts)
       end
     end
 
@@ -119,11 +114,11 @@ Capistrano::Configuration.instance(:must_exist).load do
 
     desc "Kill a rogue worker.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit. arg: host=ip pid=pid"
     task :kill_worker_with_impunity, :roles => :resque do
-      if ENV['host'].nil? || ENV['host'].empty? || ENV['pid'].nil? || ENV['pid'].empty?
-        puts 'You must enter the host and pid to kill..cap resque:quit host=ip pid=pid'
+      if ENV[' host '].nil? || ENV[' host '].empty? || ENV[' pid '].nil? || ENV[' pid '].empty?
+        puts ' You must enter the host and pid to kill..cap resque : quit host=ip pid=pid '
       else
-        hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-        run("kill -9 #{ENV['pid']}", :hosts => hosts)
+        hosts = ENV[' host '] || find_servers_for_task(current_task).collect { |s| s.host }
+        run("kill -9 #{ENV[' pid ']}", :hosts => hosts)
       end
     end
 
@@ -137,9 +132,9 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "start multiple resque workers. arg:count=x optional arg: host=ip queue=name"
     task :workers, :roles => :resque do
       default_run_options[:pty] = true
-      hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-      queue = ENV['queue'] || '*'
-      count = ENV['count'] || '1'
+      hosts = ENV[' host '] || find_servers_for_task(current_task).collect { |s| s.host }
+      queue = ENV[' queue '] || '*'
+      count = ENV[' count '] || ' 1 '
       rake = get_rake
       run("cd #{get_worker_path}; nohup #{rake} RAILS_ENV=#{stage} COUNT=#{count} QUEUE=#{queue} resque:work >> log/resque_worker.log 2>&1", :hosts => hosts)
     end
@@ -149,42 +144,42 @@ Capistrano::Configuration.instance(:must_exist).load do
       default_run_options[:pty] = true
       rake = fetch(:rake, "rake")
       #pass the rake options to the rake task so the workers can be started with the options.
-      run("cd #{get_worker_path}; RAILS_ENV=#{stage} RAKE_WITH_OPTS='#{get_rake}' nohup #{rake} resque:restart_workers")
-    end
+      run("cd #{get_worker_path}; RAILS_ENV=#{stage} RAKE_WITH_OPTS=' #{get_rake}' nohup #{rake} resque:restart_workers")
+      end
 
-    # ====================================
-    # ResqueScheduler TASKS
-    # ====================================
+      # ====================================
+      # ResqueScheduler TASKS
+      # ====================================
 
-    desc "start a resque worker. optional arg: host=ip queue=name"
-    task :scheduler, :roles => :resque do
-      default_run_options[:pty] = true
-      hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-      rake = fetch(:rake, "rake")
-      run("cd #{get_worker_path}; nohup #{rake} RAILS_ENV=#{stage} resque:scheduler", :hosts => hosts)
-    end
-
-    desc "Gracefully kill the scheduler on a server. arg: host=ip"
-    task :quit_scheduler, :roles => :resque do
-      if ENV['host'].nil? || ENV['host'].empty?
-        puts 'You must enter the host to kill..cap resque:quit_scheduler host=ip pid=pid'
-      else
+      desc "start a resque worker. optional arg: host=ip queue=name"
+      task :scheduler, :roles => :resque do
+        default_run_options[:pty] = true
         hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
         rake = fetch(:rake, "rake")
-        run("cd #{get_worker_path}; nohup #{rake} RAILS_ENV=#{stage} resque:quit_scheduler", :hosts => hosts)
+        run("cd #{get_worker_path}; nohup #{rake} RAILS_ENV=#{stage} resque:scheduler", :hosts => hosts)
       end
-    end
 
-    desc "Determine if the scheduler is running or not on a server"
-    task :scheduler_status, :roles => :resque do
-      hosts = ENV['hosts'].to_s.split(',') || find_servers_for_task(current_task).collect { |s| s.host }
+      desc "Gracefully kill the scheduler on a server. arg: host=ip"
+      task :quit_scheduler, :roles => :resque do
+        if ENV['host'].nil? || ENV['host'].empty?
+          puts 'You must enter the host to kill..cap resque:quit_scheduler host=ip pid=pid'
+        else
+          hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
+          rake = fetch(:rake, "rake")
+          run("cd #{get_worker_path}; nohup #{rake} RAILS_ENV=#{stage} resque:quit_scheduler", :hosts => hosts)
+        end
+      end
 
-      status = nil
+      desc "Determine if the scheduler is running or not on a server"
+      task :scheduler_status, :roles => :resque do
+        hosts = ENV['hosts'].to_s.split(',') || find_servers_for_task(current_task).collect { |s| s.host }
 
-      run("ps -eaf | grep resque | grep -v cap", :hosts => hosts) do |channel, stream, data|
-        status = (data =~ /resque:scheduler/) ? 'up' : 'down'
-        puts " ** [#{stream} :: #{channel[:host]}] resque:scheduler is #{status}"
+        status = nil
+
+        run("ps -eaf | grep resque | grep -v cap", :hosts => hosts) do |channel, stream, data|
+          status = (data =~ /resque:scheduler/) ? 'up' : 'down'
+          puts " ** [#{stream} :: #{channel[:host]}] resque:scheduler is #{status}"
+        end
       end
     end
   end
-end
