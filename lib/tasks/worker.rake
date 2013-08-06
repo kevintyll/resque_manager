@@ -9,6 +9,7 @@ namespace :resque do
     threads = []
     mqueue = queues.shift
     Thread.current[:queues] = mqueue
+    Thread.current[:worker_path] = Rails.root
     mworker = Resque::Worker.new(mqueue)
     mworker.verbose = true #ENV['LOGGING'] || ENV['VERBOSE']
     mworker.very_verbose = true #ENV['VVERBOSE']
@@ -21,6 +22,7 @@ namespace :resque do
       threads << Thread.new do
         begin
           Thread.current[:queues] = queue
+          Thread.current[:worker_path] = Rails.root
           worker = Resque::Worker.new(queue)
           worker.verbose = ENV['LOGGING'] || ENV['VERBOSE']
           worker.very_verbose = ENV['VVERBOSE']

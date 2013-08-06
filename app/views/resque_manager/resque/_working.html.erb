@@ -4,7 +4,7 @@
   <table>
     <tr>
       <th>&nbsp;</th>
-      <th>Where (ip):pid:thread</th>
+      <th>Where (ip):pid:thread:path</th>
       <th>Queue</th>
       <th>Started</th>
       <th>Class</th>
@@ -12,8 +12,8 @@
     </tr>
     <tr>
       <td><img src="<%='assets/resque_manager/working.png' %>" alt="working" title="working"></td>
-      <% host, pid,thread, _ = worker.to_s.split(':') %>
-      <td><%= link_to("#{host}:#{pid}:#{thread}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
+      <% host, pid,thread, path, _ = worker.to_s.split(':') %>
+      <td><%= link_to("#{host}:#{pid}:#{thread}:#{path}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
       <% data = worker.job %>
       <% queue = data['queue'] %>
       <td><%= link_to(queue, {:action => 'queues', :id => queue}, :class => 'queue') %></td>
@@ -33,7 +33,7 @@
   <table class='workers'>
     <tr>
       <th>&nbsp;</th>
-      <th>Where (ip):pid:thread</th>
+      <th>Where (ip):pid:thread:path</th>
       <th>Queue</th>
       <th>Processing</th>
     </tr>
@@ -47,8 +47,8 @@
       <% job = worker.job %>
       <tr>
         <td class='icon'><img src="<%="/assets/resque_manager/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
-        <% host, pid, thread, queues = worker.to_s.split(':') %>
-        <td class='where'><%= link_to("#{host}:#{pid}:#{thread}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
+        <% host, pid, thread, path, queues = worker.to_s.split(':') %>
+        <td class='where'><%= link_to("#{host}:#{pid}:#{thread}:#{path}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
         <td class='queues queue'>
           <%= link_to(job['queue'], {:action => 'queues', :id => job['queue']}, :class => 'queue-tag') %>
         </td>

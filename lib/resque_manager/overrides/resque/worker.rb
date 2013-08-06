@@ -16,7 +16,7 @@ module Resque
     # The string representation is the same as the id for this worker
     # instance. Can be used with `Worker.find`.
     def to_s
-      @to_s || "#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:queues]}"
+      @to_s || "#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:worker_path]}:#{Thread.current[:queues]}"
     end
 
     alias_method :id, :to_s
@@ -33,6 +33,10 @@ module Resque
 
     def thread
       to_s.split(':').third
+    end
+
+    def worker_path
+      to_s.split(':').fourth
     end
 
     def queue
@@ -239,7 +243,7 @@ module Resque
       application_path = options[:application_path]
       queues = options[:queues]
       if Rails.env =~ /development|test/
-        Thread.new(application_path, queues) { |application_path, queue| system("cd #{ResqueManager.applications.with_indifferent_access[application] || '.'}; bundle exec #{ResqueManager.resque_worker_rake || 'rake'} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
+        Thread.new(application_path, queues) { |application_path, queue| system("cd #{application_path || '.'}; bundle exec #{ResqueManager.resque_worker_rake || 'rake'} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
       else
         Thread.new(ips, application_path, queues) { |ip_list, application_path, queue| system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}") }
       end
@@ -279,7 +283,7 @@ module Resque
     def restart
       queues = self.queues_in_pid.join('#')
       quit
-      self.class.start(hosts: self.ip, queues: queues)
+      self.class.start(hosts: self.ip, queues: queues, application_path: ResqueManager.applications.with_indifferent_access[self.worker_path])
     end
 
   end
