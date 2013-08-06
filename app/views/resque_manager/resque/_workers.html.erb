@@ -68,6 +68,7 @@
       </tr>
       <% upid = '' %>
       <% for worker in (workers = resque.workers.sort_by { |w| w.to_s }) %>
+          Rails.logger.info "@@@@@@@@@ #{__FILE__}:#{__LINE__} \n********** worker = " + worker.inspect
           <tr class="<%= state = worker.state %>">
             <td class='icon'>
               <img src="<%="/assets/resque_manager/#{state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>

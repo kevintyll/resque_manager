@@ -8,8 +8,11 @@ namespace :resque do
     queues = (ENV['QUEUES'] || ENV['QUEUE']).to_s.split('#').delete_if { |a| a.blank? }
     threads = []
     mqueue = queues.shift
+    # we are assuming the application has been deployed with a standard cap recipe.
+    base, version = Rails.root.split('releases')
+    worker_path = base + 'current'
     Thread.current[:queues] = mqueue
-    Thread.current[:worker_path] = Rails.root
+    Thread.current[:path] = worker_path
     mworker = Resque::Worker.new(mqueue)
     mworker.verbose = true #ENV['LOGGING'] || ENV['VERBOSE']
     mworker.very_verbose = true #ENV['VVERBOSE']
@@ -22,7 +25,7 @@ namespace :resque do
       threads << Thread.new do
         begin
           Thread.current[:queues] = queue
-          Thread.current[:worker_path] = Rails.root
+          Thread.current[:path] = worker_path
           worker = Resque::Worker.new(queue)
           worker.verbose = ENV['LOGGING'] || ENV['VERBOSE']
           worker.very_verbose = ENV['VVERBOSE']

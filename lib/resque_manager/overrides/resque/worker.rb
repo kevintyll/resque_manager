@@ -16,7 +16,7 @@ module Resque
     # The string representation is the same as the id for this worker
     # instance. Can be used with `Worker.find`.
     def to_s
-      @to_s || "#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:worker_path]}:#{Thread.current[:queues]}"
+      @to_s || "#{hostname}(#{local_ip}):#{Process.pid}:#{Thread.current.object_id}:#{Thread.current[:path]}:#{Thread.current[:queues]}"
     end
 
     alias_method :id, :to_s
@@ -35,7 +35,7 @@ module Resque
       to_s.split(':').third
     end
 
-    def worker_path
+    def path
       to_s.split(':').fourth
     end
 
@@ -126,7 +126,7 @@ module Resque
     # environment, we can determine if Redis is old and clean it up a bit.
     def prune_dead_workers
       Worker.all.each do |worker|
-        host, pid, thread, queues = worker.id.split(':')
+        host, pid, thread, path, queues = worker.id.split(':')
         next unless host.include?(hostname)
         next if worker_pids.include?(pid)
         log! "Pruning dead worker: #{worker}"
@@ -260,7 +260,7 @@ module Resque
           system("kill -QUIT  #{self.pid}")
         end
       else
-        system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip}")
+        system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}")
       end
     end
 
@@ -283,7 +283,7 @@ module Resque
     def restart
       queues = self.queues_in_pid.join('#')
       quit
-      self.class.start(hosts: self.ip, queues: queues, application_path: ResqueManager.applications.with_indifferent_access[self.worker_path])
+      self.class.start(hosts: self.ip, queues: queues, application_path: ResqueManager.applications.with_indifferent_access[self.path])
     end
 
   end
