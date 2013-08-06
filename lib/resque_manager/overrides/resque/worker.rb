@@ -283,7 +283,7 @@ module Resque
     def restart
       queues = self.queues_in_pid.join('#')
       quit
-      self.class.start(hosts: self.ip, queues: queues, application_path: ResqueManager.applications.with_indifferent_access[self.path])
+      self.class.start(hosts: self.ip, queues: queues, application_path: self.path)
     end
 
   end
