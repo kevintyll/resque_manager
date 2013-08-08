@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    resque_manager (0.0.4)
+    resque_manager (0.0.8)
       jquery-rails
       rails (~> 3.2)
       redis (~> 3.0)

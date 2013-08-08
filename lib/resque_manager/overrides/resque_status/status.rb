@@ -13,12 +13,26 @@ module Resque
       end
 
       module ClassOverridesAndExtensions
+
+        #OVERRIDE to set the name that will be displayed on the status page for this job.
+        def enqueue_to(queue, klass, options = {})
+          uuid = Resque::Plugins::Status::Hash.generate_uuid
+          Resque::Plugins::Status::Hash.create uuid, {name: "#{self.name}: #{options.inspect}"}.merge(options)
+
+          if Resque.enqueue_to(queue, klass, uuid, options)
+            uuid
+          else
+            Resque::Plugins::Status::Hash.remove(uuid)
+            nil
+          end
+        end
+
         # This is the method called by Resque::Worker when processing jobs. It
         # creates a new instance of the job class and populates it with the uuid and
         # options.
         #
         # You should not override this method, rather the <tt>perform</tt> instance method.
-        # OVERRIDE to get the worker and set when initiaizing the class
+        # OVERRIDE to get the worker and set when initializing the class
         def perform(uuid=nil, options = {})
           uuid ||= Resque::Plugins::Status::Hash.generate_uuid
           worker = yield if block_given?
@@ -140,25 +154,6 @@ module Resque
         self.class.counter(counter, uuid)
       end
 
-      # Return the <tt>num</tt> most recent status/job UUIDs in reverse chronological order.
-      #override the gem to fix the ordering
-      #def self.status_ids(range_start = nil, range_end = nil)
-      #  unless range_end && range_start
-      #    # Because we want a reverse chronological order, we need to get a range starting
-      #    # by the higest negative number.
-      #    Resque.redis.zrevrange(set_key, 0, -1) || []
-      #  else
-      #    # Because we want a reverse chronological order, we need to get a range starting
-      #    # by the higest negative number. The ordering is transparent from the API user's
-      #    # perspective so we need to convert the passed params
-      #    if range_start == 0
-      #      range_start = -1
-      #    else
-      #      range_start += 1
-      #    end
-      #    (Resque.redis.zrange(set_key, -(range_end.abs), -(range_start.abs)) || []).reverse
-      #  end
-      #end
     end
   end
 end
