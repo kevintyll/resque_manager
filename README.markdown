@@ -29,7 +29,9 @@ Dependencies
 
 This engine now requires rails 3.2.0 or greater.
 
-This engine now requires redis 3.0 or greater for the expiration of keys to work correctly.
+This engine now requires redis 2.0 or greater for the expiration of keys to work correctly.
+
+This engine requires the redis 3.0 or higher gem
 
 This engine requires the resque 1.24 or higher gem.
 
