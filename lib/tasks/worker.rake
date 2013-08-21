@@ -10,7 +10,8 @@ namespace :resque do
     mqueue = queues.shift
     # we are assuming the application has been deployed with a standard cap recipe.
     base, version = Rails.root.to_s.split('releases')
-    worker_path = base + 'current'
+    worker_path = base
+    worker_path += '/current' unless Rails.env.development?
     Thread.current[:queues] = mqueue
     Thread.current[:path] = worker_path
     mworker = Resque::Worker.new(mqueue)

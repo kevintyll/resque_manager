@@ -6,6 +6,22 @@ module Resque
         base.class_eval do
           include Resque::Plugins::Status
           extend ClassOverrides
+          include InstanceOverrides
+        end
+      end
+
+      module InstanceOverrides
+        # OVERRIDE to just use the name of it's parent job.
+        def name
+          status.name rescue nil
+        end
+
+        def completed(*messages)
+          super(*messages)
+          # "You must override this method to provide your own logic of when to actually call complete."
+          #      if counter(:processed) >= options['total']
+          #        super
+          #      end
         end
       end
 
@@ -24,18 +40,6 @@ module Resque
             nil
           end
         end
-      end
-
-      def name
-        status.name rescue nil
-      end
-
-      def completed(*messages)
-        super(*messages)
-        # "You must override this method to provide your own logic of when to actually call complete."
-        #      if counter(:processed) >= options['total']
-        #        super
-        #      end
       end
     end
   end

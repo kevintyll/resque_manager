@@ -137,25 +137,12 @@ module Resque
     # Unregisters ourself as a worker. Useful when shutting down.
     # OVERRIDE to also remove the pause key
     # Would prefer to call super but get no superclass method error
-    def unregister_worker
-      # If we're still processing a job, make sure it gets logged as a
-      # failure.
-      if (hash = processing) && !hash.empty?
-        job = Job.new(hash['queue'], hash['payload'])
-        # Ensure the proper worker is attached to this job, even if
-        # it's not the precise instance that died.
-        job.worker = self
-        job.fail(DirtyExit.new)
-      end
+    def unregister_worker_with_pause(exception = nil)
+      unregister_worker_without_pause(exception)
 
-      Resque.redis.srem(:workers, self)
-      Resque.redis.del("worker:#{self}")
-      Resque.redis.del("worker:#{self}:started")
       Resque.redis.del(pause_key)
-
-      Stat.clear("processed:#{self}")
-      Stat.clear("failed:#{self}")
     end
+    alias_method_chain :unregister_worker, :pause
 
     def all_workers_in_pid_working
       workers_in_pid.select { |w| (hash = w.processing) && !hash.empty? }
@@ -178,45 +165,59 @@ module Resque
     # Also accepts a block which will be passed the job as soon as it
     # has completed processing. Useful for testing.
     #OVERRIDE for multithreaded workers
-    def work(interval = 5, &block)
+    def work(interval = 5.0, &block)
+      interval = Float(interval)
       $0 = "resque: Starting"
       startup
 
       loop do
-        break if @shutdown || Thread.current[:shutdown]
+        break if shutdown? || Thread.current[:shutdown]
 
-        if not @paused and job = reserve
+        if not paused? and job = reserve
           log "got: #{job.inspect}"
-          run_hook :before_fork
+          job.worker = self
           working_on job
 
-          if @child = fork
-            rand # Reseeding
-            procline "Forked #{@child} at #{Time.now.to_i}"
-            Process.wait
-          else
-            procline "Processing #{job.queue} since #{Time.now.to_i}"
+          procline "Processing #{job.queue} since #{Time.now.to_i} [#{job.payload_class}]"
+          if @child = fork(job) do
+            unregister_signal_handlers if term_child
+            reconnect
             perform(job, &block)
-            exit! unless @cant_fork
+            exit! unless run_at_exit_hooks
           end
 
+            srand # Reseeding
+            procline "Forked #{@child} at #{Time.now.to_i}"
+            begin
+              Process.waitpid(@child)
+            rescue SystemCallError
+              nil
+            end
+            job.fail(DirtyExit.new($?.to_s)) if $?.signaled?
+          else
+            reconnect
+            perform(job, &block)
+          end
           done_working
           @child = nil
         else
-          break if interval.to_i == 0
-          log! "Sleeping for #{interval.to_i}"
-          procline @paused ? "Paused" : "Waiting for #{@queues.join(',')}"
-          sleep interval.to_i
+          break if interval.zero?
+          log! "Sleeping for #{interval} seconds"
+          procline paused? ? "Paused" : "Waiting for #{@queues.join(',')}"
+          sleep interval
         end
       end
-      unregister_worker rescue nil
+
+      unregister_worker
       loop do
         #hang onto the process until all threads are done
         break if all_workers_in_pid_working.blank?
         sleep interval.to_i
       end
-    ensure
-      unregister_worker
+    rescue Exception => exception
+      log "Failed to start worker : #{exception.inspect}"
+
+      unregister_worker(exception)
     end
 
     # logic for mappged_mget changed where it returns keys with nil values in latest redis gem.

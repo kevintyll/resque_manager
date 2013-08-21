@@ -14,7 +14,9 @@ module Resque
 
       module ClassOverridesAndExtensions
 
-        #OVERRIDE to set the name that will be displayed on the status page for this job.
+        #OVERRIDE to set the name that will be displayed on the status page for this job when it is first queued.
+        #The name will be changed when set_status is called, which is called on #tick, to the value set in your name method,
+        #but the UI name field is blank when it is first queued, so setting it here so we have something.
         def enqueue_to(queue, klass, options = {})
           uuid = Resque::Plugins::Status::Hash.generate_uuid
           Resque::Plugins::Status::Hash.create uuid, {name: "#{self.name}: #{options.inspect}"}.merge(options)

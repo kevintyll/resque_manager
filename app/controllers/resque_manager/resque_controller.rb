@@ -37,8 +37,13 @@ class ResqueManager::ResqueController < ApplicationController
   end
 
   def remove_job
-    Resque.dequeue(params['class'].constantize, *Resque.decode(params['args']))
-    redirect_to request.referrer
+    # We can only dequeue a job when that job is in the same application as the UI.
+    # Otherwise we get an error when we try to constantize a class that does not exist
+    # in the application the UI is in.
+    if ResqueManager.applications.blank?
+      Resque.dequeue(params['class'].constantize, *Resque.decode(params['args']))
+      redirect_to request.referrer
+    end
   end
 
   def stop_worker

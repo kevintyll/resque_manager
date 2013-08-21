@@ -27,7 +27,7 @@
   <% if @count > 0 %>
     <div class="clearfix">
       <div class="control_panel sub_header">
-        <form method="post" id="exec" action="cleaner_exec">
+        <%= form_tag('cleaner_exec', id: 'exec') do %>
           <input type="hidden" name="c" value="<%=@klass%>" />
           <input type="hidden" name="f" value="<%=@from%>" />
           <input type="hidden" name="t" value="<%=@to%>" />
@@ -47,7 +47,7 @@
           <% end %>
           <input type="hidden" name="sha1" id="sha1_list" />
 
-        </form>
+        <% end -%>
       </div>
     </div>
   <% end %>

@@ -42,7 +42,7 @@
               <code><%= data['payload']['class'] %></code>
               <small><%= link_to(format_time(Time.zone.parse(data['run_at'])), {:action => 'working', :id => worker.to_s.gsub(/\./, '_')}, :class => "queue time") %></small>
               <br>
-              <small><%= worker.status %></small>
+              <small><%= worker.overview_message %></small>
           <% else %>
               <span class='waiting'>Waiting for a job...</span>
           <% end %>
@@ -82,7 +82,7 @@
                   <code><%= data['payload']['class'] %></code>
                   <small><%= link_to(format_time(Time.zone.parse(data['run_at'])), {:action => 'working', :id => worker.to_s.gsub(/\./, '_')}, :class => "queue time") %></small>
                   <br/>
-                  <small><%= worker.status %></small>
+                  <small><%= worker.overview_message %></small>
               <% else %>
                   <span class='waiting'>Waiting for a job...</span>
               <% end %>
