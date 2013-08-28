@@ -11,7 +11,9 @@ namespace :resque do
     # we are assuming the application has been deployed with a standard cap recipe.
     base, version = Rails.root.to_s.split('releases')
     worker_path = base
-    worker_path += '/current' unless Rails.env.development?
+    # add current to the path to use the symlink used by a standard cap deploy
+    # unless the app is deployed to the "current" directory when using cap-git-deploy
+    worker_path += '/current' unless Rails.env.development? || worker_path =~ /current/
     Thread.current[:queues] = mqueue
     Thread.current[:path] = worker_path
     mworker = Resque::Worker.new(mqueue)
