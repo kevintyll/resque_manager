@@ -9,7 +9,7 @@ namespace :resque do
     threads = []
     mqueue = queues.shift
     # we are assuming the application has been deployed with a standard cap recipe.
-    base, version = Rails.root.to_s.split('releases')
+    base, version = Rails.root.to_s.split('/releases')
     worker_path = base
     # add current to the path to use the symlink used by a standard cap deploy
     # unless the app is deployed to the "current" directory when using cap-git-deploy

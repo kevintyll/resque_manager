@@ -1,3 +1,3 @@
 module ResqueManager
-  VERSION = "0.0.11"
+  VERSION = "3.3.0"
 end
