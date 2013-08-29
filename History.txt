@@ -1,4 +1,4 @@
-== 3.3.0
+== 3.3.0 2013-08-28
 *  Change name to resque_manager
 *  Convert the gem to a true mountable rails engine
 *  Use upgraded resque_status gem

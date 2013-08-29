@@ -23,4 +23,6 @@ Gem::Specification.new do |s|
   s.add_dependency  'resque-cleaner', "~> 0.2"
   s.add_dependency  'jquery-rails'
 
+  s.license = 'MIT'
+
 end
