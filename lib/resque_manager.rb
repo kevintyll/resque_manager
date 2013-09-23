@@ -10,6 +10,7 @@ if Resque.respond_to? :schedule
 end
 require 'resque-status'
 require 'resque_manager/overrides/resque_status/status'
+require 'resque_manager/overrides/resque_status/hash'
 require 'resque_manager/overrides/resque_status/chained_status'
 require 'resque-cleaner'
 

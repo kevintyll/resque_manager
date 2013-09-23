@@ -1,4 +1,3 @@
 Rails.application.routes.draw do
-
-  mount ResqueManager::Engine => "resque"
+  mount ResqueManager::Engine => 'resque'
 end

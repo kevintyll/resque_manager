@@ -1,0 +1,16 @@
+development: &default_development
+  :host: 127.0.0.1
+  :thread_safe: true
+
+development_resque:
+  <<: *default_development
+  :db:  1
+
+test: &default_test
+  :host: 127.0.0.1
+  :db:  <%= 10 + ENV['TEST_ENV_NUMBER'].to_i %>
+  :thread_safe: true
+
+test_resque:
+  <<: *default_test
+  :db:  <%= 40 + ENV['TEST_ENV_NUMBER'].to_i %>
