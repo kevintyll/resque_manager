@@ -153,7 +153,7 @@ Resque::Plugins::Status, and everything after that includes from Resque::Plugins
 the chained job from the preceding job, you just need to pass {'uuid' => uuid} as one of the hash arguments.
 
     class DataContributionFile
-        Resque::Plugins::Status
+        include Resque::Plugins::Status
 
         @queue = :data_contribution
 
@@ -167,7 +167,7 @@ the chained job from the preceding job, you just need to pass {'uuid' => uuid} a
     end
 
     class SingleRecordLoader
-        Resque::Plugins::ChainedStatus
+        include Resque::Plugins::ChainedStatus
         @queue = :single_record_loader
 
         def completed(*messages)
