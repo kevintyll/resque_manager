@@ -1,5 +1,5 @@
 require 'test/unit'
-require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../../test_helper')
 # Testing resque status mixin through DataContributionFile
 
 class StatusTest < Test::Unit::TestCase
@@ -17,7 +17,6 @@ class StatusTest < Test::Unit::TestCase
       end
     end
     
-
     context '#initialize' do
       should 'set the instance variables @uuid, @options, @worker' do
         options = { options: 'option' }
@@ -29,7 +28,7 @@ class StatusTest < Test::Unit::TestCase
       end
     end
     
-    context '#enqueue_to' do
+    context '.enqueue_to' do
       should 'return a uuid' do
         assert_not_nil DataContributionFile.enqueue_to(:data_contribution_file, 'SingleRecordLoader')
       end
@@ -40,7 +39,7 @@ class StatusTest < Test::Unit::TestCase
       end
     end
 
-    context '#perform' do
+    context '.perform' do
       should 'return an instance of DataContributionFile with a UUID' do
         response = DataContributionFile.perform
         assert_kind_of DataContributionFile, response
@@ -58,13 +57,13 @@ class StatusTest < Test::Unit::TestCase
       end
     end
 
-    context '#counter_key' do
+    context '.counter_key' do
       should 'return a formatted counter key' do
         assert_equal "data_contribution:#{@uuid}", DataContributionFile.counter_key('data_contribution', @uuid)
       end
     end
 
-    context '#remove' do
+    context '.remove' do
       should 'remove from redis' do
         assert_equal 1, DataContributionFile.incr_counter('data_contribution', @uuid)
         DataContributionFile.remove(@uuid)
@@ -72,7 +71,7 @@ class StatusTest < Test::Unit::TestCase
       end
     end
 
-    context '#counter' do
+    context '.counter' do
       should 'return a count of 0' do
         assert_equal 0, DataContributionFile.counter('data_contribution', @uuid)
       end
@@ -83,7 +82,7 @@ class StatusTest < Test::Unit::TestCase
       end
     end
 
-    context '#incr_counter class method' do
+    context '.incr_counter' do
       should 'increment the counter to one' do
         assert_equal 1, DataContributionFile.incr_counter('data_contribution', @uuid)
       end
@@ -118,7 +117,6 @@ class StatusTest < Test::Unit::TestCase
     context '#safe_perform!' do
       setup do
         @data_contribution = DataContributionFile.new(@uuid, @worker)
-        #@data_contribution.send(:set_status) # Set the status
         @status = Resque::Plugins::Status::Hash.new().merge('uuid' => @uuid)
         @data_contribution.stubs(:status).returns(@status)
         @now = Time.now

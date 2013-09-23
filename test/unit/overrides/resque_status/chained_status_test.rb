@@ -1,5 +1,5 @@
 require 'test/unit'
-require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../../test_helper')
 
 # Testing chained status mixin through SingleRecordLoader
 
@@ -42,7 +42,7 @@ class ChainedStatusTest < Test::Unit::TestCase
     end
 
     context 'ClassOverrides' do
-      context '#enqueu_to' do
+      context '.enqueu_to' do
         should 'raise an ArgumentError for a missing UUID' do
           assert_raises(ArgumentError) { SingleRecordLoader.enqueue_to(:data_contribution_file, 'SingleRecordLoader') }
         end
