@@ -91,7 +91,7 @@ module ResqueManager
       if @polling
         text = "Last Updated: #{Time.now.strftime("%H:%M:%S")}"
       else
-        text = link_to('Live Poll', {:action => 'status_poll', :start => start}, :rel => 'poll')
+        text = link_to('Live Poll', status_poll_resque_path({:start => start}), :rel => 'poll')
       end
       "<p class='poll'>#{text}</p>".html_safe
     end

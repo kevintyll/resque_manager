@@ -1,11 +1,10 @@
-require "resque_manager/engine"
+require 'resque_manager/engine'
 require 'resque/server'
 require 'resque_manager/overrides/resque/worker'
 require 'resque_manager/overrides/resque/resque'
 require 'resque_manager/overrides/resque/job'
 require 'resque_manager/overrides/resque/failure/redis'
 if Resque.respond_to? :schedule
-  require 'resque_scheduler/tasks'
   require 'resque_manager/overrides/resque_scheduler/resque_scheduler'
 end
 require 'resque-status'
