@@ -21,7 +21,7 @@
     <% Resque.schedule.each do |name,config| %>
       <tr>
         <td>
-          <%= button_to "Queue now", {:controller=>'resque', :action=> 'schedule_requeue', :job_name => name}, :method => :post %>
+          <%= button_to "Queue now", schedule_requeue_resque_path(job_name: name), :method => :post %>
         </td>
         <td><%= h name %></td>
         <td><%= h config['ip'] %></td>
@@ -29,7 +29,7 @@
         <td style="white-space:nowrap"><%= h config['cron'] %></td>
         <td><%= h config['class'] %></td>
         <td><%= h config['args'].inspect %></td>
-        <td><%= button_to "Remove", {:controller=>'resque', :action=> 'remove_from_schedule', :job_name => name, :ip => config['ip']}, :method => :post %></td>
+        <td><%= button_to "Remove", remove_from_schedule_resque_path(job_name: name, ip: config['ip']), :method => :post %></td>
       </tr>
     <%end%>
   </table>
@@ -38,10 +38,8 @@
   <div id='flash' class="flash">
     <%flash_message = flash_helper%>
     <% unless flash_message.blank? -%>
-      <p>
-        <%= flash_message %>
-      </p>
-      <%= javascript_tag "$('flash').show();" %>
+        <%= flash_message.html_safe %>
+        <%= javascript_tag "$('flash').show();" %>
     <% end %>
   </div>
   <%= form_tag '/resque/add_scheduled_job' do -%>
@@ -85,9 +83,9 @@
         <td><%= status %></td>
         <td>
           <%  if status == 'Running' -%>
-            <%= button_to "Stop Scheduler", {:controller=>'resque', :action=> 'stop_scheduler', :ip => ip}, :method => :post %>
+            <%= button_to 'Stop Scheduler', stop_scheduler_resque_path(ip: ip), :method => :post %>
           <% else -%>
-            <%= button_to "Start Scheduler", {:controller=>'resque', :action=> 'start_scheduler', :ip => ip}, :method => :post %>
+            <%= button_to 'Start Scheduler', stop_scheduler_resque_path(ip: ip), :method => :post %>
           <% end -%>
         </td>
       </tr>

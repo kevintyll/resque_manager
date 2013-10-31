@@ -5,12 +5,7 @@ module Resque
     @@local_ip = nil
 
     def local_ip
-      @@local_ip ||= begin
-        UDPSocket.open do |s|
-          s.connect 'google.com', 1
-          s.addr.last
-        end
-      end
+      @@local_ip ||= IPSocket.getaddress(Socket.gethostname)
     end
 
     # The string representation is the same as the id for this worker
@@ -40,7 +35,7 @@ module Resque
     end
 
     def queue
-      to_s.split(':').last
+      to_s.split(':').fifth
     end
 
     def workers_in_pid
@@ -52,7 +47,7 @@ module Resque
     end
 
     def queues_in_pid
-      workers_in_pid.collect { |w| w.queue }
+      workers_in_pid.collect { |w| w.queue }.compact
     end
 
     #OVERRIDE for multithreaded workers
@@ -100,7 +95,7 @@ module Resque
     #OVERRIDE to set a redis key so UI knows it's paused too
     # Would prefer to call super but get no superclass method error
     def pause_processing
-      log "USR2 received; pausing job processing"
+      log 'USR2 received; pausing job processing'
       @paused = true
       Resque.redis.set(pause_key, Time.now.to_s)
     end
@@ -109,7 +104,7 @@ module Resque
     #OVERRIDE to set remove redis key so UI knows it's unpaused too
     # Would prefer to call super but get no superclass method error
     def unpause_processing
-      log "CONT received; resuming job processing"
+      log 'CONT received; resuming job processing'
       @paused = false
       Resque.redis.del(pause_key)
     end
@@ -167,12 +162,11 @@ module Resque
     #OVERRIDE for multithreaded workers
     def work(interval = 5.0, &block)
       interval = Float(interval)
-      $0 = "resque: Starting"
+      $0 = 'resque: Starting'
       startup
 
       loop do
         break if shutdown? || Thread.current[:shutdown]
-
         if not paused? and job = reserve
           log "got: #{job.inspect}"
           job.worker = self

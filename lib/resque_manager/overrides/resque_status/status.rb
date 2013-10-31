@@ -45,7 +45,7 @@ module Resque
 
         # OVERRIDE to clear all the keys that have the UUI. status, counters, etc.
         def remove(uuid)
-          Resque.redis.zrem(set_key, uuid)
+          Resque.redis.zrem(Resque::Plugins::Status::Hash.set_key, uuid)
           Resque.redis.keys("*#{uuid}").each do |key|
             Resque.redis.del(key)
           end
@@ -130,7 +130,7 @@ module Resque
         Rails.logger.info "Job #{self} Killed at #{Time.now}"
         Resque::Plugins::Status::Hash.killed(uuid)
         on_killed if respond_to?(:on_killed)
-      rescue => e
+      rescue Exception => e
         Rails.logger.error e
         failed("The task failed because of an error: #{e}")
         if respond_to?(:on_failure)

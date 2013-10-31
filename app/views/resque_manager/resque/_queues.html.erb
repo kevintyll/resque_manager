@@ -51,7 +51,7 @@
           </tr>
       <% end %>
       <tr class='failed'>
-        <td class='queue failed'><%= link_to('failed', {:action => "cleaner"}, :class => 'queue') %></td>
+        <td class='queue failed'><%= link_to('failed', cleaner_resque_path , :class => 'queue') %></td>
         <td class='size'><%= Resque::Failure.count %></td>
       </tr>
     </table>

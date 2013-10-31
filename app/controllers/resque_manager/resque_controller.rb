@@ -42,42 +42,42 @@ class ResqueManager::ResqueController < ApplicationController
     # in the application the UI is in.
     if ResqueManager.applications.blank?
       Resque.dequeue(params['class'].constantize, *Resque.decode(params['args']))
-      redirect_to request.referrer
     end
+    redirect_to request.referrer
   end
 
   def stop_worker
     worker = find_worker(params[:worker])
     worker.quit if worker
-    redirect_to(:action => "workers")
+    redirect_to workers_resque_path
   end
 
   def pause_worker
     worker = find_worker(params[:worker])
     worker.pause if worker
-    redirect_to(:action => "workers")
+    redirect_to workers_resque_path
   end
 
   def continue_worker
     worker = find_worker(params[:worker])
     worker.continue if worker
-    redirect_to(:action => "workers")
+    redirect_to workers_resque_path
   end
 
   def restart_worker
     worker = find_worker(params[:worker])
     worker.restart if worker
-    redirect_to(:action => "workers")
+    redirect_to workers_resque_path
   end
 
   def start_worker
     Resque::Worker.start(params)
-    redirect_to(:action => "workers")
+    redirect_to workers_resque_path
   end
 
   def stats
     unless params[:id]
-      redirect_to(:action => 'stats', :id => 'resque')
+      redirect_to(stats_resque_path(:id => 'resque'))
     end
 
     if params[:id] == 'txt'
@@ -89,7 +89,6 @@ class ResqueManager::ResqueController < ApplicationController
       stats << "resque.failed+=#{info[:failed]}"
       stats << "resque.workers=#{info[:workers]}"
       stats << "resque.working=#{info[:working]}"
-
       Resque.queues.each do |queue|
         stats << "queues.#{queue}=#{Resque.size(queue)}"
       end
@@ -107,13 +106,13 @@ class ResqueManager::ResqueController < ApplicationController
   def schedule_requeue
     config = Resque.schedule[params['job_name']]
     Resque::Scheduler.enqueue_from_config(config)
-    redirect_to(:action => 'overview')
+    redirect_to overview_resque_path
   end
 
   def add_scheduled_job
     errors = []
     if Resque.schedule.keys.include?(params[:name])
-      errors << 'Name already exists'
+      errors << 'Name already exists.'
     end
     if params[:ip].blank?
       errors << 'You must enter an ip address for the server you want this job to run on.'
@@ -129,33 +128,32 @@ class ResqueManager::ResqueController < ApplicationController
                                    'description' => params['description']}
       }
       Resque.redis.rpush(:scheduled, Resque.encode(config))
-      ResqueScheduler.restart('ip')
+      ResqueScheduler.restart(params['ip'])
     else
-      flash[:error] = errors.join('<br>')
+      flash[:error] = errors.join('<br>').html_safe
     end
-    redirect_to(:action => 'schedule')
+    redirect_to schedule_resque_path
   end
 
   def remove_from_schedule
     Resque.list_range(:scheduled, 0, -0).each do |s|
-
       if s[params['job_name']]
         Resque.redis.lrem(:scheduled, 0, s.to_json)
         # Restart the scheduler on the server that has changed it's schedule
         ResqueScheduler.restart(params['ip'])
       end
     end
-    redirect_to(:action => 'schedule')
+    redirect_to schedule_resque_path
   end
 
   def start_scheduler
     ResqueScheduler.start(params[:ip])
-    redirect_to(:action => 'schedule')
+    redirect_to schedule_resque_path
   end
 
   def stop_scheduler
     ResqueScheduler.quit(params[:ip])
-    redirect_to(:action => 'schedule')
+    redirect_to schedule_resque_path
   end
 
   # resque-status actions
@@ -165,20 +163,22 @@ class ResqueManager::ResqueController < ApplicationController
     @end = @start + (params[:per_page] || 20)
     @statuses = Resque::Plugins::Status::Hash.statuses(@start, @end)
     @size = Resque::Plugins::Status::Hash.status_ids.size
-    if params[:format] == 'js'
-      render :text => @statuses.to_json
+    respond_to do |format|
+      format.js   { render json: @statuses }
+      format.json { render json: @statuses }
     end
   end
 
   def clear_statuses
     Resque::Plugins::Status::Hash.clear
-    redirect_to(:action => 'statuses')
+    redirect_to statuses_resque_path
   end
 
   def status
     @status = Resque::Plugins::Status::Hash.get(params[:id])
-    if params[:format] == 'js'
-      render :text => @status.to_json
+    respond_to do |format|
+      format.js   { render json: @status }
+      format.json { render json: @status }
     end
   end
 
@@ -187,7 +187,7 @@ class ResqueManager::ResqueController < ApplicationController
     s = Resque::Plugins::Status::Hash.get(params[:id])
     s.status = 'killed'
     Resque::Plugins::Status::Hash.set(params[:id], s)
-    redirect_to(:action => 'statuses')
+    redirect_to statuses_resque_path
   end
 
   def cleaner
@@ -262,7 +262,7 @@ class ResqueManager::ResqueController < ApplicationController
 
   def cleaner_stale
     @cleaner.clear_stale
-    redirect_to :action => "cleaner"
+    redirect_to cleaner_resque_path
   end
 
 
@@ -271,11 +271,12 @@ class ResqueManager::ResqueController < ApplicationController
   def check_connection
     Resque.keys
   rescue Errno::ECONNREFUSED
-    render(:template => 'resque/error', :layout => false, :locals => {:error => "Can't connect to Redis! (#{Resque.redis.server})"})
+    render(:template => 'resque_manager/resque/error', :layout => false, :locals => { :error => "Can't connect to Redis! (#{Resque.redis_id})" })
     false
   end
 
   def find_worker(worker)
+    return nil if worker.blank?
     first_part, *rest = worker.split(':')
     first_part.gsub!(/_/, '.')
     Resque::Worker.find("#{first_part}:#{rest.join(':')}")
@@ -290,14 +291,14 @@ class ResqueManager::ResqueController < ApplicationController
   end
 
   def load_cleaner_filter
-    @from = params[:f]=="" ? nil : params[:f]
-    @to = params[:t]=="" ? nil : params[:t]
-    @klass = params[:c]=="" ? nil : params[:c]
-    @exception = params[:ex]=="" ? nil : params[:ex]
+    @from      = params[:f].blank?  ? nil : params[:f]
+    @to        = params[:t].blank?  ? nil : params[:t]
+    @klass     = params[:c].blank?  ? nil : params[:c]
+    @exception = params[:ex].blank? ? nil : params[:ex]
   end
 
   def filter_block
-    block = lambda { |j|
+    lambda { |j|
       (!@from || j.after?(hours_ago(@from))) &&
           (!@to || j.before?(hours_ago(@to))) &&
           (!@klass || j.klass?(@klass)) &&
@@ -309,5 +310,4 @@ class ResqueManager::ResqueController < ApplicationController
   def hours_ago(h)
     Time.now - h.to_i*60*60
   end
-
 end
