@@ -1,4 +1,9 @@
+== 3.3.1 2013-10-31
+
+*  Test suite added.  Fixed a few bugs around resque_scheduler, and pausing and stopping workers.  Thank you very much Andrew Medeiros!
+
 == 3.3.0 2013-08-28
+
 *  Change name to resque_manager
 *  Convert the gem to a true mountable rails engine
 *  Use upgraded resque_status gem

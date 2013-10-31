@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 # Declare your gem's dependencies in resque_manager.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
-gem 'resque-scheduler', require: 'resque_scheduler'
+gem 'resque-scheduler', require: false # require this yourself in your gemfile if you want this functionality.  Adding it here for tests
 gemspec
 
 # jquery-rails is used by the dummy application
