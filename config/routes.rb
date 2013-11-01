@@ -26,6 +26,7 @@ ResqueManager::Engine.routes.draw do
       post :stop_scheduler
       get :statuses
       post :clear_statuses
+      get :statuses
       get :status
       post :kill
       get :cleaner

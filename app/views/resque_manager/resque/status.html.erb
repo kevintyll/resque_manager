@@ -1,7 +1,7 @@
 <%= render(:partial => 'status_styles') %>
 
 <h1 class='wi'>Statuses: <%= @status.uuid %>/<%= @status.name %></h1>
-<p class='intro'>Viewing a specific job created with JobWithStatus. <%= link_to('Return to the list of statuses', :action => "statuses") %></p>
+<p class='intro'>Viewing a specific job created with JobWithStatus. <%= link_to('Return to the list of statuses', statuses_resque_path) %></p>
 
 <div class="status-holder" rel="<%= @status.status %>" id="status_<%= @status.uuid %>">
   <div class="status-progress">

@@ -1,7 +1,10 @@
+require 'resque/tasks'
+Rake::Task["resque:work"].clear # clear out the work task defined in resque so we can redefine it.
+
 namespace :resque do
 
   desc "Start a Resque worker, each queue will create it's own worker in a separate thread"
-  task :work => :setup do
+  task :work => [:fix_eager_load_paths, :preload, :setup] do
     require 'resque'
 
     worker = nil
@@ -47,6 +50,46 @@ namespace :resque do
     end
     threads.each { |thread| thread.join(0.5) }
     mworker.work(ENV['INTERVAL'] || 5) # interval, will block
+  end
+
+  # If something really bad happens and you get hudreds or thousands of failures, this can help
+  # This task can take a while. Expect to requeue maybe 500/min.
+  desc "Requeue all failed jobs, or for specified class. resque:requeue_class[TrialAnalysis] or [all]"
+  task :requeue_class, [:klass] => :environment do |t, args|
+    require 'resque/failure/redis'
+
+    module Resque
+      module Failure
+
+        # Requeues all failed jobs or for a given class
+        def self.requeue_class(failed_class)
+          length = Resque.redis.llen(:failed)
+          puts "#{length} items in failed queue. Preparing to requeue all items of class: #{failed_class}."
+          i = 0
+          skipped = 0
+          requeued = 0
+          length.times do
+            f = Resque.list_range(:failed, length, 1)
+            if f && (failed_class.to_s.downcase == "all" || (f["payload"]["class"].to_s.downcase == failed_class.to_s.downcase))
+              Resque.redis.lrem(:failed, 0, f.to_json)
+              args = f["payload"]["args"]
+              Resque.enqueue(eval(f["payload"]["class"]), *args)
+              requeued += 1
+              puts "#{requeued} requeued" if requeued % 100 == 0
+            else
+              length -= 1
+              skipped += 1
+              puts "#{skipped} skipped" if skipped % 100 == 0
+            end
+          end
+        end
+      end
+    end
+
+    args.with_defaults :klass => "all"
+    klass = args.klass
+    Resque::Failure.requeue_class(klass)
+    puts "Finished\n#{requeued} requeued.\n#{skipped} skipped."
   end
 
   desc "Restart all the workers"
@@ -124,6 +167,12 @@ namespace :resque do
         end
       end
     end
+  end
+
+  # there is no need to load controllers for a worker, and it may cause load errors.
+  task :fix_eager_load_paths => :setup do
+    Rails.application.config.eager_load_paths -= ["#{Rails.root}/app/controllers"]
+    Rails.application.config.eager_load_paths -= ["#{Rails.root}/app/helpers"]
   end
 
 end
