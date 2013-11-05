@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency  'resque-status', "~> 0.4"
   s.add_dependency  'resque-cleaner', "~> 0.2"
   s.add_dependency  'jquery-rails'
+  s.add_dependency  'capistrano'
 
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'shoulda'
