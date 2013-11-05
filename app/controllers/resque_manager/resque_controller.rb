@@ -278,8 +278,8 @@ unless defined?($rails_rake_task) && $rails_rake_task
     end
 
     def find_worker(worker)
-      worker = CGI::unescape(worker)
       return nil if worker.blank?
+      worker = CGI::unescape(worker)
       first_part, *rest = worker.split(':')
       first_part.gsub!(/_/, '.')
       Resque::Worker.find("#{first_part}:#{rest.join(':')}")
