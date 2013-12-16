@@ -13,10 +13,10 @@
     <tr>
       <td><img src="<%='assets/resque_manager/working.png' %>" alt="working" title="working"></td>
       <% host, pid,thread, path, _ = worker.to_s.split(':') %>
-      <td><%= link_to("#{host}:#{pid}:#{thread}:#{path}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
+      <td><%= link_to("#{host}:#{pid}:#{thread}:#{path}", workers_resque_path(id: worker.to_s.gsub(/\./, '_'))) %></td>
       <% data = worker.job %>
       <% queue = data['queue'] %>
-      <td><%= link_to(queue, {:action => 'queues', :id => queue}, :class => 'queue') %></td>
+      <td><%= link_to(queue, queues_resque_path(id: queue), :class => 'queue') %></td>
       <td><span class="time"><%= format_time(Time.zone.parse(data['run_at'].to_s)) %></span></td>
       <td>
         <code><%= data['payload']['class'] %></code>
@@ -48,14 +48,14 @@
       <tr>
         <td class='icon'><img src="<%="/assets/resque_manager/#{state = worker.state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
         <% host, pid, thread, path, queues = worker.to_s.split(':') %>
-        <td class='where'><%= link_to("#{host}:#{pid}:#{thread}:#{path}", {:action => 'workers', :id => worker.to_s.gsub(/\./,'_')}) %></td>
+        <td class='where'><%= link_to("#{host}:#{pid}:#{thread}:#{path}", workers_resque_path(id: worker.to_s.gsub(/\./, '_'))) %></td>
         <td class='queues queue'>
-          <%= link_to(job['queue'], {:action => 'queues', :id => job['queue']}, :class => 'queue-tag') %>
+          <%= link_to(job['queue'], queues_resque_path(id: job['queue']), :class => 'queue-tag') %>
         </td>
         <td class='process'>
           <% if job['queue'] %>
             <code><%= job['payload']['class'] %></code>
-            <small><%= link_to(format_time(Time.zone.parse(job['run_at'].to_s)), {:action => 'working', :id => worker.to_s.gsub(/\./,'_')}, :class => 'queue time') %></small>
+            <small><%= link_to(format_time(Time.zone.parse(job['run_at'].to_s)), working_resque_path(id: worker.to_s.gsub(/\./, '_')), :class => 'queue time') %></small>
             <br/>
             <small><%=worker.overview_message%></small>
           <% else %>

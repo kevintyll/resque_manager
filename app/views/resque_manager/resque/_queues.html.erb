@@ -46,7 +46,7 @@
       </tr>
       <% for queue in resque.queues.sort_by { |q| q.to_s } %>
           <tr>
-            <td class='queue'><%= link_to(queue, {:action => "queues", :id => queue}, :class => 'queue') %></td>
+            <td class='queue'><%= link_to(queue, queues_resque_path(id: queue), :class => 'queue') %></td>
             <td class='size'><%= resque.size queue %></td>
           </tr>
       <% end %>

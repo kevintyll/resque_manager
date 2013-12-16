@@ -33,14 +33,14 @@
               <span>Not Paused</span>
         <% end %>
         </td>
-        <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag') }.join('').html_safe %></td>
+        <td class='queues'><%= queues.split(',').map { |q| link_to(q, queues_resque_path(id: q), :class => 'queue-tag') }.join('').html_safe %></td>
         <td><%= worker.processed %></td>
         <td><%= worker.failed %></td>
         <td class='process'>
           <% data = worker.processing || {} %>
           <% if data['queue'] %>
               <code><%= data['payload']['class'] %></code>
-              <small><%= link_to(format_time(Time.zone.parse(data['run_at'])), {:action => 'working', :id => worker.to_s.gsub(/\./, '_')}, :class => "queue time") %></small>
+              <small><%= link_to(format_time(Time.zone.parse(data['run_at'])), working_resque_path(id: worker.to_s.gsub(/\./, '_')), :class => "queue time") %></small>
               <br>
               <small><%= worker.overview_message %></small>
           <% else %>
@@ -73,14 +73,14 @@
               <img src="<%="/assets/resque_manager/#{state}" %>.png" alt="<%= state %>" title="<%= state %>"></td>
 
             <% host, pid, thread, path, queues = worker.to_s.split(':') %>
-            <td class='where'><%= link_to("#{host}:#{pid}:#{thread}:#{path}", :action => 'workers', :id => worker.to_s.gsub(/\./, '_')) %></td>
-            <td class='queues'><%= queues.split(',').map { |q| link_to(q, {:action => 'queues', :id => q}, :class => 'queue-tag') }.join('').html_safe %></td>
+            <td class='where'><%= link_to("#{host}:#{pid}:#{thread}:#{path}", workers_resque_path(id: worker.to_s.gsub(/\./, '_'))) %></td>
+            <td class='queues'><%= queues.split(',').map { |q| link_to(q, queues_resque_path(id: q), :class => 'queue-tag') }.join('').html_safe %></td>
 
             <td class='process'>
               <% data = worker.processing || {} %>
               <% if data['queue'] %>
                   <code><%= data['payload']['class'] %></code>
-                  <small><%= link_to(format_time(Time.zone.parse(data['run_at'])), {:action => 'working', :id => worker.to_s.gsub(/\./, '_')}, :class => "queue time") %></small>
+                  <small><%= link_to(format_time(Time.zone.parse(data['run_at'])), working_resque_path(id: worker.to_s.gsub(/\./, '_')), :class => "queue time") %></small>
                   <br/>
                   <small><%= worker.overview_message %></small>
               <% else %>

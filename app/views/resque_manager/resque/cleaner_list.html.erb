@@ -74,7 +74,9 @@
             <dd>&nbsp;</dd>
             <dt>Worker</dt>
             <dd>
-              <a href="<%= u(:workers, job['worker']) %>"><%= job['worker'].split(':')[0...2].join(':') %></a> on <b class='queue-tag'><%= job['queue'] %></b > at <b><span class="time"><%= Time.parse(job['failed_at']).strftime(date_format) %></span></b>
+              <% host, pid, thread, path, queues = job['worker'].to_s.split(':') %>
+              <%= link_to("#{host}:#{pid}:#{thread}", workers_resque_path(id: job['worker'].to_s.gsub(/\./, '_'))) %>
+              on <b class='queue-tag'><%= job['queue'] %></b > at <b><span class="time"><%= Time.parse(job['failed_at']).strftime(date_format) %></span></b>
               <% if job['retried_at'] %>
                 <div class='retried'>
                   Retried <b><span class="time"><%= Time.parse(job['retried_at']).strftime(date_format) %></span></b>
