@@ -1,8 +1,13 @@
+== 3.3.3 2013-12-20
+
+*  Add capistrano as a dependency
+*  Bug fixes
+
 == 3.3.2 2013-11-1
 
 *  Fixed test suite so it will run under rake.
 *  Fixed status and statuses actions and tests
-*  Preload the app so for workers workers.  Added a new denpendency on the worker rake task to remove the controllers from the eager_load_paths.  They aren't needed for workers and may cause load errors.
+*  Preload the app for workers.  Added a new denpendency on the worker rake task to remove the controllers from the eager_load_paths.  They aren't needed for workers and may cause load errors.
 
 == 3.3.1 2013-10-31
 
