@@ -1,3 +1,7 @@
+== 3.3.4 2013-1-30
+
+*  Add an & to the end of the resque work cap task so the nohup will release the process.
+
 == 3.3.3 2013-12-20
 
 *  Add capistrano as a dependency
