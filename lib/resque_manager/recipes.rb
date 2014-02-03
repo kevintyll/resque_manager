@@ -81,7 +81,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         #The kill command used to be done directly in the cap task, but since workers can now live in multiple apps, we need to send
         #the correct signal based on the worker's platform which has to be done in the rake task."
         hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
-        run("cd #{get_worker_path}; nohup #{get_rake} RAILS_ENV=#{stage} resque:quit_worker pid=#{ENV['pid']}", :hosts => hosts)
+        run("cd #{get_worker_path}; #{get_rake} RAILS_ENV=#{stage} resque:quit_worker pid=#{ENV['pid']}", :hosts => hosts)
       end
     end
 
@@ -144,7 +144,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       default_run_options[:pty] = true
       rake = fetch(:rake, "rake")
       #pass the rake options to the rake task so the workers can be started with the options.
-      run("cd #{get_worker_path}; RAILS_ENV=#{stage} RAKE_WITH_OPTS='#{get_rake}'nohup #{rake} resque:restart_workers")
+      run("cd #{get_worker_path}; RAILS_ENV=#{stage} RAKE_WITH_OPTS='#{get_rake}' #{rake} resque:restart_workers")
       end
 
       # ====================================
@@ -156,7 +156,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         default_run_options[:pty] = true
         hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
         rake = fetch(:rake, "rake")
-        run("cd #{get_worker_path}; nohup #{rake} RAILS_ENV=#{stage} resque:scheduler", :hosts => hosts)
+        run("cd #{get_worker_path}; #{rake} RAILS_ENV=#{stage} resque:scheduler", :hosts => hosts)
       end
 
       desc "Gracefully kill the scheduler on a server. arg: host=ip"
@@ -166,7 +166,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         else
           hosts = ENV['host'] || find_servers_for_task(current_task).collect { |s| s.host }
           rake = fetch(:rake, "rake")
-          run("cd #{get_worker_path}; nohup #{rake} RAILS_ENV=#{stage} resque:quit_scheduler", :hosts => hosts)
+          run("cd #{get_worker_path}; #{rake} RAILS_ENV=#{stage} resque:quit_scheduler", :hosts => hosts)
         end
       end
 

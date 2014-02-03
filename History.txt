@@ -1,3 +1,7 @@
+== 3.3.7 2013-2-3
+
+*  Clean up the nohup calls.  nohup only spawns another process when output is redirected 2>&1.
+
 == 3.3.6 2013-2-3
 
 *  base.include throws and error on jruby.  Use base.class_eval instead.

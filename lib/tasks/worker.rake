@@ -111,7 +111,7 @@ namespace :resque do
             system("kill -QUIT  #{worker.pid}")
           end
           queues = worker.queues_in_pid.join('#')
-          Thread.new(queues) { |queue| system("nohup #{rake} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
+          system("nohup #{rake} RAILS_ENV=#{Rails.env} QUEUE=#{queues} resque:work >> log/resque_worker.log 3>&1 & sleep 2")
           pid = worker.pid
         end
       end
