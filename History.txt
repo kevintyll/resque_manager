@@ -1,3 +1,9 @@
+== 3.3.5 2013-2-3
+
+*  Use alias_method_chain on overridden worker methods so we don't have to rewrite the entire method.  Prevents breaking changes when resque gets upgraded.
+*  Added a dependency on semantic_logger for better log messages
+*  Add a sleep to the work cap task so cap will respect the & with the nohup and release the process.
+
 == 3.3.4 2013-1-30
 
 *  Add an & to the end of the resque work cap task so the nohup will release the process.

@@ -1,7 +1,10 @@
 require 'socket'
+require 'semantic_logger'
 
 module Resque
   class Worker
+    include SemanticLogger::Loggable
+
     @@local_ip = nil
 
     def local_ip
@@ -74,11 +77,11 @@ module Resque
     # Schedule this worker for shutdown. Will finish processing the
     # current job.
     #OVERRIDE for multithreaded workers
-    def shutdown
-      log 'Exiting...'
+    def shutdown_with_multithreading
       Thread.list.each { |t| t[:shutdown] = true }
-      @shutdown = true
+      shutdown_without_multithreading
     end
+    alias_method_chain :shutdown, :multithreading
 
     def paused
       Resque.redis.get pause_key
@@ -93,28 +96,27 @@ module Resque
     # Stop processing jobs after the current one has completed (if we're
     # currently running one).
     #OVERRIDE to set a redis key so UI knows it's paused too
-    # Would prefer to call super but get no superclass method error
-    def pause_processing
-      log 'USR2 received; pausing job processing'
-      @paused = true
+    def pause_processing_with_pause_key
+      pause_processing_without_pause_key
       Resque.redis.set(pause_key, Time.now.to_s)
     end
+    alias_method_chain :pause_processing, :pause_key
 
     # Start processing jobs again after a pause
     #OVERRIDE to set remove redis key so UI knows it's unpaused too
     # Would prefer to call super but get no superclass method error
-    def unpause_processing
-      log 'CONT received; resuming job processing'
-      @paused = false
+    def unpause_processing_with_pause_key
+      unpause_processing_without_pause_key
       Resque.redis.del(pause_key)
     end
+    alias_method_chain :unpause_processing, :pause_key
 
     # Looks for any workers which should be running on this server
     # and, if they're not, removes them from Redis.
     #
     # This is a form of garbage collection. If a server is killed by a
     # hard shutdown, power failure, or something else beyond our
-    # control, the Resque workers will not die gracefully and therefor
+    # control, the Resque workers will not die gracefully and therefore
     # will leave stale state information in Redis.
     #
     # By checking the current Redis state against the actual
@@ -160,59 +162,20 @@ module Resque
     # Also accepts a block which will be passed the job as soon as it
     # has completed processing. Useful for testing.
     #OVERRIDE for multithreaded workers
-    def work(interval = 5.0, &block)
-      interval = Float(interval)
-      $0 = 'resque: Starting'
-      startup
-
-      loop do
-        break if shutdown? || Thread.current[:shutdown]
-        if not paused? and job = reserve
-          log "got: #{job.inspect}"
-          job.worker = self
-          working_on job
-
-          procline "Processing #{job.queue} since #{Time.now.to_i} [#{job.payload_class}]"
-          if @child = fork(job) do
-            unregister_signal_handlers if term_child
-            reconnect
-            perform(job, &block)
-            exit! unless run_at_exit_hooks
-          end
-
-            srand # Reseeding
-            procline "Forked #{@child} at #{Time.now.to_i}"
-            begin
-              Process.waitpid(@child)
-            rescue SystemCallError
-              nil
-            end
-            job.fail(DirtyExit.new($?.to_s)) if $?.signaled?
-          else
-            reconnect
-            perform(job, &block)
-          end
-          done_working
-          @child = nil
-        else
-          break if interval.zero?
-          log! "Sleeping for #{interval} seconds"
-          procline paused? ? "Paused" : "Waiting for #{@queues.join(',')}"
-          sleep interval
-        end
-      end
-
-      unregister_worker
+    def work_with_multithreading(interval = 5.0, &block)
+      work_without_multithreading(interval, &block)
       loop do
         #hang onto the process until all threads are done
         break if all_workers_in_pid_working.blank?
         sleep interval.to_i
       end
-    rescue Exception => exception
-      log "Failed to start worker : #{exception.inspect}"
-
-      unregister_worker(exception)
     end
+    alias_method_chain :work, :multithreading
+
+    def shutdown_with_multithreading?
+      shutdown_without_multithreading? || Thread.current[:shutdown]
+    end
+    alias_method_chain :shutdown?, :multithreading
 
     # logic for mappged_mget changed where it returns keys with nil values in latest redis gem.
     def self.working

@@ -156,9 +156,9 @@ module ResqueManager
 
       context '#add_scheduled_job' do
         should 'have an error for a name already existing and missing ip and missing cron' do
-          # Resque.schedule.keys.expects(:include?).returns(true)
+          Resque.expects(:schedule).returns('key' => 'some schedule')
           # Stub on array instead of Resque.schedule.keys otherwise the stub never works.
-          Array.any_instance.expects(:include?).returns(true).at_least_once
+          #Array.any_instance.expects(:include?).with('key').returns(true).at_least_once
           post :add_scheduled_job, {name: 'key', use_route: :resque_manager}
           assert_redirected_to '/resque/schedule'
           errors = flash[:error].split('<br>')

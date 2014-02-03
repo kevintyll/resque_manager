@@ -10,6 +10,7 @@ module Resque
         # can't call super, so add ClassMethods here that resque-status was doing
         base.extend(ClassMethods) #add the methods in the resque-status gem
         base.extend(ClassOverridesAndExtensions)
+        base.include(SemanticLogger::Loggable)
       end
 
       module ClassOverridesAndExtensions
@@ -127,11 +128,11 @@ module Resque
           on_success if respond_to?(:on_success)
         end
       rescue Killed
-        Rails.logger.info "Job #{self} Killed at #{Time.now}"
+        logger.info "Job #{self} Killed at #{Time.now}"
         Resque::Plugins::Status::Hash.killed(uuid)
         on_killed if respond_to?(:on_killed)
       rescue Exception => e
-        Rails.logger.error e
+        logger.error 'The task failed because of an error:', e
         failed("The task failed because of an error: #{e}")
         if respond_to?(:on_failure)
           on_failure(e)

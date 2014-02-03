@@ -126,7 +126,7 @@ class StatusTest < Test::Unit::TestCase
       should 'rescue Killed' do
         # Stub on the hash not the actual status because it will change and wont be stubbed on the right status object
         Resque::Plugins::Status::Hash.expects(:should_kill?).returns(true)
-        Rails.logger.expects(:info).with("Job #{@data_contribution} Killed at #{@now}")
+        DataContributionFile.logger.expects(:info).with("Job #{@data_contribution} Killed at #{@now}")
         Resque::Plugins::Status::Hash.expects(:killed).with(@uuid)
         assert_nothing_raised(Resque::Plugins::Status::Killed) { @data_contribution.safe_perform! }
       end
@@ -135,7 +135,7 @@ class StatusTest < Test::Unit::TestCase
         e = Exception.new('exception')
         Resque::Plugins::Status::Hash.expects(:should_kill?).returns(true)
         @data_contribution.stubs(:kill!).raises(e)
-        Rails.logger.expects(:error).with(e)
+        DataContributionFile.logger.expects(:error).with('The task failed because of an error:', e)
         @data_contribution.expects(:on_failure).with(e)
         assert_nothing_raised(Exception) { @data_contribution.safe_perform! }
       end
@@ -144,7 +144,7 @@ class StatusTest < Test::Unit::TestCase
         e = Exception.new('exception')
         Resque::Plugins::Status::Hash.expects(:should_kill?).returns(true)
         @data_contribution.stubs(:kill!).raises(e)
-        Rails.logger.expects(:error).with(e)
+        DataContributionFile.logger.expects(:error).with('The task failed because of an error:', e)
         @data_contribution.expects(:respond_to?).returns(false)
         assert_raises(Exception) { @data_contribution.safe_perform! }
       end
