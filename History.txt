@@ -1,3 +1,7 @@
+== 3.3.6 2013-2-3
+
+*  base.include throws and error on jruby.  Use base.class_eval instead.
+
 == 3.3.5 2013-2-3
 
 *  Use alias_method_chain on overridden worker methods so we don't have to rewrite the entire method.  Prevents breaking changes when resque gets upgraded.

@@ -2,188 +2,143 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>class ResqueManager::ResqueController - ResqueManager</title>
 
-<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+<link href="../fonts.css" rel="stylesheet">
+<link href="../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/search_index.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/searcher.js"></script>
+<script src="../js/darkfish.js"></script>
 
 
-<body id="top" class="class">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="../index.html">Home</a>
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
     <a href="../table_of_contents.html#classes">Classes</a>
     <a href="../table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
-
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
-  <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
-             title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
-  </form>
-
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
-
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>app/controllers/resque_manager/resque_controller.rb
-  </ul>
-</nav>
-
-    
   </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
 
   <div id="class-metadata">
     
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
   
   <p class="link">ApplicationController
   
-</nav>
+</div>
 
+    
     
     <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
 
-  <ul class="link-list">
+  <ul class="link-list" role="directory">
     
-    <li><a href="#method-i-add_scheduled_job">#add_scheduled_job</a>
+    <li ><a href="#method-i-add_scheduled_job">#add_scheduled_job</a>
     
-    <li><a href="#method-i-cleaner">#cleaner</a>
+    <li ><a href="#method-i-cleaner">#cleaner</a>
     
-    <li><a href="#method-i-cleaner_dump">#cleaner_dump</a>
+    <li ><a href="#method-i-cleaner_dump">#cleaner_dump</a>
     
-    <li><a href="#method-i-cleaner_exec">#cleaner_exec</a>
+    <li ><a href="#method-i-cleaner_exec">#cleaner_exec</a>
     
-    <li><a href="#method-i-cleaner_list">#cleaner_list</a>
+    <li ><a href="#method-i-cleaner_list">#cleaner_list</a>
     
-    <li><a href="#method-i-cleaner_stale">#cleaner_stale</a>
+    <li ><a href="#method-i-cleaner_stale">#cleaner_stale</a>
     
-    <li><a href="#method-i-clear_statuses">#clear_statuses</a>
+    <li ><a href="#method-i-clear_statuses">#clear_statuses</a>
     
-    <li><a href="#method-i-continue_worker">#continue_worker</a>
+    <li ><a href="#method-i-continue_worker">#continue_worker</a>
     
-    <li><a href="#method-i-kill">#kill</a>
+    <li ><a href="#method-i-kill">#kill</a>
     
-    <li><a href="#method-i-pause_worker">#pause_worker</a>
+    <li ><a href="#method-i-pause_worker">#pause_worker</a>
     
-    <li><a href="#method-i-poll">#poll</a>
+    <li ><a href="#method-i-poll">#poll</a>
     
-    <li><a href="#method-i-queues">#queues</a>
+    <li ><a href="#method-i-queues">#queues</a>
     
-    <li><a href="#method-i-remove_from_schedule">#remove_from_schedule</a>
+    <li ><a href="#method-i-remove_from_schedule">#remove_from_schedule</a>
     
-    <li><a href="#method-i-remove_job">#remove_job</a>
+    <li ><a href="#method-i-remove_job">#remove_job</a>
     
-    <li><a href="#method-i-restart_worker">#restart_worker</a>
+    <li ><a href="#method-i-restart_worker">#restart_worker</a>
     
-    <li><a href="#method-i-schedule">#schedule</a>
+    <li ><a href="#method-i-schedule">#schedule</a>
     
-    <li><a href="#method-i-schedule_requeue">#schedule_requeue</a>
+    <li ><a href="#method-i-schedule_requeue">#schedule_requeue</a>
     
-    <li><a href="#method-i-start_scheduler">#start_scheduler</a>
+    <li ><a href="#method-i-start_scheduler">#start_scheduler</a>
     
-    <li><a href="#method-i-start_worker">#start_worker</a>
+    <li ><a href="#method-i-start_worker">#start_worker</a>
     
-    <li><a href="#method-i-stats">#stats</a>
+    <li ><a href="#method-i-stats">#stats</a>
     
-    <li><a href="#method-i-status">#status</a>
+    <li ><a href="#method-i-status">#status</a>
     
-    <li><a href="#method-i-status_poll">#status_poll</a>
+    <li ><a href="#method-i-status_poll">#status_poll</a>
     
-    <li><a href="#method-i-statuses">#statuses</a>
+    <li ><a href="#method-i-statuses">#statuses</a>
     
-    <li><a href="#method-i-stop_scheduler">#stop_scheduler</a>
+    <li ><a href="#method-i-stop_scheduler">#stop_scheduler</a>
     
-    <li><a href="#method-i-stop_worker">#stop_worker</a>
+    <li ><a href="#method-i-stop_worker">#stop_worker</a>
     
-    <li><a href="#method-i-working">#working</a>
+    <li ><a href="#method-i-working">#working</a>
     
   </ul>
-</nav>
-
-  </div>
-
-  <div id="project-metadata">
-    
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
-
-  <ul class="link-list">
-  
-    <li><a href="../Resque.html">Resque</a>
-  
-    <li><a href="../Resque/Failure.html">Resque::Failure</a>
-  
-    <li><a href="../Resque/Failure/Redis.html">Resque::Failure::Redis</a>
-  
-    <li><a href="../Resque/Job.html">Resque::Job</a>
-  
-    <li><a href="../Resque/Plugins.html">Resque::Plugins</a>
-  
-    <li><a href="../Resque/Plugins/ChainedStatus.html">Resque::Plugins::ChainedStatus</a>
-  
-    <li><a href="../Resque/Plugins/ChainedStatus/ClassOverrides.html">Resque::Plugins::ChainedStatus::ClassOverrides</a>
-  
-    <li><a href="../Resque/Plugins/Status.html">Resque::Plugins::Status</a>
-  
-    <li><a href="../Resque/Plugins/Status/ClassOverridesAndExtensions.html">Resque::Plugins::Status::ClassOverridesAndExtensions</a>
-  
-    <li><a href="../Resque/Plugins/Status/Hash.html">Resque::Plugins::Status::Hash</a>
-  
-    <li><a href="../Resque/Worker.html">Resque::Worker</a>
-  
-    <li><a href="../ResqueManager.html">ResqueManager</a>
-  
-    <li><a href="../ResqueManager/ApplicationHelper.html">ResqueManager::ApplicationHelper</a>
-  
-    <li><a href="../ResqueManager/Engine.html">ResqueManager::Engine</a>
-  
-    <li><a href="../ResqueManager/Paginate.html">ResqueManager::Paginate</a>
-  
-    <li><a href="../ResqueManager/ResqueController.html">ResqueManager::ResqueController</a>
-  
-    <li><a href="../ResqueManager/ResqueHelper.html">ResqueManager::ResqueHelper</a>
-  
-    <li><a href="../Object.html">Object</a>
-  
-    <li><a href="../ResqueScheduler.html">ResqueScheduler</a>
-  
-  </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation">
-  <h1 class="class">class ResqueManager::ResqueController</h1>
+<main role="main" aria-labelledby="class-ResqueManager::ResqueController">
+  <h1 id="class-ResqueManager::ResqueController" class="class">
+    class ResqueManager::ResqueController
+  </h1>
 
-  <div id="description" class="description">
+  <section class="description">
     
-  </div><!-- description -->
+  </section>
 
   
   
@@ -197,10 +152,11 @@
 
     
 
-    <!-- Methods -->
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
 
     
       <div id="method-i-add_scheduled_job" class="method-detail ">
@@ -208,7 +164,9 @@
         <div class="method-heading">
           <span class="method-name">add_scheduled_job</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -216,14 +174,15 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="add_scheduled_job-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 108</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_scheduled_job</span>
   <span class="ruby-identifier">errors</span> = []
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">schedule</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>])
-    <span class="ruby-identifier">errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;Name already exists&#39;</span>
+    <span class="ruby-identifier">errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;Name already exists.&#39;</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>].<span class="ruby-identifier">blank?</span>
     <span class="ruby-identifier">errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;You must enter an ip address for the server you want this job to run on.&#39;</span>
@@ -239,20 +198,20 @@
                                  <span class="ruby-string">&#39;description&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;description&#39;</span>]}
     }
     <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">rpush</span>(<span class="ruby-value">:scheduled</span>, <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">encode</span>(<span class="ruby-identifier">config</span>))
-    <span class="ruby-constant">ResqueScheduler</span>.<span class="ruby-identifier">restart</span>(<span class="ruby-string">&#39;ip&#39;</span>)
+    <span class="ruby-constant">ResqueScheduler</span>.<span class="ruby-identifier">restart</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;ip&#39;</span>])
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&lt;br&gt;&#39;</span>)
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&lt;br&gt;&#39;</span>).<span class="ruby-identifier">html_safe</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;schedule&#39;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">schedule_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- add_scheduled_job-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- add_scheduled_job-method -->
+      </div>
 
     
       <div id="method-i-cleaner" class="method-detail ">
@@ -260,7 +219,9 @@
         <div class="method-heading">
           <span class="method-name">cleaner</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -268,10 +229,11 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="cleaner-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 188</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 196</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cleaner</span>
   <span class="ruby-identifier">load_cleaner_filter</span>
 
@@ -288,18 +250,18 @@
     <span class="ruby-identifier">items</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-string">&quot;1h&quot;</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_at</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">hours_ago</span>(<span class="ruby-value">1</span>)
     <span class="ruby-identifier">items</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-string">&quot;3h&quot;</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_at</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">hours_ago</span>(<span class="ruby-value">3</span>)
     <span class="ruby-identifier">items</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-string">&quot;1d&quot;</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_at</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">hours_ago</span>(<span class="ruby-value">24</span>)
-    <span class="ruby-identifier">items</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-string">&quot;3d&quot;</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_at</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">hours_ago</span>(<span class="ruby-value">24</span>*<span class="ruby-value">3</span>)
-    <span class="ruby-identifier">items</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-string">&quot;7d&quot;</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_at</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">hours_ago</span>(<span class="ruby-value">24</span>*<span class="ruby-value">7</span>)
+    <span class="ruby-identifier">items</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-string">&quot;3d&quot;</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_at</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">hours_ago</span>(<span class="ruby-value">24</span><span class="ruby-operator">*</span><span class="ruby-value">3</span>)
+    <span class="ruby-identifier">items</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-string">&quot;7d&quot;</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> } <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_at</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">hours_ago</span>(<span class="ruby-value">24</span><span class="ruby-operator">*</span><span class="ruby-value">7</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- cleaner-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- cleaner-method -->
+      </div>
 
     
       <div id="method-i-cleaner_dump" class="method-detail ">
@@ -307,7 +269,9 @@
         <div class="method-heading">
           <span class="method-name">cleaner_dump</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -315,27 +279,28 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="cleaner_dump-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 248</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 256</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cleaner_dump</span>
   <span class="ruby-identifier">load_cleaner_filter</span>
 
   <span class="ruby-identifier">block</span> = <span class="ruby-identifier">filter_block</span>
-  <span class="ruby-identifier">failures</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">select</span>(&amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">failures</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">select</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
   <span class="ruby-comment"># pretty generate throws an error with the json gem on jruby</span>
   <span class="ruby-identifier">output</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">pretty_generate</span>(<span class="ruby-identifier">failures</span>) <span class="ruby-keyword">rescue</span> <span class="ruby-identifier">failures</span>.<span class="ruby-identifier">to_json</span>
   <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- cleaner_dump-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- cleaner_dump-method -->
+      </div>
 
     
       <div id="method-i-cleaner_exec" class="method-detail ">
@@ -343,7 +308,9 @@
         <div class="method-heading">
           <span class="method-name">cleaner_exec</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -351,10 +318,11 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="cleaner_exec-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 225</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 233</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cleaner_exec</span>
   <span class="ruby-identifier">load_cleaner_filter</span>
 
@@ -368,23 +336,23 @@
   <span class="ruby-ivar">@count</span> =
       <span class="ruby-keyword">case</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:form_action</span>]
         <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;clear&quot;</span> <span class="ruby-keyword">then</span>
-          <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">clear</span>(&amp;<span class="ruby-identifier">block</span>)
+          <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">clear</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
         <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;retry_and_clear&quot;</span> <span class="ruby-keyword">then</span>
-          <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">requeue</span>(<span class="ruby-keyword">true</span>, &amp;<span class="ruby-identifier">block</span>)
+          <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">requeue</span>(<span class="ruby-keyword">true</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
         <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;retry&quot;</span> <span class="ruby-keyword">then</span>
-          <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">requeue</span>(<span class="ruby-keyword">false</span>, {}, &amp;<span class="ruby-identifier">block</span>)
+          <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">requeue</span>(<span class="ruby-keyword">false</span>, {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
       <span class="ruby-keyword">end</span>
 
   <span class="ruby-ivar">@link_url</span> = <span class="ruby-node">&quot;cleaner_list?c=#{@klass}&amp;ex=#{@exception}&amp;f=#{@from}&amp;t=#{@to}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- cleaner_exec-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- cleaner_exec-method -->
+      </div>
 
     
       <div id="method-i-cleaner_list" class="method-detail ">
@@ -392,7 +360,9 @@
         <div class="method-heading">
           <span class="method-name">cleaner_list</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -400,16 +370,17 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="cleaner_list-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 209</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 217</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cleaner_list</span>
   <span class="ruby-identifier">load_cleaner_filter</span>
 
   <span class="ruby-identifier">block</span> = <span class="ruby-identifier">filter_block</span>
 
-  <span class="ruby-ivar">@failed</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">select</span>(&amp;<span class="ruby-identifier">block</span>).<span class="ruby-identifier">reverse</span>
+  <span class="ruby-ivar">@failed</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">select</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">reverse</span>
 
   <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;cleaner_list?c=#{@klass}&amp;ex=#{@exception}&amp;f=#{@from}&amp;t=#{@to}&quot;</span>
   <span class="ruby-ivar">@dump_url</span> = <span class="ruby-node">&quot;cleaner_dump?c=#{@klass}&amp;ex=#{@exception}&amp;f=#{@from}&amp;t=#{@to}&quot;</span>
@@ -417,16 +388,16 @@
 
   <span class="ruby-ivar">@klasses</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">stats_by_class</span>.<span class="ruby-identifier">keys</span>
   <span class="ruby-ivar">@exceptions</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">stats_by_exception</span>.<span class="ruby-identifier">keys</span>
-  <span class="ruby-ivar">@count</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">select</span>(&amp;<span class="ruby-identifier">block</span>).<span class="ruby-identifier">size</span>
+  <span class="ruby-ivar">@count</span> = <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">select</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">size</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- cleaner_list-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- cleaner_list-method -->
+      </div>
 
     
       <div id="method-i-cleaner_stale" class="method-detail ">
@@ -434,7 +405,9 @@
         <div class="method-heading">
           <span class="method-name">cleaner_stale</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -442,22 +415,23 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="cleaner_stale-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 258</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 266</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cleaner_stale</span>
   <span class="ruby-ivar">@cleaner</span>.<span class="ruby-identifier">clear_stale</span>
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;cleaner&quot;</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">cleaner_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- cleaner_stale-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- cleaner_stale-method -->
+      </div>
 
     
       <div id="method-i-clear_statuses" class="method-detail ">
@@ -465,7 +439,9 @@
         <div class="method-heading">
           <span class="method-name">clear_statuses</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -473,22 +449,23 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="clear_statuses-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 168</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 175</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_statuses</span>
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">clear</span>
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;statuses&#39;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">statuses_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- clear_statuses-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- clear_statuses-method -->
+      </div>
 
     
       <div id="method-i-continue_worker" class="method-detail ">
@@ -496,7 +473,9 @@
         <div class="method-heading">
           <span class="method-name">continue_worker</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -504,23 +483,24 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="continue_worker-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 56</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">continue_worker</span>
   <span class="ruby-identifier">worker</span> = <span class="ruby-identifier">find_worker</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:worker</span>])
   <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">continue</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">worker</span>
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;workers&quot;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">workers_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- continue_worker-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- continue_worker-method -->
+      </div>
 
     
       <div id="method-i-kill" class="method-detail ">
@@ -528,7 +508,9 @@
         <div class="method-heading">
           <span class="method-name">kill</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -536,25 +518,26 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="kill-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 180</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 188</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">kill</span>
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">kill</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-identifier">s</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-identifier">s</span>.<span class="ruby-identifier">status</span> = <span class="ruby-string">&#39;killed&#39;</span>
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>], <span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;statuses&#39;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">statuses_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- kill-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- kill-method -->
+      </div>
 
     
       <div id="method-i-pause_worker" class="method-detail ">
@@ -562,7 +545,9 @@
         <div class="method-heading">
           <span class="method-name">pause_worker</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -570,23 +555,24 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="pause_worker-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pause_worker</span>
   <span class="ruby-identifier">worker</span> = <span class="ruby-identifier">find_worker</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:worker</span>])
   <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">pause</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">worker</span>
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;workers&quot;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">workers_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- pause_worker-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- pause_worker-method -->
+      </div>
 
     
       <div id="method-i-poll" class="method-detail ">
@@ -594,7 +580,9 @@
         <div class="method-heading">
           <span class="method-name">poll</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -602,22 +590,23 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="poll-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 23</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">poll</span>
   <span class="ruby-ivar">@polling</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-identifier">render</span>(<span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">render_to_string</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{params[:page]}&quot;</span>, <span class="ruby-value">:formats</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:html</span>], <span class="ruby-value">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:resque</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Resque</span>)).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\s{1,}/</span>, <span class="ruby-string">&#39; &#39;</span>))
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- poll-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- poll-method -->
+      </div>
 
     
       <div id="method-i-queues" class="method-detail ">
@@ -625,7 +614,9 @@
         <div class="method-heading">
           <span class="method-name">queues</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -633,21 +624,22 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="queues-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 19</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">queues</span>
   <span class="ruby-identifier">render</span>(<span class="ruby-string">&#39;_queues&#39;</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>})
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- queues-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- queues-method -->
+      </div>
 
     
       <div id="method-i-remove_from_schedule" class="method-detail ">
@@ -655,7 +647,9 @@
         <div class="method-heading">
           <span class="method-name">remove_from_schedule</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -663,29 +657,29 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="remove_from_schedule-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 134</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 141</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_from_schedule</span>
   <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">list_range</span>(<span class="ruby-value">:scheduled</span>, <span class="ruby-value">0</span>, <span class="ruby-value">-0</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
-
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>[<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;job_name&#39;</span>]]
       <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">lrem</span>(<span class="ruby-value">:scheduled</span>, <span class="ruby-value">0</span>, <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_json</span>)
       <span class="ruby-comment"># Restart the scheduler on the server that has changed it&#39;s schedule</span>
       <span class="ruby-constant">ResqueScheduler</span>.<span class="ruby-identifier">restart</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;ip&#39;</span>])
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;schedule&#39;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">schedule_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- remove_from_schedule-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- remove_from_schedule-method -->
+      </div>
 
     
       <div id="method-i-remove_job" class="method-detail ">
@@ -693,7 +687,9 @@
         <div class="method-heading">
           <span class="method-name">remove_job</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -701,22 +697,28 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="remove_job-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 39</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_job</span>
-  <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">dequeue</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;class&#39;</span>].<span class="ruby-identifier">constantize</span>, *<span class="ruby-constant">Resque</span>.<span class="ruby-identifier">decode</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;args&#39;</span>]))
+  <span class="ruby-comment"># We can only dequeue a job when that job is in the same application as the UI.</span>
+  <span class="ruby-comment"># Otherwise we get an error when we try to constantize a class that does not exist</span>
+  <span class="ruby-comment"># in the application the UI is in.</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">ResqueManager</span>.<span class="ruby-identifier">applications</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">dequeue</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;class&#39;</span>].<span class="ruby-identifier">constantize</span>, <span class="ruby-operator">*</span><span class="ruby-constant">Resque</span>.<span class="ruby-identifier">decode</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;args&#39;</span>]))
+  <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referrer</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- remove_job-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- remove_job-method -->
+      </div>
 
     
       <div id="method-i-restart_worker" class="method-detail ">
@@ -724,7 +726,9 @@
         <div class="method-heading">
           <span class="method-name">restart_worker</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -732,23 +736,24 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="restart_worker-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 62</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 70</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restart_worker</span>
   <span class="ruby-identifier">worker</span> = <span class="ruby-identifier">find_worker</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:worker</span>])
   <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">restart</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">worker</span>
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;workers&quot;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">workers_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- restart_worker-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- restart_worker-method -->
+      </div>
 
     
       <div id="method-i-schedule" class="method-detail ">
@@ -756,7 +761,9 @@
         <div class="method-heading">
           <span class="method-name">schedule</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -764,21 +771,22 @@
           
           <p>resque-scheduler actions</p>
           
+          
 
           
           <div class="method-source-code" id="schedule-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 98</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 105</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">schedule</span>
   <span class="ruby-ivar">@farm_status</span> = <span class="ruby-constant">ResqueScheduler</span>.<span class="ruby-identifier">farm_status</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- schedule-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- schedule-method -->
+      </div>
 
     
       <div id="method-i-schedule_requeue" class="method-detail ">
@@ -786,7 +794,9 @@
         <div class="method-heading">
           <span class="method-name">schedule_requeue</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -794,23 +804,24 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="schedule_requeue-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 102</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">schedule_requeue</span>
   <span class="ruby-identifier">config</span> = <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">schedule</span>[<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;job_name&#39;</span>]]
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Scheduler</span>.<span class="ruby-identifier">enqueue_from_config</span>(<span class="ruby-identifier">config</span>)
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;overview&#39;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">overview_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- schedule_requeue-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- schedule_requeue-method -->
+      </div>
 
     
       <div id="method-i-start_scheduler" class="method-detail ">
@@ -818,7 +829,9 @@
         <div class="method-heading">
           <span class="method-name">start_scheduler</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -826,22 +839,23 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="start_scheduler-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 146</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 152</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">start_scheduler</span>
   <span class="ruby-constant">ResqueScheduler</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>])
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;schedule&#39;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">schedule_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- start_scheduler-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- start_scheduler-method -->
+      </div>
 
     
       <div id="method-i-start_worker" class="method-detail ">
@@ -849,7 +863,9 @@
         <div class="method-heading">
           <span class="method-name">start_worker</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -857,22 +873,23 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="start_worker-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 68</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">start_worker</span>
   <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Worker</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">params</span>)
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;workers&quot;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">workers_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- start_worker-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- start_worker-method -->
+      </div>
 
     
       <div id="method-i-stats" class="method-detail ">
@@ -880,7 +897,9 @@
         <div class="method-heading">
           <span class="method-name">stats</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -888,13 +907,14 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="stats-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 73</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 81</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stats</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
-    <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;stats&#39;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;resque&#39;</span>)
+    <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">stats_resque_path</span>(<span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;resque&#39;</span>))
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;txt&#39;</span>
@@ -906,7 +926,6 @@
     <span class="ruby-identifier">stats</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;resque.failed+=#{info[:failed]}&quot;</span>
     <span class="ruby-identifier">stats</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;resque.workers=#{info[:workers]}&quot;</span>
     <span class="ruby-identifier">stats</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;resque.working=#{info[:working]}&quot;</span>
-
     <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">queues</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">queue</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">stats</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;queues.#{queue}=#{Resque.size(queue)}&quot;</span>
     <span class="ruby-keyword">end</span>
@@ -914,14 +933,14 @@
     <span class="ruby-identifier">render</span>(<span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">stats</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;&lt;/br&gt;&quot;</span>).<span class="ruby-identifier">html_safe</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- stats-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- stats-method -->
+      </div>
 
     
       <div id="method-i-status" class="method-detail ">
@@ -929,7 +948,9 @@
         <div class="method-heading">
           <span class="method-name">status</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -937,24 +958,26 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="status-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 173</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 180</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">status</span>
   <span class="ruby-ivar">@status</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:format</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;js&#39;</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@status</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@status</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:status</span> }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- status-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- status-method -->
+      </div>
 
     
       <div id="method-i-status_poll" class="method-detail ">
@@ -962,7 +985,9 @@
         <div class="method-heading">
           <span class="method-name">status_poll</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -970,28 +995,29 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="status_poll-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">status_poll</span>
   <span class="ruby-ivar">@polling</span> = <span class="ruby-keyword">true</span>
 
   <span class="ruby-ivar">@start</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:start</span>].<span class="ruby-identifier">to_i</span>
   <span class="ruby-ivar">@end</span> = <span class="ruby-ivar">@start</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">params</span>[<span class="ruby-value">:per_page</span>] <span class="ruby-operator">||</span> <span class="ruby-value">20</span>)
-  <span class="ruby-ivar">@statuses</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">statuses</span>(<span class="ruby-ivar">@start</span>, <span class="ruby-ivar">@end</span>)
+  <span class="ruby-ivar">@statuses</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">statuses</span>(<span class="ruby-ivar">@start</span>, <span class="ruby-ivar">@end</span>) <span class="ruby-keyword">rescue</span> []
   <span class="ruby-ivar">@size</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">status_ids</span>.<span class="ruby-identifier">size</span>
 
   <span class="ruby-identifier">render</span>(<span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">render_to_string</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;statuses&#39;</span>, <span class="ruby-value">:formats</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:html</span>], <span class="ruby-value">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)))
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- status_poll-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- status_poll-method -->
+      </div>
 
     
       <div id="method-i-statuses" class="method-detail ">
@@ -999,7 +1025,9 @@
         <div class="method-heading">
           <span class="method-name">statuses</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -1007,27 +1035,29 @@
           
           <p>resque-status actions</p>
           
+          
 
           
           <div class="method-source-code" id="statuses-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 158</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 164</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">statuses</span>
   <span class="ruby-ivar">@start</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:start</span>].<span class="ruby-identifier">to_i</span>
   <span class="ruby-ivar">@end</span> = <span class="ruby-ivar">@start</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">params</span>[<span class="ruby-value">:per_page</span>] <span class="ruby-operator">||</span> <span class="ruby-value">20</span>)
   <span class="ruby-ivar">@statuses</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">statuses</span>(<span class="ruby-ivar">@start</span>, <span class="ruby-ivar">@end</span>)
   <span class="ruby-ivar">@size</span> = <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span><span class="ruby-operator">::</span><span class="ruby-constant">Hash</span>.<span class="ruby-identifier">status_ids</span>.<span class="ruby-identifier">size</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:format</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;js&#39;</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@statuses</span>.<span class="ruby-identifier">to_json</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@statuses</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:statuses</span> }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- statuses-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- statuses-method -->
+      </div>
 
     
       <div id="method-i-stop_scheduler" class="method-detail ">
@@ -1035,7 +1065,9 @@
         <div class="method-heading">
           <span class="method-name">stop_scheduler</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -1043,22 +1075,23 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="stop_scheduler-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 151</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 157</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stop_scheduler</span>
   <span class="ruby-constant">ResqueScheduler</span>.<span class="ruby-identifier">quit</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>])
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;schedule&#39;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">schedule_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- stop_scheduler-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- stop_scheduler-method -->
+      </div>
 
     
       <div id="method-i-stop_worker" class="method-detail ">
@@ -1066,7 +1099,9 @@
         <div class="method-heading">
           <span class="method-name">stop_worker</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -1074,23 +1109,24 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="stop_worker-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 44</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stop_worker</span>
   <span class="ruby-identifier">worker</span> = <span class="ruby-identifier">find_worker</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:worker</span>])
   <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">quit</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">worker</span>
-  <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;workers&quot;</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">workers_resque_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- stop_worker-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- stop_worker-method -->
+      </div>
 
     
       <div id="method-i-working" class="method-detail ">
@@ -1098,7 +1134,9 @@
         <div class="method-heading">
           <span class="method-name">working</span><span
             class="method-args">()</span>
+          
           <span class="method-click-advice">click to toggle source</span>
+          
         </div>
         
 
@@ -1106,33 +1144,33 @@
           
           
           
+          
 
           
           <div class="method-source-code" id="working-source">
-            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/controllers/resque_manager/resque_controller.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">working</span>
   <span class="ruby-identifier">render</span>(<span class="ruby-string">&#39;_working&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- working-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- working-method -->
+      </div>
 
     
-    </section><!-- public-instance-method-details -->
+    </section>
   
-  </section><!-- 5Buntitled-5D -->
+  </section>
+</main>
 
-</div><!-- documentation -->
 
-
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

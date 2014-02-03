@@ -5,12 +5,14 @@ module Resque
 
       #OVERRIDE so we can add OverridesAndExtensionsClassMethods
       def self.included(base)
-        attr_reader :worker
+        base.class_eval do
+          attr_reader :worker
 
-        # can't call super, so add ClassMethods here that resque-status was doing
-        base.extend(ClassMethods) #add the methods in the resque-status gem
-        base.extend(ClassOverridesAndExtensions)
-        base.include(SemanticLogger::Loggable)
+          # can't call super, so add ClassMethods here that resque-status was doing
+          extend(ClassMethods) #add the methods in the resque-status gem
+          extend(ClassOverridesAndExtensions)
+          include(SemanticLogger::Loggable)
+        end
       end
 
       module ClassOverridesAndExtensions
