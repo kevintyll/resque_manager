@@ -1,3 +1,7 @@
+== 3.3.8 2013-2-5
+
+*  Changed the chained system calls to use && so they all run in one call to prevent possible profile changes in a subsequent call that prevents the system from finding the cap executable.
+
 == 3.3.7 2013-2-3
 
 *  Clean up the nohup calls.  nohup only spawns another process when output is redirected 2>&1.

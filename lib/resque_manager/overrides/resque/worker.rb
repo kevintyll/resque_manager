@@ -201,9 +201,9 @@ module Resque
       application_path = options[:application_path]
       queues = options[:queues]
       if Rails.env =~ /development|test/
-        Thread.new(application_path, queues) { |application_path, queue| system("cd #{application_path || '.'}; bundle exec #{ResqueManager.resque_worker_rake || 'rake'} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
+        Thread.new(application_path, queues) { |application_path, queue| system("cd #{application_path || '.'} && bundle exec #{ResqueManager.resque_worker_rake || 'rake'} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
       else
-        Thread.new(ips, application_path, queues) { |ip_list, application_path, queue| system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}") }
+        Thread.new(ips, application_path, queues) { |ip_list, application_path, queue| system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}") }
       end
     end
 
@@ -218,7 +218,7 @@ module Resque
           system("kill -QUIT  #{self.pid}")
         end
       else
-        system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}")
+        system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}")
       end
     end
 
@@ -226,7 +226,7 @@ module Resque
       if Rails.env =~ /development|test/
         system("kill -USR2  #{self.pid}")
       else
-        system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:pause_worker pid=#{self.pid} host=#{self.ip}")
+        system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:pause_worker pid=#{self.pid} host=#{self.ip}")
       end
     end
 
@@ -234,7 +234,7 @@ module Resque
       if Rails.env =~ /development|test/
         system("kill -CONT  #{self.pid}")
       else
-        system("cd #{Rails.root}; bundle exec cap #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}")
+        system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}")
       end
     end
 

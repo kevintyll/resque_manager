@@ -205,9 +205,9 @@
   <span class="ruby-identifier">application_path</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:application_path</span>]
   <span class="ruby-identifier">queues</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:queues</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
-    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{application_path || &#39;.&#39;}; bundle exec #{ResqueManager.resque_worker_rake || &#39;rake&#39;} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work&quot;</span>) }
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{application_path || &#39;.&#39;} &amp;&amp; bundle exec #{ResqueManager.resque_worker_rake || &#39;rake&#39;} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work&quot;</span>) }
   <span class="ruby-keyword">else</span>
-    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">ips</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">ip_list</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}&quot;</span>) }
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">ips</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">ip_list</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}&quot;</span>) }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -324,7 +324,7 @@ latest redis gem.</p>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
     <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -CONT  #{self.pid}&quot;</span>)
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; bundle exec cap #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -555,7 +555,7 @@ latest redis gem.</p>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
     <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -USR2  #{self.pid}&quot;</span>)
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; bundle exec cap #{Rails.env} resque:pause_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:pause_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -918,7 +918,7 @@ determine if Redis is old and clean it up a bit.</p>
       <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -QUIT  #{self.pid}&quot;</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root}; bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}&quot;</span>)
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}&quot;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
