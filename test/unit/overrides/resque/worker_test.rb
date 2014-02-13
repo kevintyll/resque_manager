@@ -13,7 +13,7 @@ class WorkerTest < Test::Unit::TestCase
 
     context '#local_ip' do
       should 'set the local_ip' do
-        assert_equal IPSocket.getaddress(Socket.gethostname), @worker.local_ip
+        assert_equal UDPSocket.open { |s| s.connect('google.com', 1); s.addr.last }, @worker.local_ip
       end
     end
 
@@ -21,7 +21,7 @@ class WorkerTest < Test::Unit::TestCase
       should 'return the correct string representation of the worker'do
         Process.stubs(:pid).returns(27415)
         object_id = Thread.current.object_id
-        assert_equal "#{Socket.gethostname}(#{IPSocket.getaddress(Socket.gethostname)}):27415:#{object_id}:path:*", @worker.to_s
+        assert_equal "#{Socket.gethostname}(#{UDPSocket.open { |s| s.connect('google.com', 1); s.addr.last }}):27415:#{object_id}:path:*", @worker.to_s
       end
 
       should 'alias to_s as id' do
@@ -32,7 +32,7 @@ class WorkerTest < Test::Unit::TestCase
     context '#pause' do
       should 'return a correctly formatted pause key' do
         Process.stubs(:pid).returns(27415)
-        assert_equal "worker:#{Socket.gethostname}(#{IPSocket.getaddress(Socket.gethostname)}):27415:all_workers:paused", @worker.pause_key
+        assert_equal "worker:#{Socket.gethostname}(#{UDPSocket.open { |s| s.connect('google.com', 1); s.addr.last }}):27415:all_workers:paused", @worker.pause_key
       end
     end
 
@@ -74,7 +74,7 @@ class WorkerTest < Test::Unit::TestCase
 
     context '#ip' do
       should 'return the correct ip' do
-        assert_equal IPSocket.getaddress(Socket.gethostname), @worker.ip
+        assert_equal UDPSocket.open { |s| s.connect('google.com', 1); s.addr.last }, @worker.ip
       end
     end
 

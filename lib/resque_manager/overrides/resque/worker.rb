@@ -8,7 +8,7 @@ module Resque
     @@local_ip = nil
 
     def local_ip
-      @@local_ip ||= IPSocket.getaddress(Socket.gethostname)
+      @@local_ip ||= UDPSocket.open { |s| s.connect('google.com', 1); s.addr.last }
     end
 
     # The string representation is the same as the id for this worker
@@ -81,6 +81,7 @@ module Resque
       Thread.list.each { |t| t[:shutdown] = true }
       shutdown_without_multithreading
     end
+
     alias_method_chain :shutdown, :multithreading
 
     def paused
@@ -100,6 +101,7 @@ module Resque
       pause_processing_without_pause_key
       Resque.redis.set(pause_key, Time.now.to_s)
     end
+
     alias_method_chain :pause_processing, :pause_key
 
     # Start processing jobs again after a pause
@@ -109,6 +111,7 @@ module Resque
       unpause_processing_without_pause_key
       Resque.redis.del(pause_key)
     end
+
     alias_method_chain :unpause_processing, :pause_key
 
     # Looks for any workers which should be running on this server
@@ -139,6 +142,7 @@ module Resque
 
       Resque.redis.del(pause_key)
     end
+
     alias_method_chain :unregister_worker, :pause
 
     def all_workers_in_pid_working
@@ -170,12 +174,33 @@ module Resque
         sleep interval.to_i
       end
     end
+
     alias_method_chain :work, :multithreading
 
     def shutdown_with_multithreading?
       shutdown_without_multithreading? || Thread.current[:shutdown]
     end
+
     alias_method_chain :shutdown?, :multithreading
+
+    # override so we can synchronize the client on the reconnect for multithreaded workers.
+    def reconnect
+      tries = 0
+      begin
+        redis.synchronize do |client|
+          client.reconnect
+        end
+      rescue Redis::BaseConnectionError
+        if (tries += 1) <= 3
+          log "Error reconnecting to Redis; retrying"
+          sleep(tries)
+          retry
+        else
+          log "Error reconnecting to Redis; quitting"
+          raise
+        end
+      end
+    end
 
     # logic for mappged_mget changed where it returns keys with nil values in latest redis gem.
     def self.working
@@ -199,11 +224,12 @@ module Resque
     def self.start(options)
       ips = options[:hosts]
       application_path = options[:application_path]
+
       queues = options[:queues]
       if Rails.env =~ /development|test/
         Thread.new(application_path, queues) { |application_path, queue| system("cd #{application_path || '.'} && bundle exec #{ResqueManager.resque_worker_rake || 'rake'} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work") }
       else
-        Thread.new(ips, application_path, queues) { |ip_list, application_path, queue| system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}") }
+        Thread.new(ips, application_path, queues) { |ip_list, application_path, queue| system("cd #{Rails.root} && #{ResqueManager.resque_worker_cap || 'bundle exec cap'} #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}") }
       end
     end
 

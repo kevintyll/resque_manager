@@ -1,3 +1,10 @@
+== 3.3.9 2013-2-13
+
+*  Modified resque:work's pre-requisite :preload task to properly load a rails 4 app.
+*  Override the reconnect method on worker to make it thread safe.
+*  Added the resque_worker_rake and resque_worker_cap attributes to the config so you can override the default rake and cap behavior when starting workers from the UI.
+
+
 == 3.3.8 2013-2-5
 
 *  Changed the chained system calls to use && so they all run in one call to prevent possible profile changes in a subsequent call that prevents the system from finding the cap executable.

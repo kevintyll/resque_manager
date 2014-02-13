@@ -4,7 +4,7 @@ Rake::Task["resque:work"].clear # clear out the work task defined in resque so w
 namespace :resque do
 
   desc "Start a Resque worker, each queue will create it's own worker in a separate thread"
-  task :work => [:fix_eager_load_paths, :preload, :setup] do
+  task :work => [:fix_eager_load_paths, :preload_with_rails_4_support, :setup] do
     require 'resque'
 
     worker = nil
@@ -44,7 +44,7 @@ namespace :resque do
           worker.work(ENV['INTERVAL'] || 5) # interval, will block
         rescue Exception => e
           puts "********** e.message = " + e.message.inspect
-          worker.logger.error  'Error with worker:', e
+          worker.logger.error 'Error with worker:', e
         end
       end
     end
@@ -169,10 +169,21 @@ namespace :resque do
     end
   end
 
+
   # there is no need to load controllers for a worker, and it may cause load errors.
   task :fix_eager_load_paths => :setup do
     Rails.application.config.eager_load_paths -= ["#{Rails.root}/app/controllers"]
     Rails.application.config.eager_load_paths -= ["#{Rails.root}/app/helpers"]
   end
 
+  task :preload_with_rails_4_support => :setup do
+    if Rails.application.config.respond_to? :eager_load_namespaces
+      # rails 4
+      Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+    else
+      Rake::Task['resque:preload'].invoke
+    end
+  end
+
 end
+

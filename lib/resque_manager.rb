@@ -2,7 +2,6 @@ require 'resque_manager/engine'
 require 'resque/server'
 require 'resque_manager/overrides/resque/worker'
 require 'resque_manager/overrides/resque/resque'
-require 'resque_manager/overrides/resque/job'
 require 'resque_manager/overrides/resque/failure/redis'
 if Resque.respond_to? :schedule
   require 'resque_manager/overrides/resque_scheduler/resque_scheduler'
@@ -19,13 +18,13 @@ Resque::Server.tabs.delete 'Failed'
 module ResqueManager
   # Set this to a hash of all the different applications and deployment paths
   # for those applications that have workers you want to manage.
-  # The different app do not have to be deployed to the same server.
+  # The different apps do not have to be deployed to the same server.
   # ex. {app1: 'www/var/rails/app1/current',
   #      app2: 'www/var/rails/app2/current'}
   # There is no need to set this if all the workers live in the same app as the Resque Manager
   # It will default to the current app's deploy path
   mattr_accessor :applications
-  @@applicataions = nil
+  @@applications = nil
 
   mattr_accessor :redis_config
   @@redis_config = "SET TO RESQUE'S REDIS CONFIGURATION HASH"
@@ -37,6 +36,22 @@ module ResqueManager
   # Optionally set this to determine whether to run inline or not.
   mattr_accessor :inline
   @@inline
+
+  # This is only used by resque_controller in the dev and test env. to manage workers
+  # By default resque_controller will use bundle exec rake.
+  # Set this if you need to define a custom path or add environment options.
+  # ex. resque_worker_rake: 'bundle exec bin/rake'
+  # This setting is optional
+  mattr_accessor :resque_worker_rake
+  @@resque_worker_rake
+
+  # This is only used by resque_controller in deployed env. to manage workers
+  # By default resque_controller will use bundle exec rake.
+  # Set this if you need to define a custom path or add environment options.
+  # ex. resque_worker_cap: 'bundle exec bin/cap'
+  # This setting is optional
+  mattr_accessor :resque_worker_cap
+  @@resque_worker_cap
 
   def self.configure
     yield self

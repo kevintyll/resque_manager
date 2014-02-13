@@ -57,6 +57,16 @@ ResqueManager.configure do |config|
   # optional - If you have workers in multiple applications that you want to control through a single app's UI, this this
   # to a hash where the keys are your application names, and the values are the paths where the app is deployed.
   config.applications = resque_manager_config['applications']
+  # optional - This is only used by resque_controller in the dev and test env. to manage workers
+  # By default resque_controller will use bundle exec rake.
+  # Set this if you need to define a custom path or add environment options.
+  # ex. resque_worker_rake: 'bundle exec bin/rake'
+  config.resque_worker_rake = resque_manager_config['resque_worker_rake']
+  # optional - This is only used by resque_controller in deployed env. to manage workers
+  # By default resque_controller will use bundle exec rake.
+  # Set this if you need to define a custom path or add environment options.
+  # ex. resque_worker_cap: 'bundle exec bin/cap'
+  config.resque_worker_cap = resque_manager_config['resque_worker_cap']
 end
 
 See the sample .yml files in config.
