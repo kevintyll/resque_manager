@@ -1,3 +1,7 @@
+== 3.3.10 2013-2-14
+
+*  Use resque_worker_cap on all UI actions.
+
 == 3.3.9 2013-2-13
 
 *  Modified resque:work's pre-requisite :preload task to properly load a rails 4 app.

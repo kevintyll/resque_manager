@@ -244,7 +244,7 @@ module Resque
           system("kill -QUIT  #{self.pid}")
         end
       else
-        system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}")
+        system("cd #{Rails.root} && #{ResqueManager.resque_worker_cap || 'bundle exec cap'} #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}")
       end
     end
 
@@ -252,7 +252,7 @@ module Resque
       if Rails.env =~ /development|test/
         system("kill -USR2  #{self.pid}")
       else
-        system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:pause_worker pid=#{self.pid} host=#{self.ip}")
+        system("cd #{Rails.root} && #{ResqueManager.resque_worker_cap || 'bundle exec cap'} resque:pause_worker pid=#{self.pid} host=#{self.ip}")
       end
     end
 
@@ -260,7 +260,7 @@ module Resque
       if Rails.env =~ /development|test/
         system("kill -CONT  #{self.pid}")
       else
-        system("cd #{Rails.root} && bundle exec cap #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}")
+        system("cd #{Rails.root} && #{ResqueManager.resque_worker_cap || 'bundle exec cap'} #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}")
       end
     end
 

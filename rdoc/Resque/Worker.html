@@ -126,6 +126,8 @@
     
     <li ><a href="#method-i-quit">#quit</a>
     
+    <li ><a href="#method-i-reconnect">#reconnect</a>
+    
     <li ><a href="#method-i-restart">#restart</a>
     
     <li ><a href="#method-i-shutdown_with_multithreading">#shutdown_with_multithreading</a>
@@ -199,15 +201,16 @@
 
           
           <div class="method-source-code" id="start-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 199</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 224</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">ips</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:hosts</span>]
   <span class="ruby-identifier">application_path</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:application_path</span>]
+
   <span class="ruby-identifier">queues</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:queues</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
     <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{application_path || &#39;.&#39;} &amp;&amp; bundle exec #{ResqueManager.resque_worker_rake || &#39;rake&#39;} RAILS_ENV=#{Rails.env} QUEUE=#{queue} resque:work&quot;</span>) }
   <span class="ruby-keyword">else</span>
-    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">ips</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">ip_list</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}&quot;</span>) }
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">ips</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queues</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">ip_list</span>, <span class="ruby-identifier">application_path</span>, <span class="ruby-identifier">queue</span><span class="ruby-operator">|</span> <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; #{ResqueManager.resque_worker_cap || &#39;bundle exec cap&#39;} #{Rails.env} resque:work host=#{ip_list} application_path=#{application_path} queue=#{queue}&quot;</span>) }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -240,7 +243,7 @@ latest redis gem.</p>
 
           
           <div class="method-source-code" id="working-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 181</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 206</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">working</span>
   <span class="ruby-identifier">names</span> = <span class="ruby-identifier">all</span>
   <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">any?</span>
@@ -286,7 +289,7 @@ latest redis gem.</p>
 
           
           <div class="method-source-code" id="all_workers_in_pid_working-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 144</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">all_workers_in_pid_working</span>
   <span class="ruby-identifier">workers_in_pid</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span> (<span class="ruby-identifier">hash</span> = <span class="ruby-identifier">w</span>.<span class="ruby-identifier">processing</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">hash</span>.<span class="ruby-identifier">empty?</span> }
 <span class="ruby-keyword">end</span></pre>
@@ -319,12 +322,12 @@ latest redis gem.</p>
 
           
           <div class="method-source-code" id="continue-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 233</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 259</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">continue</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
     <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -CONT  #{self.pid}&quot;</span>)
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; #{ResqueManager.resque_worker_cap || &#39;bundle exec cap&#39;} #{Rails.env} resque:continue_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -419,7 +422,7 @@ latest redis gem.</p>
           <div class="method-source-code" id="local_ip-source">
             <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">local_ip</span>
-  <span class="ruby-identifier">@@local_ip</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">IPSocket</span>.<span class="ruby-identifier">getaddress</span>(<span class="ruby-constant">Socket</span>.<span class="ruby-identifier">gethostname</span>)
+  <span class="ruby-identifier">@@local_ip</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">UDPSocket</span>.<span class="ruby-identifier">open</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">connect</span>(<span class="ruby-string">&#39;google.com&#39;</span>, <span class="ruby-value">1</span>); <span class="ruby-identifier">s</span>.<span class="ruby-identifier">addr</span>.<span class="ruby-identifier">last</span> }
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -450,7 +453,7 @@ latest redis gem.</p>
 
           
           <div class="method-source-code" id="overview_message-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 195</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 220</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">overview_message</span>
   <span class="ruby-identifier">job</span>[<span class="ruby-string">&#39;overview_message&#39;</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -483,7 +486,7 @@ latest redis gem.</p>
 
           
           <div class="method-source-code" id="overview_message-3D-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 190</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 215</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">overview_message=</span>(<span class="ruby-identifier">message</span>)
   <span class="ruby-identifier">data</span> = <span class="ruby-identifier">encode</span>(<span class="ruby-identifier">job</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-string">&#39;overview_message&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">message</span>))
   <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">set</span>(<span class="ruby-node">&quot;worker:#{self}&quot;</span>, <span class="ruby-identifier">data</span>)
@@ -550,12 +553,12 @@ latest redis gem.</p>
 
           
           <div class="method-source-code" id="pause-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 225</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 251</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pause</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
     <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -USR2  #{self.pid}&quot;</span>)
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:pause_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; #{ResqueManager.resque_worker_cap || &#39;bundle exec cap&#39;} resque:pause_worker pid=#{self.pid} host=#{self.ip}&quot;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -626,7 +629,7 @@ currently running one).</pre>
 
           
           <div class="method-source-code" id="pause_processing_with_pause_key-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 99</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 100</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pause_processing_with_pause_key</span>
   <span class="ruby-identifier">pause_processing_without_pause_key</span>
   <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">pause_key</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_s</span>)
@@ -660,7 +663,7 @@ currently running one).</pre>
 
           
           <div class="method-source-code" id="paused-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 86</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 87</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">paused</span>
   <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">get</span> <span class="ruby-identifier">pause_key</span>
 <span class="ruby-keyword">end</span></pre>
@@ -693,7 +696,7 @@ currently running one).</pre>
 
           
           <div class="method-source-code" id="paused-3F-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 92</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 93</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">paused?</span>
   <span class="ruby-ivar">@paused</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">paused</span>.<span class="ruby-identifier">present?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -768,7 +771,7 @@ determine if Redis is old and clean it up a bit.</p>
 
           
           <div class="method-source-code" id="prune_dead_workers-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 124</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 127</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">prune_dead_workers</span>
   <span class="ruby-constant">Worker</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">worker</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">host</span>, <span class="ruby-identifier">pid</span>, <span class="ruby-identifier">thread</span>, <span class="ruby-identifier">path</span>, <span class="ruby-identifier">queues</span> = <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)
@@ -906,7 +909,7 @@ determine if Redis is old and clean it up a bit.</p>
 
           
           <div class="method-source-code" id="quit-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 210</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 236</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">quit</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/development|test/</span>
     <span class="ruby-keyword">if</span> <span class="ruby-constant">RUBY_PLATFORM</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/java/</span>
@@ -918,7 +921,55 @@ determine if Redis is old and clean it up a bit.</p>
       <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;kill -QUIT  #{self.pid}&quot;</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; bundle exec cap #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}&quot;</span>)
+    <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;cd #{Rails.root} &amp;&amp; #{ResqueManager.resque_worker_cap || &#39;bundle exec cap&#39;} #{Rails.env} resque:quit_worker pid=#{self.pid} host=#{self.ip} application_path=#{self.path}&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-reconnect" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reconnect</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>override so we can synchronize the client on the reconnect for
+multithreaded workers.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="reconnect-source">
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 187</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reconnect</span>
+  <span class="ruby-identifier">tries</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">redis</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">client</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">client</span>.<span class="ruby-identifier">reconnect</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Redis</span><span class="ruby-operator">::</span><span class="ruby-constant">BaseConnectionError</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">tries</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>) <span class="ruby-operator">&lt;=</span> <span class="ruby-value">3</span>
+      <span class="ruby-identifier">log</span> <span class="ruby-string">&quot;Error reconnecting to Redis; retrying&quot;</span>
+      <span class="ruby-identifier">sleep</span>(<span class="ruby-identifier">tries</span>)
+      <span class="ruby-keyword">retry</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">log</span> <span class="ruby-string">&quot;Error reconnecting to Redis; quitting&quot;</span>
+      <span class="ruby-identifier">raise</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -950,7 +1001,7 @@ determine if Redis is old and clean it up a bit.</p>
 
           
           <div class="method-source-code" id="restart-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 241</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 267</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restart</span>
   <span class="ruby-identifier">queues</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">queues_in_pid</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;#&#39;</span>)
   <span class="ruby-identifier">quit</span>
@@ -1022,7 +1073,7 @@ current job.</pre>
 
           
           <div class="method-source-code" id="shutdown_with_multithreading-3F-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 175</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 180</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">shutdown_with_multithreading?</span>
   <span class="ruby-identifier">shutdown_without_multithreading?</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>[<span class="ruby-value">:shutdown</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -1175,7 +1226,7 @@ Can be used with `Worker.find`.</p>
 
           
           <div class="method-source-code" id="unpause_processing_with_pause_key-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 108</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unpause_processing_with_pause_key</span>
   <span class="ruby-identifier">unpause_processing_without_pause_key</span>
   <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">redis</span>.<span class="ruby-identifier">del</span>(<span class="ruby-identifier">pause_key</span>)
@@ -1211,7 +1262,7 @@ method error</p>
 
           
           <div class="method-source-code" id="unregister_worker_with_pause-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 137</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 140</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unregister_worker_with_pause</span>(<span class="ruby-identifier">exception</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">unregister_worker_without_pause</span>(<span class="ruby-identifier">exception</span>)
 
@@ -1263,7 +1314,7 @@ has completed processing. Useful for testing.</pre>
 
           
           <div class="method-source-code" id="work_with_multithreading-source">
-            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 165</span>
+            <pre><span class="ruby-comment"># File lib/resque_manager/overrides/resque/worker.rb, line 169</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">work_with_multithreading</span>(<span class="ruby-identifier">interval</span> = <span class="ruby-value">5.0</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
   <span class="ruby-identifier">work_without_multithreading</span>(<span class="ruby-identifier">interval</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
   <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
