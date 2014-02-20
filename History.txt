@@ -1,3 +1,7 @@
+== 3.3.11 2013-2-20
+
+*  Use the proper methods for the routes.
+
 == 3.3.10 2013-2-14
 
 *  Use resque_worker_cap on all UI actions.

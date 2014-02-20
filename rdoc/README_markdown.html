@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>README.markdown - ResqueManager</title>
+
+<link href="./fonts.css" rel="stylesheet">
+<link href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/navigation.js"></script>
+<script src="./js/search_index.js"></script>
+<script src="./js/search.js"></script>
+<script src="./js/searcher.js"></script>
+<script src="./js/darkfish.js"></script>
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#label-ResqueManager">ResqueManager</a>
+    <li><a href="#label-Installation">Installation</a>
+    <li><a href="#label-Dependencies">Dependencies</a>
+    <li><a href="#label-Configuration">Configuration</a>
+    <li><a href="#label-Capistrano+Configuration">Capistrano Configuration</a>
+    <li><a href="#label-Times+Fixed">Times Fixed</a>
+    <li><a href="#label-Display+Process+Status">Display Process Status</a>
+    <li><a href="#label-Restart+Failed+Jobs">Restart Failed Jobs</a>
+    <li><a href="#label-Remove+Items+from+the+Queue">Remove Items from the Queue</a>
+    <li><a href="#label-View+Processed+Job+Info">View Processed Job Info</a>
+    <li><a href="#label-Pause+a+Worker">Pause a Worker</a>
+    <li><a href="#label-Regular+Workers">Regular Workers</a>
+    <li><a href="#label-Resque%3A%3APlugins%3A%3AStatus+Workers">Resque::Plugins::Status Workers</a>
+    <li><a href="#label-Throttle+a+Queue">Throttle a Queue</a>
+    <li><a href="#label-Multi-Threaded+Workers">Multi-Threaded Workers</a>
+    <li><a href="#label-Workers+in+Multiple+Applications">Workers in Multiple Applications</a>
+    <li><a href="#label-After+Deploy+Hooks">After Deploy Hooks</a>
+    <li><a href="#label-Resque+Scheduler">Resque Scheduler</a>
+    <li><a href="#label-Additional+cap+tasks+added%3A">Additional cap tasks added:</a>
+    <li><a href="#label-Delayed+Tab">Delayed Tab</a>
+  </ul>
+</div>
+
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./README_markdown.html">README.markdown</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page README.markdown">
+
+<p>Resque UI has been renamed to Resque Manager to better reflect what this
+engine really does. It manages your resque workers…through the UI.</p>
+
+<h2 id="label-ResqueManager">ResqueManager<span><a href="#label-ResqueManager">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>Resque Manager is a Rails engine port of the Sinatra app that is included
+in Chris Wanstrath&#39;s resque gem. We love the gem and love the UI, but
+just didn&#39;t want to add Sinatra to our stack and wanted to be able to
+manage the queues from the UI.</p>
+
+<h2 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<pre>sudo gem install resque_manager</pre>
+
+<p>Or just add it to your Gemfile</p>
+
+<pre>gem &#39;resque_manager&#39;</pre>
+
+<p>If you have your default routes disabled, which you should if you have a
+RESTful API, then you&#39;ll need to add this to the bottom of your
+routes.rb file.</p>
+
+<pre class="ruby"><span class="ruby-comment"># Resque Manager</span>
+<span class="ruby-identifier">mount</span> <span class="ruby-constant">ResqueManager</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;resque&#39;</span>
+</pre>
+
+<p>Once installed, you now have a resque controller, so you can get to the ui
+with: <a href="http://your_domain/resque">your_domain/resque</a>.</p>
+
+<h2 id="label-Dependencies">Dependencies<span><a href="#label-Dependencies">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>This engine now requires rails 3.2.0 or greater.</p>
+
+<p>This engine now requires redis 2.0 or greater for the expiration of keys to
+work correctly.</p>
+
+<p>This engine requires the redis 3.0 or higher gem</p>
+
+<p>This engine requires the resque 1.24 or higher gem.</p>
+
+<p>This engine now requires the resque-status 0.4.0 or higher gem.</p>
+
+<p>This engine now requires the resque-cleaner 0.2 or higher gem.</p>
+
+<p>These gems will all be installed for you automatically when you install
+resque_manager.</p>
+
+<h2 id="label-Configuration">Configuration<span><a href="#label-Configuration">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>There are a few things you need to configure, and a few more you can if you
+like. The easiest is to add an initializer:</p>
+
+<p><a href="ResqueManager.html#method-c-configure">ResqueManager.configure</a>
+do |config|  # configure redis  config.redis_config =
+YAML.load(IO.read(Rails.root.join(“config”, “<a
+href=""#{Rails.env}_resque"">redis.yml”)))</a>  resque_manager_config =
+YAML.load(IO.read(Rails.root.join(&#39;config&#39;, &#39;<a
+href="Rails.env">resque_manager.yml’)))</a>  # optional - set when you want
+your status keys to expire. Once expired, jobs will no longer show on the
+status page.  config.key_expiration = <a
+href="'key_expiration'">resque_manager_config</a>  # optional - Tell
+whether to run jobs inline or not.  config.inline = <a
+href="'inline'">resque_manager_config</a>  # optional - If you have workers
+in multiple applications that you want to control through a single
+app&#39;s UI, this this  # to a hash where the keys are your application
+names, and the values are the paths where the app is deployed. 
+config.applications = <a href="'applications'">resque_manager_config</a>  #
+optional - This is only used by resque_controller in the dev and test env.
+to manage workers  # By default resque_controller will use bundle exec
+rake.  # Set this if you need to define a custom path or add environment
+options.  # ex. resque_worker_rake: &#39;bundle exec bin/rake&#39; 
+config.resque_worker_rake = <a
+href="'resque_worker_rake'">resque_manager_config</a>  # optional - This is
+only used by resque_controller in deployed env. to manage workers  # By
+default resque_controller will use bundle exec rake.  # Set this if you
+need to define a custom path or add environment options.  # ex.
+resque_worker_cap: &#39;bundle exec bin/cap&#39;  config.resque_worker_cap
+= <a href="'resque_worker_cap'">resque_manager_config</a> end</p>
+
+<p>See the sample .yml files in config.</p>
+
+<h2 id="label-Capistrano+Configuration">Capistrano Configuration<span><a href="#label-Capistrano+Configuration">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>Added the ability to stop, start, and restart workers from the workers
+page. This requires capistrano, and capistrano-ext to be installed on all
+deployed servers.</p>
+
+<p><img src="http://img.skitch.com/20100308-ds6bgsnwqe6j9jn9yx8x7cxre3.png"></p>
+
+<p>The controller calls cap tasks to manage the workers. To include the
+recipes in your application, add this line to your deploy.rb file:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;resque_manager/recipes&#39;</span>
+</pre>
+
+<p>You will also need to define the :resque role in your
+deploy/&lt;environment&gt;.rb file with the servers that will run your
+workers.</p>
+
+<pre>role :resque, &#39;server1&#39;, &#39;server2&#39;</pre>
+
+<p>You will also need to make sure you have your rake path set in the
+deploy.rb file.</p>
+
+<pre>set :rake, &quot;/opt/ruby-enterprise-1.8.6-20090421/bin/rake&quot;</pre>
+
+<p>…using your own path of course.</p>
+
+<p>The cap tasks included are:</p>
+
+<pre>cap resque:work                         # start a resque worker.
+cap resque:workers                      # start multiple resque workers.
+cap resque:quit_worker                  # Gracefully kill a worker.  If the worker is working, it will finish before shutting down.
+cap resque:quit_workers                 # Gracefully kill all workers on all servers.  If the worker is working, it will finish before shutting down.
+cap resque:kill_worker_with_impunity    # Kill a rogue worker.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit. arg: host=ip pid=pid
+cap resque:kill_workera_with_impunity   # Kill all rogue workers on all servers.  If the worker is working, it will not finish and the job will go to the Failed queue as a DirtyExit.
+cap resque:restart_workers              # Restart all workers on all servers</pre>
+
+<h2 id="label-Times+Fixed">Times Fixed<span><a href="#label-Times+Fixed">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>The displaying of times is fixed. Some browsers displayed “Nan days ago”
+for all process times in the original Sinatra app. Fixed the stats/keys
+page. The page wasn&#39;t showing the keys&#39; types, size or values.</p>
+
+<h2 id="label-Display+Process+Status">Display Process Status<span><a href="#label-Display+Process+Status">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>Added the ability to display process status in the worker “Processing”
+column on the overview, workers and working pages. To do this, set the
+overview_status to the status message in your perform method.</p>
+
+<pre class="ruby"><span class="ruby-constant">Class</span> <span class="ruby-constant">YourClass</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>(<span class="ruby-identifier">arg</span>)
+  <span class="ruby-operator">...</span><span class="ruby-identifier">your</span> <span class="ruby-identifier">code</span> <span class="ruby-identifier">here</span>
+  <span class="ruby-identifier">overview_status</span> =  <span class="ruby-string">&quot;Your status message&quot;</span>
+  <span class="ruby-operator">...</span><span class="ruby-identifier">more</span> <span class="ruby-identifier">code</span>
+  <span class="ruby-identifier">overview_status</span> = <span class="ruby-string">&quot;Another status message&quot;</span>
+  <span class="ruby-operator">...</span><span class="ruby-identifier">more</span> <span class="ruby-identifier">code</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>This is really handy for those long running jobs to give you assurance the
+the job is really running or not.</p>
+
+<p><img src="http://img.skitch.com/20100308-8mk5hrwnu462q2d23d51n8cjxp.png"></p>
+
+<h2 id="label-Restart+Failed+Jobs">Restart Failed Jobs<span><a href="#label-Restart+Failed+Jobs">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>Added the Resque Cleaner gem to manage the failed queue. Have complete
+control over the failed queue now with the Cleaner tab by querying and
+restarting failed jobs.</p>
+
+<p>See what all you can do on the github page: <a
+href="https://github.com/ono/resque-cleaner">github.com/ono/resque-cleaner</a></p>
+
+<h2 id="label-Remove+Items+from+the+Queue">Remove Items from the Queue<span><a href="#label-Remove+Items+from+the+Queue">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>Added the ability to remove jobs, from a queue</p>
+
+<p><img src="http://img.skitch.com/20100308-qukiw7bpsnr9y1saap7f8276qx.png"></p>
+
+<h2 id="label-View+Processed+Job+Info">View Processed Job Info<span><a href="#label-View+Processed+Job+Info">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p><img src="https://img.skitch.com/20110309-r9mhfgnn8w63ep29sik4c6khcj.png"></p>
+
+<p>resque_manager now incorporates the resque-status gem and replaced the
+Processed tab with the Status tab. You can read about what you can do with
+resque-status <a href="https://github.com/quirkey/resque-status">here</a>.</p>
+
+<p>I&#39;ve added some additional functionality to the resque-status gem.
+Namely, I&#39;ve added a <a
+href="Resque/Plugins/ChainedStatus.html">Resque::Plugins::ChainedStatus</a>
+module. We process a lot of data files. Each part of the file&#39;s process
+is handled by a different worker. One worker may convert a file into a
+different format, then another will parse that file and peel each record
+off the file and put each individual record on a separate queue. A separate
+worker may then do any post processing when the file is complete.</p>
+
+<p>I wanted all of that to show under a single status. So to do that, the very
+first worker class includes Resque::Plugins::Status, and everything after
+that includes from <a
+href="Resque/Plugins/ChainedStatus.html">Resque::Plugins::ChainedStatus</a>.
+When you call create on the chained job from the preceding job, you just
+need to pass {&#39;uuid&#39; =&gt; uuid} as one of the hash arguments.</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">DataContributionFile</span>
+    <span class="ruby-identifier">include</span> <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>
+
+    <span class="ruby-ivar">@queue</span> = :<span class="ruby-identifier">data_contribution</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>
+        <span class="ruby-operator">...</span><span class="ruby-identifier">your</span> <span class="ruby-identifier">code</span> <span class="ruby-identifier">here</span>
+        <span class="ruby-identifier">tick</span> <span class="ruby-string">&quot;Retrieving file.&quot;</span>
+        <span class="ruby-operator">...</span><span class="ruby-identifier">more</span> <span class="ruby-identifier">code</span>
+        <span class="ruby-identifier">tick</span> <span class="ruby-node">&quot;Peeling #{file_path}&quot;</span>
+        <span class="ruby-constant">SingleRecordLoader</span>.<span class="ruby-identifier">create</span>({<span class="ruby-string">&#39;uuid&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">uuid</span>, <span class="ruby-string">&#39;row_data&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">hash_of_row_data</span>, <span class="ruby-string">&#39;rows_in_file&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">total_rows</span>})
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">SingleRecordLoader</span>
+    <span class="ruby-identifier">include</span> <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">ChainedStatus</span>
+    <span class="ruby-ivar">@queue</span> = :<span class="ruby-identifier">single_record_loader</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">completed</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">messages</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">counter</span>(:<span class="ruby-identifier">processed</span>) <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">options</span>[:<span class="ruby-identifier">rows_in_file</span>].<span class="ruby-identifier">to_i</span>
+        <span class="ruby-keyword">super</span>(<span class="ruby-node">&quot;#{options[:rows_in_file]} records processed: Started(#{status.time.to_s(:eastern_time_zone_long)}) Finished(#{Time.now.to_s(:eastern_time_zone_long)})&quot;</span>)
+        <span class="ruby-identifier">post_process</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>
+        <span class="ruby-operator">...</span><span class="ruby-identifier">your</span> <span class="ruby-identifier">code</span> <span class="ruby-identifier">here</span>
+
+        <span class="ruby-identifier">incr_counter</span>(:<span class="ruby-identifier">processed</span>)
+        <span class="ruby-identifier">at</span>((<span class="ruby-keyword">self</span>.<span class="ruby-identifier">processed</span>), <span class="ruby-identifier">options</span>[:<span class="ruby-identifier">rows_in_file</span>], <span class="ruby-node">&quot;#{(self.processed)} of #{options[:rows_in_file]} completed.&quot;</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>So now, the data_contribution worker and the single_record_loader workers
+will update the same status on the status page. You can call tick or
+set_status to add messages along the way too. Note: These statuses are
+shown in the Messages column of the status page. When you set the
+overview_status, those messages appear in the Processing column of the
+Overview, Workers, and Working pages.</p>
+
+<p>You will want to override the completed method so that it isn&#39;t called
+until the very end of the entire process.</p>
+
+<p>I&#39;ve also added two more methods, incr_counter(:counter) and
+count(:counter). We have dozens of single_record_loader workers processing
+records at a time. You encounter a race condition when they are all calling
+at at the same time to update the :num attribute. So I created these two
+methods to atomically increment a dedicated counter. Just call incr_counter
+and pass in a symbol for what you want to call the counter. You can create
+any number of different counters for different purposes. We keep track of
+different validation issues for each record. Use counter and pass it the
+same symbol to read the integer back. The redis entries created by these
+methods all get cleaned up with a call to
+Resque::Plugins::Status::Hash.clear(uuid)</p>
+
+<p>When you kill a job on the UI, it will kill all the workers in the chain.</p>
+
+<h2 id="label-Pause+a+Worker">Pause a Worker<span><a href="#label-Pause+a+Worker">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>The workers page now has a button for every worker to pause that worker.</p>
+
+<h3 id="label-Regular+Workers">Regular Workers<span><a href="#label-Regular+Workers">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>For workers that do not include Resque::Plugins::Status, this will pause
+the worker, but not the job. So if the worker is in the middle of a job
+when it is paused, it will finish it&#39;s process, but then will not pick
+anything else up off the queue.</p>
+
+<p>You can manually pause the processing though using the worker object.</p>
+
+<pre class="ruby"><span class="ruby-constant">Class</span> <span class="ruby-constant">YourClass</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>(<span class="ruby-identifier">arg</span>)
+  <span class="ruby-operator">...</span><span class="ruby-identifier">your</span> <span class="ruby-identifier">code</span> <span class="ruby-identifier">here</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">worker</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>
+      <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-keyword">break</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>
+        <span class="ruby-identifier">sleep</span> <span class="ruby-value">60</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-operator">...</span><span class="ruby-identifier">continue</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h3 id="label-Resque%3A%3APlugins%3A%3AStatus+Workers">Resque::Plugins::Status Workers<span><a href="#label-Resque%3A%3APlugins%3A%3AStatus+Workers">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>For workers that do include Resque::Plugins::Status or <a
+href="Resque/Plugins/ChainedStatus.html">Resque::Plugins::ChainedStatus</a>,
+this will pause the worker, and will automatically pause the job it is
+processing on the next call to tick. The worker is also available to the
+class that includes Resque::Plugins::Status so you can manually check
+it&#39;s status as well.</p>
+
+<pre class="ruby"><span class="ruby-constant">Class</span> <span class="ruby-constant">YourClass</span>
+
+<span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">Status</span>
+
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>
+  <span class="ruby-operator">...</span><span class="ruby-identifier">your</span> <span class="ruby-identifier">code</span> <span class="ruby-identifier">here</span>
+  <span class="ruby-identifier">tick</span> <span class="ruby-string">&quot;Retrieving file.&quot;</span>  <span class="ruby-comment">#You&#39;re process will pause here automatically and the status on the Status tab will be set to paused if the worker is paused.</span>
+
+  <span class="ruby-comment">#Alternatively, you have access to the worker, so you can pause the process yourself too.</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">worker</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>
+      <span class="ruby-comment"># There could be workers in a chained job still doing work.</span>
+      <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">pause!</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">paused?</span>
+        <span class="ruby-keyword">break</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>
+        <span class="ruby-identifier">sleep</span> <span class="ruby-value">60</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">tick</span>(<span class="ruby-node">&quot;Job resumed at #{Time.now}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-operator">...</span><span class="ruby-identifier">continue</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-constant">This</span> <span class="ruby-identifier">will</span> <span class="ruby-identifier">only</span> <span class="ruby-identifier">pause</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">work</span> <span class="ruby-identifier">being</span> <span class="ruby-identifier">processed</span> <span class="ruby-identifier">by</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">worker</span> <span class="ruby-identifier">that</span> <span class="ruby-identifier">was</span> <span class="ruby-identifier">paused</span>.  <span class="ruby-constant">If</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">job</span> <span class="ruby-identifier">is</span> <span class="ruby-identifier">paused</span> <span class="ruby-identifier">by</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">call</span> <span class="ruby-identifier">to</span> <span class="ruby-comment">#tick,</span>
+<span class="ruby-identifier">the</span> <span class="ruby-identifier">job</span> <span class="ruby-identifier">will</span> <span class="ruby-identifier">sleep</span> <span class="ruby-keyword">for</span> <span class="ruby-value">60</span> <span class="ruby-identifier">seconds</span> <span class="ruby-identifier">before</span> <span class="ruby-identifier">checking</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">status</span> <span class="ruby-identifier">again</span>.
+
+<span class="ruby-constant">You</span> <span class="ruby-identifier">may</span> <span class="ruby-identifier">have</span> <span class="ruby-identifier">a</span> <span class="ruby-identifier">series</span> <span class="ruby-identifier">of</span> <span class="ruby-identifier">classes</span> <span class="ruby-identifier">that</span> <span class="ruby-identifier">include</span> <span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">ChainedStatus</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">you</span> <span class="ruby-identifier">want</span> <span class="ruby-identifier">all</span> <span class="ruby-identifier">processing</span> <span class="ruby-keyword">in</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">chain</span> <span class="ruby-identifier">stopped</span>.
+
+<span class="ruby-constant">Class</span> <span class="ruby-constant">YourClass</span>
+
+<span class="ruby-constant">Resque</span><span class="ruby-operator">::</span><span class="ruby-constant">Plugins</span><span class="ruby-operator">::</span><span class="ruby-constant">ChainedStatus</span>
+
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>
+  <span class="ruby-operator">...</span><span class="ruby-identifier">your</span> <span class="ruby-identifier">code</span> <span class="ruby-identifier">here</span>
+  <span class="ruby-identifier">tick</span> <span class="ruby-string">&quot;Retrieving file.&quot;</span>  <span class="ruby-comment">#You&#39;re process will pause here automatically and the status on the Status tab will be set to paused if the worker is paused.</span>
+
+  <span class="ruby-comment">#Alternatively, you have access to the worker, so you can pause the process yourself too.</span>
+  <span class="ruby-keyword">if</span> (<span class="ruby-identifier">worker</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">paused?</span>
+      <span class="ruby-comment"># There could be workers in a chained job still doing work.</span>
+      <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">pause!</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">paused?</span>
+        <span class="ruby-keyword">break</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">worker</span>.<span class="ruby-identifier">paused?</span>
+        <span class="ruby-identifier">sleep</span> <span class="ruby-value">60</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">tick</span>(<span class="ruby-node">&quot;Job resumed at #{Time.now}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-operator">...</span><span class="ruby-identifier">continue</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-constant">By</span> <span class="ruby-identifier">looking</span> <span class="ruby-identifier">at</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">paused?</span> <span class="ruby-identifier">method</span> <span class="ruby-identifier">too</span>, <span class="ruby-identifier">this</span> <span class="ruby-identifier">process</span> <span class="ruby-identifier">will</span> <span class="ruby-identifier">stop</span>, <span class="ruby-identifier">even</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">it</span><span class="ruby-string">&#39;s worker has not been paused.
+But be aware, if this worker does other jobs, it will not process anything else and it&#39;</span><span class="ruby-identifier">s</span> <span class="ruby-identifier">queue</span> <span class="ruby-identifier">could</span> <span class="ruby-identifier">get</span> <span class="ruby-identifier">backed</span> <span class="ruby-identifier">up</span>.
+<span class="ruby-constant">This</span> <span class="ruby-identifier">is</span> <span class="ruby-identifier">where</span> <span class="ruby-identifier">pausing</span> <span class="ruby-identifier">one</span> <span class="ruby-identifier">worker</span>, <span class="ruby-identifier">could</span> <span class="ruby-identifier">affect</span> <span class="ruby-identifier">other</span>, <span class="ruby-identifier">unrelated</span> <span class="ruby-identifier">workers</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">jobs</span> <span class="ruby-identifier">from</span> <span class="ruby-identifier">getting</span> <span class="ruby-identifier">backed</span> <span class="ruby-identifier">up</span> <span class="ruby-identifier">as</span> <span class="ruby-identifier">well</span>.
+</pre>
+
+<h2 id="label-Throttle+a+Queue">Throttle a Queue<span><a href="#label-Throttle+a+Queue">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>A throttle method has been added. This is useful if you have a queue that
+tends to have very high volume, for example, the queue that process all the
+individual records of a file. You don&#39;t want to load that queue up with
+1 million entries, possibly blowing out the memory of your Redis server.</p>
+
+<pre class="ruby"><span class="ruby-constant">CSV</span>.<span class="ruby-identifier">foreach</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">file_path</span>, :<span class="ruby-identifier">headers</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, :<span class="ruby-identifier">quote_char</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&quot;&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">throttle</span>(:<span class="ruby-identifier">single_record_loader</span>, <span class="ruby-value">10000</span>, <span class="ruby-value">30</span>)
+    <span class="ruby-constant">SingleRecordLoader</span>.<span class="ruby-identifier">create</span>({<span class="ruby-string">&#39;uuid&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">uuid</span>, <span class="ruby-string">&#39;row_data&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">row</span>.<span class="ruby-identifier">to_hash</span>, <span class="ruby-string">&#39;rows_in_file&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">total_rows</span>})
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Putting the throttle before enqueing the SingleRecordLoader will check the
+single_record_loader queue to make sure it has less than 10000 entries in
+it before proceeding. If is has 10000 or more entries, it will sleep for 30
+seconds before checking again.</p>
+
+<h2 id="label-Multi-Threaded+Workers">Multi-Threaded Workers<span><a href="#label-Multi-Threaded+Workers">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>With Jruby, you have to specify the amount of memory to allocate when you
+start up the jvm. This has proven inefficient for us because different
+workers require different amounts of memory. We have standardized our jvm
+configuration for the workers, which means we have to start each worker
+with the maximum amount of memory needed by the most memory intensive
+worker. This means we are wasting a lot of resources for the workers that
+don&#39;t require as much memory.</p>
+
+<p>Our answer was to make the workers multi-threaded. Now you can pass
+multiple workers and queues into the rake task, each worker will be started
+in separate threads within the same process.</p>
+
+<p>NOTE: The convention to identify which queues are monitored by which worker
+is to prefix each worker with a &#39;#&#39; in the rake task argument.</p>
+
+<pre>rake QUEUE=#file_loader#file_loader,email resque:work</pre>
+
+<p>This will start up 2 workers, 1 will work the file_loader queue, and one
+will work the file_loader and email queue.</p>
+
+<p>Be aware that when you stop a worker, it will stop all the workers within
+that process.</p>
+
+<h2 id="label-Workers+in+Multiple+Applications">Workers in Multiple Applications<span><a href="#label-Workers+in+Multiple+Applications">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>You now have the ability to manage workers in multiple applications from a
+single app&#39;s UI. In other words, the workers can be in a different app
+than the UI itself. I did this becase our app had become very large. I did
+not want to have to load up our huge monolithic app just to run a small
+worker. So by splitting the workers out into a separate application, I save
+server resources, but only our main app mounts resque_manager in the
+routes.rb file and manages all the workers.</p>
+
+<p>To do this, you&#39;ll need to add resque_manager to the Gemfile of all
+apps containing workers as well as the app with the UI.</p>
+
+<p>You will also need to tell the app that mounts resque_manager UI what
+applications contain workers and the paths where they are deployed to.</p>
+
+<pre>ResqueManager.applications = {application1: &#39;/Users/ktyll/rails_sites/git/application1&#39;,
+                              application2: &#39;/Users/ktyll/rails_sites/git/application2&#39;}</pre>
+
+<p>See the sample initializer above.</p>
+
+<p>By setting the applications hash, a select box will display on the workers
+page so you can select the application where the worker is you want to
+start.</p>
+
+<p><img
+src="https://www.evernote.com/shard/s198/sh/04538799-da21-48b4-ab63-ac19c815dc85/62f73190d926844e5f97ea74f0bedb6c/deep/0/Pasted%20Image%207/30/13%2010:30%20AM.png"></p>
+
+<p>You do not need to include the application that has mounted the
+resque_manager UI in this hash. If you do not select an application from
+the drop down, it will assume the worker is in the same app.</p>
+
+<h2 id="label-After+Deploy+Hooks">After Deploy Hooks<span><a href="#label-After+Deploy+Hooks">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>The resque:restart_workers cap task can be added as an after deploy task to
+refresh your workers. Without this, your workers will continue to run your
+old code base after a deployment.</p>
+
+<p>To make it work add the callbacks in your deploy.rb file:</p>
+
+<pre>after &quot;deploy&quot;, &quot;resque:restart_workers&quot;
+after &quot;deploy:migrations&quot;, &quot;resque:restart_workers&quot;</pre>
+
+<h2 id="label-Resque+Scheduler">Resque Scheduler<span><a href="#label-Resque+Scheduler">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>If resque-scheduler is installed, the Schedule and Delayed tabs will
+display.</p>
+
+<p>Be sure you add the resque_scheduler gem before the resque_manager gem in
+your Gemfile:</p>
+
+<pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-string">&#39;resque-scheduler&#39;</span>, :<span class="ruby-identifier">require</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;resque_scheduler&#39;</span>
+<span class="ruby-identifier">gem</span> <span class="ruby-string">&#39;resque_manager&#39;</span>
+</pre>
+
+<p>The Schedule tab functionality has been enhanced to be able to add jobs to
+the scheduler from the UI. This means you don&#39;t need to edit a static
+file that gets loaded on initialization. This also means you don&#39;t have
+to deploy that file every time you edit your schedule.</p>
+
+<p>You can also create different schedules on different servers in your farm.
+You specify the IP address you want to schedule a job to run on, and it
+will add the job to the schedule on that server. You can also start and
+stop the scheduler on each server from the Schedule tab.</p>
+
+<p><img src="http://img.skitch.com/20100308-quccysfiwtgubpw286ka2enr9m.png"></p>
+
+<p>The caveat to this is the Arguments value must be entered in the text box
+as JSON in order for the arguments to get parsed and stored in the schedule
+correctly. I find the easiest thing to do is to perform a Resque.encode on
+my parameters list in script/console. If we have a method that takes 3
+parameters:</p>
+
+<pre class="ruby"><span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">encode</span>([[<span class="ruby-string">&#39;300&#39;</span>],<span class="ruby-value">1</span>,{<span class="ruby-string">&quot;start_date&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;2010-02-01&quot;</span>,<span class="ruby-string">&quot;end_date&quot;</span>=<span class="ruby-operator">&gt;</span><span class="ruby-string">&quot;2010-02-28&quot;</span>}])
+=<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;[[&quot;</span><span class="ruby-value">300</span><span class="ruby-string">&quot;],1,{&quot;</span><span class="ruby-identifier">end_date</span><span class="ruby-string">&quot;:&quot;</span><span class="ruby-value">2010</span><span class="ruby-operator">-</span><span class="ruby-value">02</span><span class="ruby-operator">-</span><span class="ruby-value">28</span><span class="ruby-string">&quot;,&quot;</span><span class="ruby-identifier">start_date</span><span class="ruby-string">&quot;:&quot;</span><span class="ruby-value">2010</span><span class="ruby-operator">-</span><span class="ruby-value">02</span><span class="ruby-operator">-</span><span class="ruby-value">01</span><span class="ruby-string">&quot;}]&quot;</span>
+</pre>
+
+<p>The first parameter is an array of strings, the second parameter is an
+integer, and the third parameter is a hash. Remembering that the arguments
+are stored in an array, all the parameters need to be in an array when
+there is more than one.</p>
+
+<p>Any string arguments need to be quoted in the text box:</p>
+
+<pre class="ruby"><span class="ruby-operator">&gt;&gt;</span> <span class="ruby-constant">Resque</span>.<span class="ruby-identifier">encode</span>(<span class="ruby-string">&quot;Hello World&quot;</span>)
+=<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;&quot;</span><span class="ruby-constant">Hello</span> <span class="ruby-constant">World</span><span class="ruby-string">&quot;&quot;</span>
+</pre>
+
+<h3 id="label-Additional+cap+tasks+added%3A">Additional cap tasks added:<span><a href="#label-Additional+cap+tasks+added%3A">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<pre>cap resque:quit_scheduler   # Gracefully kill the scheduler on a server.
+cap resque:scheduler        # start a resque worker.
+cap resque:scheduler_status # Determine if the scheduler is running or not</pre>
+
+<h2 id="label-Delayed+Tab">Delayed Tab<span><a href="#label-Delayed+Tab">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>I have not tested or added any functionality to the Delayed tab. I get a
+RuntimeError: -ERR invalid bulk write count any time I try to do a
+Resque.enqueue_at. I&#39;ve spent some time researching, and assume
+it&#39;s something with my version combinations. I believe it&#39;s a Redis
+issue and not a Resque-Scheduler issue. But since I&#39;m not using it, I
+haven&#39;t put a great deal of time into resolving it.</p>
+
+<p>Copyright © 2009 Chris Wanstrath Copyright © 2010 Ben VandenBos Copyright ©
+2010 Aaron Quint Copyright © 2011 Tatsuya Ono Copyright © 2013 Kevin Tyll,
+released under the MIT license</p>
+
+<p>Thanks to Karl Baum for doing the original heavy lifting for converting
+this to a rails engine for rails 3.</p>
+
+<p>Much thanks goes to Brian Ketelsen for the ideas for the improved
+functionality for the UI.</p>
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -30,7 +30,7 @@
         <div class="progress-pct"><%= status.pct_complete ? "#{status.pct_complete}%" : '' %></div>
       </td>
       <td><%= status.message.to_s.html_safe %></td>
-      <td><% if status.killable? %><%= button_to('Kill', kill_resque_path(status.uuid), :class => 'kill') %><% end %></td>
+      <td><% if status.killable? %><%= button_to('Kill', kill_resque_path(status.uuid), :class => 'kill', method: :delete) %><% end %></td>
     </tr>
     <% end %>
   <% else %>

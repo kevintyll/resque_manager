@@ -178,7 +178,7 @@ unless defined?($rails_rake_task) && $rails_rake_task
       end
 
       def status
-        @status = Resque::Plugins::Status::Hash.get(params[:id])
+        @status = Resque::Plugins::Status::Hash.get(params[:uuid])
         respond_to do |format|
           format.js { render json: @status }
           format.html { render :status }
@@ -186,10 +186,10 @@ unless defined?($rails_rake_task) && $rails_rake_task
       end
 
       def kill
-        Resque::Plugins::Status::Hash.kill(params[:id])
-        s = Resque::Plugins::Status::Hash.get(params[:id])
+        Resque::Plugins::Status::Hash.kill(params[:uuid])
+        s = Resque::Plugins::Status::Hash.get(params[:uuid])
         s.status = 'killed'
-        Resque::Plugins::Status::Hash.set(params[:id], s)
+        Resque::Plugins::Status::Hash.set(params[:uuid], s)
         redirect_to statuses_resque_path
       end
 

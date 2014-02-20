@@ -115,6 +115,7 @@ module ResqueManager
 
       context '#start_worker' do
         should 'always redirect to workers path' do
+          Resque::Worker.expects(:start)
           post :start_worker, use_route: :resque_manager
           assert_redirected_to '/resque/workers'
         end
@@ -234,13 +235,13 @@ module ResqueManager
       context '#status' do
         should 'render a status in json' do
           hash = Resque::Plugins::Status::Hash.set('UUID', 'message')
-          get :status, {id: 'UUID', format: :js, use_route: :resque_manager}
+          get :status, {uuid: 'UUID', format: :js, use_route: :resque_manager}
           assert_equal hash, JSON.parse(@response.body), JSON.parse(@response.body).inspect
         end
 
         should 'render a status in html' do
           hash = Resque::Plugins::Status::Hash.set('UUID', 'message')
-          post :status, {id: 'UUID', use_route: :resque_manager}
+          post :status, {uuid: 'UUID', use_route: :resque_manager}
           assert_select 'h1', /Statuses:/
         end
       end
@@ -248,7 +249,7 @@ module ResqueManager
       context '#kill' do
         should 'redirect to statuses and kill a status' do
           Resque::Plugins::Status::Hash.set('UUID', 'message')
-          post :kill, {id: 'UUID', use_route: :resque_manager}
+          post :kill, {uuid: 'UUID', use_route: :resque_manager}
           assert_redirected_to '/resque/statuses'
           hash = Resque::Plugins::Status::Hash.get('UUID')
           assert_equal 'killed', hash['status']
