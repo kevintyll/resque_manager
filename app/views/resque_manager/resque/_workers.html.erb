@@ -89,13 +89,13 @@
             </td>
             <td>
               <% if upid != pid %>
-                  <%= button_to "Stop", stop_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :delete, :title => "This will stop all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}", :method => :post %>
+                  <%= button_to "Stop", stop_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :delete, :title => "This will stop all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}" %>
                   <% if worker.paused? %>
-                      <%= button_to "Unpause", continue_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :put, :title => "This will unpause all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}", :method => :post %>
+                      <%= button_to "Unpause", continue_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :put, :title => "This will unpause all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}" %>
                   <% else %>
-                      <%= button_to "Pause", pause_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :put, :title => "This will pause all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}", :method => :post %>
+                      <%= button_to "Pause", pause_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :put, :title => "This will pause all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}" %>
                   <% end %>
-                  <%= button_to "Restart", restart_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :put, :title => "This will restart all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}", :method => :post %>
+                  <%= button_to "Restart", restart_worker_resque_path(worker: worker.to_s), :class => 'clear-failed', method: :put, :title => "This will restart all workers on #{host} in pid #{pid}: #{worker.workers_in_pid.collect { |w| w.to_s }.join(', ')}" %>
                   <% upid = pid %>
               <% end %>
             </td>
