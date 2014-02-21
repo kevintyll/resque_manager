@@ -21,7 +21,7 @@
     <% Resque.schedule.each do |name,config| %>
       <tr>
         <td>
-          <%= button_to "Queue now", schedule_requeue_resque_path(name), :method => :put %>
+          <%= button_to "Queue now", schedule_requeue_resque_path(job_name: name), :method => :put %>
         </td>
         <td><%= h name %></td>
         <td><%= h config['ip'] %></td>
@@ -29,7 +29,7 @@
         <td style="white-space:nowrap"><%= h config['cron'] %></td>
         <td><%= h config['class'] %></td>
         <td><%= h config['args'].inspect %></td>
-        <td><%= button_to "Remove", remove_from_schedule_resque_path(name, config['ip']), :method => :delete %></td>
+        <td><%= button_to "Remove", remove_from_schedule_resque_path(job: name, ip: config['ip']), :method => :delete %></td>
       </tr>
     <%end%>
   </table>
@@ -83,9 +83,9 @@
         <td><%= status %></td>
         <td>
           <%  if status == 'Running' -%>
-            <%= button_to 'Stop Scheduler', stop_scheduler_resque_path(ip), :method => :delete %>
+            <%= button_to 'Stop Scheduler', stop_scheduler_resque_path(ip: ip), :method => :delete %>
           <% else -%>
-            <%= button_to 'Start Scheduler', start_scheduler_resque_path(ip), :method => :post %>
+            <%= button_to 'Start Scheduler', start_scheduler_resque_path(ip: ip), :method => :post %>
           <% end -%>
         </td>
       </tr>

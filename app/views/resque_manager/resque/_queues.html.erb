@@ -21,7 +21,7 @@
             <td class='args'><%= job['args'].inspect.html_safe %></td>
             <% if ResqueManager.applications.blank? %>
                 <td>
-                  <%= button_to "Remove", remove_job_resque_path(job['class'], :args => Resque.encode(job['args'])), :class => 'clear-failed', :method => :delete %>
+                  <%= button_to "Remove", remove_job_resque_path(class: job['class'], args: Resque.encode(job['args'])), :class => 'clear-failed', :method => :delete %>
                 </td>
             <% end %>
           </tr>

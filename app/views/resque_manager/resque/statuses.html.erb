@@ -21,7 +21,7 @@
   <% unless @statuses.empty? %>
     <% @statuses.each do |status| %>
     <tr>
-      <td><%= link_to(status.uuid, status_resque_path(status.uuid)) %></td>
+      <td><%= link_to(status.uuid, status_resque_path(uuid: status.uuid)) %></td>
       <td><%= status.name %></td>
       <td class="status status-<%= status.status %>"><%= status.status %></td>
       <td class="time"><%= format_time(Time.zone.parse(status.time.to_s)) %></td>
@@ -30,7 +30,7 @@
         <div class="progress-pct"><%= status.pct_complete ? "#{status.pct_complete}%" : '' %></div>
       </td>
       <td><%= status.message.to_s.html_safe %></td>
-      <td><% if status.killable? %><%= button_to('Kill', kill_resque_path(status.uuid), :class => 'kill', method: :delete) %><% end %></td>
+      <td><% if status.killable? %><%= button_to('Kill', kill_resque_path(uuid: status.uuid), :class => 'kill', method: :delete) %><% end %></td>
     </tr>
     <% end %>
   <% else %>
