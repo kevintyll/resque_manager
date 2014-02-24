@@ -1,4 +1,4 @@
-Thu, 20 Feb 2014 15:54:58 -0500
+Mon, 24 Feb 2014 13:20:48 -0500
 README.markdown	Thu, 13 Feb 2014 14:19:23 -0500
 lib/resque_manager.rb	Thu, 13 Feb 2014 14:18:43 -0500
 lib/resque_manager/engine.rb	Tue, 30 Jul 2013 14:53:13 -0400
@@ -9,8 +9,8 @@ lib/resque_manager/overrides/resque_scheduler/resque_scheduler.rb	Thu, 31 Oct 20
 lib/resque_manager/overrides/resque_status/chained_status.rb	Mon, 12 Aug 2013 12:34:07 -0400
 lib/resque_manager/overrides/resque_status/hash.rb	Wed, 10 Jul 2013 13:47:30 -0400
 lib/resque_manager/overrides/resque_status/status.rb	Mon, 03 Feb 2014 12:13:42 -0500
-lib/resque_manager/recipes.rb	Mon, 03 Feb 2014 15:28:45 -0500
-lib/resque_manager/version.rb	Thu, 20 Feb 2014 15:53:19 -0500
+lib/resque_manager/recipes.rb	Mon, 24 Feb 2014 13:18:49 -0500
+lib/resque_manager/version.rb	Mon, 24 Feb 2014 13:19:06 -0500
 app/controllers/resque_manager/resque_controller.rb	Thu, 20 Feb 2014 14:47:30 -0500
 app/helpers/resque_manager/application_helper.rb	Fri, 12 Jul 2013 10:23:28 -0400
 app/helpers/resque_manager/resque_helper.rb	Mon, 16 Dec 2013 11:05:18 -0500

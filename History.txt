@@ -1,3 +1,7 @@
+== 3.3.12 2013-2-24
+
+*  add nohup back to the restart_workers cap task
+
 == 3.3.11 2013-2-21
 
 *  Use the proper methods for the routes.
