@@ -141,6 +141,9 @@ module Resque
         else
           raise e
         end
+      ensure
+        # Return any database connections used by this worker back to the pool
+        ActiveRecord::Base.clear_active_connections! if defined?(ActiveRecord::Base)
       end
 
       # sets a message for the job on the overview page

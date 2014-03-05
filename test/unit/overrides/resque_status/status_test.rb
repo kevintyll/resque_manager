@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'active_record'
 require File.expand_path(File.dirname(__FILE__) + '/../../../test_helper')
 # Testing resque status mixin through DataContributionFile
 
@@ -54,6 +55,11 @@ class StatusTest < Test::Unit::TestCase
         assert_equal @uuid,                 response.uuid
         assert_equal options,               response.options
         assert_equal :single_record_loader, response.worker
+      end
+
+      should 'return active connections to the connection pool' do
+        ActiveRecord::Base.expects(:clear_active_connections!)
+        DataContributionFile.perform
       end
     end
 
