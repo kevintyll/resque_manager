@@ -45,7 +45,7 @@ Configuration
 --------------
 
 There are a few things you need to configure, and a few more you can if you like.  The easiest is to add an initializer:
-
+```rb
 ResqueManager.configure do |config|
   # configure redis
   config.redis_config = YAML.load(IO.read(Rails.root.join("config", "redis.yml")))["#{Rails.env}_resque"]
@@ -68,7 +68,7 @@ ResqueManager.configure do |config|
   # ex. resque_worker_cap: 'bundle exec bin/cap'
   config.resque_worker_cap = resque_manager_config['resque_worker_cap']
 end
-
+```
 See the sample .yml files in config.
 
 Capistrano Configuration
